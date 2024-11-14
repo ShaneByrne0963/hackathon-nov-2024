@@ -40,4 +40,19 @@ function updatePreference(event) {
   sendData();
 }
 
-document.querySelector('#button-size').addEventListener('change', updatePreference);
+/**
+ * Sets the size of the body to either the width of the screen minus padding, or maxWidth
+ * @param {Number} maxWidth the maximum width of the popup in pixels
+ * @param {Number} padding the amount of pixels between the popup and the edge of the screen
+ */
+function updateBodySize(maxWidth, padding) {
+  document.querySelector('body').style.width = `${Math.min(screen.width - (padding * 2), maxWidth)}px`;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Add your event listeners here
+  document.querySelector('#button-size').addEventListener('change', updatePreference);
+
+  // Update the size of the body
+  updateBodySize(500, 16); 
+})
