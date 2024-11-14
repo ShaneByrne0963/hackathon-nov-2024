@@ -18,6 +18,14 @@ const functions = [
     targets: "body, header, div, section, article"
   },
   {
+    func: replacementColor,
+    targets: "body, header, div, section, article",
+    condition: {
+        key: 'removeBg',
+        equals: true
+    }
+  },
+  {
     func: ruler,
     targets: "body"
   }

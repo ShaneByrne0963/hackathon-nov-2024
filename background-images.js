@@ -1,17 +1,26 @@
+function replacementColor(element, data) {
+   // alert('color changed');
+    //alert(data.replacementColor);
+    removeBackgroundImage(element, data);
+}
+
 function removeBackgroundImage(element, data) {
   console.log("remove bg is ", data.removeBg);
 
-  if (data.removeBg) {
-    const style = window.getComputedStyle(element);
 
-    if (hasBackgroundImage(style)) {
+  if (data.removeBg) {
+    let style = window.getComputedStyle(element);
+
+    if (hasBackgroundImage(style) || element.getAttribute("data-original-bg")) {
       // Save the original background image URL if it hasn't been saved already
       if (!element.getAttribute("data-original-bg")) {
         element.setAttribute("data-original-bg", style.backgroundImage);
       }
 
       // Color should be taken from user preferences
-      const userBgColor = "#e1e8d8";
+      //if (data.replacementColor) {
+
+      let userBgColor = data.replacementColor; //"#e1e8d8";
       // Keep background properties that affect layout and appearance
       element.style.backgroundSize = style.backgroundSize;
       element.style.backgroundPosition = style.backgroundPosition;
@@ -40,8 +49,8 @@ function removeBackgroundImage(element, data) {
     const originalBg = element.getAttribute("data-original-bg");
     if (originalBg) {
       element.style.backgroundImage = originalBg;
-      element.style.backgroundColor = ""; // Clear the background color to show the image
-      element.removeAttribute("data-original-bg"); // Optional: Remove the data attribute if not needed for future toggles
+      element.style.backgroundColor = ""; // Clear the background color
+     // element.removeAttribute("data-original-bg");
     }
   }
 }
