@@ -1,14 +1,26 @@
+/**
+ * Calls function that replaces the background image with the selected color
+ * @param {element} Element whose bg image will be removed and text colors updated
+ * @param {data} User preferences
+ */
 function updateReplacementColor(element, data) {
-   // alert('color changed');
-    //alert(data.replacementColor);
-    removeBackgroundImage(element, data);
+
+  removeBackgroundImage(element, data);
 }
 
+/**
+ * Processes the replacement and reinstatement of background images.
+ * Automatically sets a contrasting text color.
+ * @param {element} Element whose bg image will be removed and text colors updated
+ * @param {data} User preferences
+ */
 function removeBackgroundImage(element, data) {
   console.log("remove bg is ", data.removeBg);
+  const childElements = element.querySelectorAll("*");
 
-  if (data.removeBg && element.innerText) {
-    let style = window.getComputedStyle(element);
+  if (data.removeBg && childElements.length) {
+    
+    const style = window.getComputedStyle(element);
 
     if (hasBackgroundImage(style) || element.getAttribute("data-original-bg")) {
       // Save the original background image URL if it hasn't been saved already
@@ -17,7 +29,9 @@ function removeBackgroundImage(element, data) {
       }
 
       // Color should be taken from user preferences
-      let userBgColor = data.replacementColor; //"#e1e8d8";
+      let userBgColor = data.replacementColor;
+      let contrastColor = getMaxContrastColor(userBgColor);
+
       // Keep background properties that affect layout and appearance
       element.style.backgroundSize = style.backgroundSize;
       element.style.backgroundPosition = style.backgroundPosition;
@@ -34,6 +48,16 @@ function removeBackgroundImage(element, data) {
 
       element.style.backgroundImage = "none";
       element.style.backgroundColor = userBgColor;
+      // Go through each child element and check if it has text
+      childElements.forEach((child) => {
+        if (child.textContent.trim()) {
+            // Save the original text color
+            if (!child.getAttribute("data-original-color")) {
+                child.setAttribute("data-original-color", child.style.color);
+            }
+          child.style.color = contrastColor;
+        }
+      });
     }
 
     // Function to check if an element has a background image
@@ -45,9 +69,53 @@ function removeBackgroundImage(element, data) {
     // Restore the original background image if present
     const originalBg = element.getAttribute("data-original-bg");
     if (originalBg) {
+
       element.style.backgroundImage = originalBg;
       element.style.backgroundColor = "";
       element.removeAttribute("data-original-bg");
+
+      // Restore the original text color for each child
+      childElements.forEach((child) => {
+        if (child.textContent.trim()) {
+            originalTextColor = child.getAttribute("data-original-color");
+            if (originalTextColor) {
+                child.style.color = originalTextColor;
+                child.removeAttribute("data-original-color");
+            }
+        }
+      });
     }
   }
+}
+
+// Adapted from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
+
+function getLuminance(r, g, b) {
+  const a = [r, g, b].map((v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+function hexToRgb(hex) {
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+  
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+      parseInt(result[1], 16),
+      parseInt(result[2], 16),
+      parseInt(result[3], 16)
+     ] : null;
+  }
+
+function getMaxContrastColor(hexColor) {
+  const [r, g, b] = hexToRgb(hexColor);
+  const luminance = getLuminance(r, g, b);
+
+  // Return black for light colors and white for dark colors
+  return luminance > 0.5 ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)";
 }
