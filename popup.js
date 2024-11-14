@@ -1,7 +1,9 @@
 // All keys used in the local storage
 // Format: { key: string, default: string }
 const storageKeys = [
-  { key: "buttonSize", default: "default" },
+  { key: "buttonSize", default: "default",
+    key: "removeBg", default: "false"
+   },
 ];
 
 /**
@@ -34,6 +36,7 @@ function updatePreference(event) {
   const target = event.target;
   const key = target.getAttribute('data-key');
   const value = target.value;
+
   if (key && value) {
     localStorage.setItem(key, value);
   }
@@ -41,3 +44,4 @@ function updatePreference(event) {
 }
 
 document.querySelector('#button-size').addEventListener('change', updatePreference);
+document.querySelector('#remove-bg-image').addEventListener('change', updatePreference);
