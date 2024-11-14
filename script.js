@@ -6,6 +6,7 @@ const functions = [
 ];
 
 function updatePage(preferences) {
+  console.log(preferences);
   functions.map(data => {
     [...document.querySelectorAll(data.targets)].map(element => {
       data.func(element, preferences);

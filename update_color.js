@@ -35,7 +35,7 @@ function updateColorContrast(element, data) {
   if (element.innerText) {
     let backgroundColor = findBackgroundColor(element);
     if (backgroundColor !== 'rgb(255, 255, 255)') {
-      console.log(element, backgroundColor);
+      // console.log(element, backgroundColor);
     }
   }
 }
