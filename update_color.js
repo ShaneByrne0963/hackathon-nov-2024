@@ -91,7 +91,7 @@ function updateColorContrast(element, data) {
 
     let backLuminence = getColorLuminence(...backgroundColor);
     let textLuminence = getColorLuminence(...textColor);
-    let relativeLuminance = backLuminence > textLuminence ? (backLuminence + 0.05) / (textLuminence + 0.05) : (textLuminence + 0.05) / (backLuminence + 0.05);
+    let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
 
     if (relativeLuminance < 3) {
       // Will temporarily leave these in so you guys can test it
