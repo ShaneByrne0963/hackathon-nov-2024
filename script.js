@@ -4,10 +4,10 @@ const functions = [
   { func: removeBackgroundImage, targets: "body, header, div, section, article" },
 ];
 
-function updatePage(data) {
+function updatePage(preferences) {
   functions.map(data => {
     [...document.querySelectorAll(data.targets)].map(element => {
-      data.func(element);
+      data.func(element, preferences);
     });
   });
 }
