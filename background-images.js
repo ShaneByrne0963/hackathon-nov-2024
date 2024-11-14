@@ -1,4 +1,4 @@
-function replacementColor(element, data) {
+function updateReplacementColor(element, data) {
    // alert('color changed');
     //alert(data.replacementColor);
     removeBackgroundImage(element, data);
@@ -7,8 +7,7 @@ function replacementColor(element, data) {
 function removeBackgroundImage(element, data) {
   console.log("remove bg is ", data.removeBg);
 
-
-  if (data.removeBg) {
+  if (data.removeBg && element.innerText) {
     let style = window.getComputedStyle(element);
 
     if (hasBackgroundImage(style) || element.getAttribute("data-original-bg")) {
@@ -18,8 +17,6 @@ function removeBackgroundImage(element, data) {
       }
 
       // Color should be taken from user preferences
-      //if (data.replacementColor) {
-
       let userBgColor = data.replacementColor; //"#e1e8d8";
       // Keep background properties that affect layout and appearance
       element.style.backgroundSize = style.backgroundSize;
@@ -49,8 +46,8 @@ function removeBackgroundImage(element, data) {
     const originalBg = element.getAttribute("data-original-bg");
     if (originalBg) {
       element.style.backgroundImage = originalBg;
-      element.style.backgroundColor = ""; // Clear the background color
-     // element.removeAttribute("data-original-bg");
+      element.style.backgroundColor = "";
+      element.removeAttribute("data-original-bg");
     }
   }
 }

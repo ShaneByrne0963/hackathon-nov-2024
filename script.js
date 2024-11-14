@@ -18,7 +18,7 @@ const functions = [
     targets: "body, header, div, section, article"
   },
   {
-    func: replacementColor,
+    func: updateReplacementColor,
     targets: "body, header, div, section, article",
     condition: {
         key: 'removeBg',
