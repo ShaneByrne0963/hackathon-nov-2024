@@ -1,8 +1,8 @@
 // Add your functions to be ran on each element here
 const functions = [
   { func: updateColor, targets: "*"},
-  { func: removeBackgroundImage, targets: "body, header, div, section, article",},
-  { func: ruler, targets: "body",}
+  { func: removeBackgroundImage, targets: "body, header, div, section, article"},
+  {func: ruler, targets: "body",}
 ];
 
 function updatePage(preferences) {

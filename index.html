@@ -2,50 +2,57 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-  <!-- To be updated when navigation has been confirmed -->
-  <nav>
-    <a href="#home" aria-label="Go to Home Page">Home</a>
-    <a href="#about" aria-label="Learn more About Us">About</a>
-    <a href="#services" aria-label="View our Services">Services</a>
-    <a href="#contact" aria-label="Contact Us">Contact</a>
-  </nav>
+    <!-- To be updated when navigation has been confirmed -->
+    <nav>
+        <a href="#home" aria-label="Go to Home Page">Home</a>
+        <a href="#about" aria-label="Learn more About Us">About</a>
+        <a href="#services" aria-label="View our Services">Services</a>
+        <a href="#contact" aria-label="Contact Us">Contact</a>
+    </nav>
 
-  <!-- Label for Button Size Selector -->
-  <label for="button-size">Select Button Size:</label>
-  <select id="button-size" data-key="buttonSize" aria-label="Select button size">
-    <option value="default">Default</option>
-    <option value="medium">Medium</option>
-    <option value="large">Large</option>
-  </select>
+    <!-- Label for Button Size Selector -->
+    <label for="button-size">Select Button Size:</label>
+    <select id="button-size" data-key="buttonSize" aria-label="Select button size">
+        <option value="default">Default</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+    </select>
 
-  <!-- Label for Ruler -->
-  <label for="ruler">Ruler</label>
-  <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler">
-  
-  <!-- Buttons with ARIA labels for clarity -->
+    <!-- Label for Ruler -->
+    <label for="ruler">Ruler</label>
+    <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler">
+    
+    <!-- Buttons with ARIA labels for clarity -->
   <button aria-label="Action for Button 1">Button 1</button>
   <button aria-label="Action for Button 2">Button 2</button>
   <button aria-label="Action for Button 3">Button 3</button>
 
-  <!-- To be updated when footers have been confirmed -->
-  <footer>
-    <a href="https://twitter.com/example" aria-label="Visit our Twitter profile">
-      <i class="icon-twitter"></i> Twitter
-    </a>
-    <a href="https://facebook.com/example" aria-label="Visit our Facebook page">
-      <i class="icon-facebook"></i> Facebook
-    </a>
-    <a href="https://linkedin.com/example" aria-label="Visit our LinkedIn profile">
-      <i class="icon-linkedin"></i> LinkedIn
-    </a>
-  </footer>
-  <script src="popup.js"></script>
+  
+    <!-- TODO: Checkbox value should be set programmatically if checkbox.checked -->
+    <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images" value="true">
+    <!-- Label for Background Image Removal toggle -->
+    <label for="remove-bg-image">Hide background images</label>
+
+
+    <!-- To be updated when footers have been confirmed -->
+    <footer>
+        <a href="https://twitter.com/example" aria-label="Visit our Twitter profile">
+            <i class="icon-twitter"></i> Twitter
+        </a>
+        <a href="https://facebook.com/example" aria-label="Visit our Facebook page">
+            <i class="icon-facebook"></i> Facebook
+        </a>
+        <a href="https://linkedin.com/example" aria-label="Visit our LinkedIn profile">
+            <i class="icon-linkedin"></i> LinkedIn
+        </a>
+    </footer>
+    <script src="popup.js"></script>
 </body>
 
 </html>
