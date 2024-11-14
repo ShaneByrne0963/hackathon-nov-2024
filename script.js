@@ -1,6 +1,8 @@
 // Add your functions to be ran on each element here
 const functions = [
-  { func: updateColor, query: "*" }
+  { func: updateColor, query: "*",
+    func: removeBackgroundImage, query: "body, header, div, section, article"
+   }
 ];
 
 function updatePage() {
