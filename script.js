@@ -15,6 +15,5 @@ function updatePage(preferences) {
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   const resultData = JSON.parse(message.action);
-  console.log(resultData);
   updatePage(resultData);
 });
