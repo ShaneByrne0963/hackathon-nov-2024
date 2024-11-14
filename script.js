@@ -2,7 +2,7 @@
 const functions = [
   { func: updateColor, targets: "*"},
   { func: removeBackgroundImage, targets: "body, header, div, section, article",},
-  {func: ruler, targets: "body",}
+  { func: ruler, targets: "body",}
 ];
 
 function updatePage(preferences) {

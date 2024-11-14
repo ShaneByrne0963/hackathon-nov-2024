@@ -2,6 +2,7 @@
 // Format: { key: string, default: string }
 const storageKeys = [
   { key: "buttonSize", default: "default" },
+  { key: "ruler", default: "auto" }
 ];
 
 /**
@@ -52,6 +53,7 @@ function updateBodySize(maxWidth, padding) {
 window.addEventListener('DOMContentLoaded', () => {
   // Add your event listeners here
   document.querySelector('#button-size').addEventListener('change', updatePreference);
+  document.querySelector('#ruler').addEventListener('change', updatePreference);
 
   // Update the size of the body
   updateBodySize(500, 16); 
