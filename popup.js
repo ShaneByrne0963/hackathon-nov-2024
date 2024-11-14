@@ -1,9 +1,8 @@
 // All keys used in the local storage
 // Format: { key: string, default: string }
 const storageKeys = [
-  { key: "buttonSize", default: "default",
-    key: "removeBg", default: "false"
-   },
+  { key: "buttonSize", default: "default" },
+  { key: "removeBg", default: "false" },
 ];
 
 /**
@@ -14,10 +13,10 @@ function sendData() {
   // Get the data saved from the user's preferences to be sent to the page
   for (let item of storageKeys) {
     const storageData = localStorage.getItem(item.key);
+
     if (storageData) {
       data[item.key] = storageData;
-    }
-    else {
+    } else {
       localStorage.setItem(item.key, item.default);
       data[item.key] = item.default;
     }
@@ -34,9 +33,8 @@ function sendData() {
  */
 function updatePreference(event) {
   const target = event.target;
-  const key = target.getAttribute('data-key');
+  const key = target.getAttribute("data-key");
   const value = target.value;
-
   if (key && value) {
     localStorage.setItem(key, value);
   }
@@ -49,15 +47,22 @@ function updatePreference(event) {
  * @param {Number} padding the amount of pixels between the popup and the edge of the screen
  */
 function updateBodySize(maxWidth, padding) {
-    document.querySelector('body').style.width = `${Math.min(screen.width - (padding * 2), maxWidth)}px`;
-  }
-  
-  window.addEventListener('DOMContentLoaded', () => {
-    // Add your event listeners here
-    document.querySelector('#button-size').addEventListener('change', updatePreference);
-    document.querySelector('#remove-bg-image').addEventListener('change', updatePreference);
+  document.querySelector("body").style.width = `${Math.min(
+    screen.width - padding * 2,
+    maxWidth
+  )}px`;
+}
 
-  
-    // Update the size of the body
-    updateBodySize(500, 16); 
-  })
+window.addEventListener("DOMContentLoaded", () => {
+  // Add your event listeners here
+
+  document
+    .querySelector("#button-size")
+    .addEventListener("change", updatePreference);
+  document
+    .querySelector("#remove-bg-image")
+    .addEventListener("change", updatePreference);
+
+  // Update the size of the body
+  updateBodySize(500, 16);
+});

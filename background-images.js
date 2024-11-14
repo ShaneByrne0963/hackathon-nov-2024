@@ -1,6 +1,7 @@
 function removeBackgroundImage(element, data) {
+    console.log("remove bg is ", data.removeBg);
+
   if (data.removeBg) {
-    console.log(data.removeBg)
     const style = window.getComputedStyle(element);
 
     if (hasBackgroundImage(style)) {
