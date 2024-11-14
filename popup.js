@@ -56,7 +56,7 @@ function sendData() {
  */
 function updatePreference(event) {
   const target = event.target;
-  const key = target.getAttribute('data-key');
+  const key = target.getAttribute("data-key");
   const value = target.value;
   if (key) {
     if (target.getAttribute('type') === 'checkbox') {
@@ -75,7 +75,10 @@ function updatePreference(event) {
  * @param {Number} padding the amount of pixels between the popup and the edge of the screen
  */
 function updateBodySize(maxWidth, padding) {
-  document.querySelector('body').style.width = `${Math.min(screen.width - (padding * 2), maxWidth)}px`;
+  document.querySelector("body").style.width = `${Math.min(
+    screen.width - padding * 2,
+    maxWidth
+  )}px`;
 }
 
 window.addEventListener('DOMContentLoaded', () => {
