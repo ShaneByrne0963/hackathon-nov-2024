@@ -1,9 +1,8 @@
 // Add your functions to be ran on each element here
 const functions = [
-  { func: updateColor, query: "*",
-    func: removeBackgroundImage, query: "body, header, div, section, article",
-    func: ruler, query: "body",
-   }
+  { func: updateColor, targets: "*"},
+  { func: removeBackgroundImage, targets: "body, header, div, section, article",},
+  {func: ruler, targets: "body",}
 ];
 
 function updatePage(preferences) {
@@ -16,5 +15,6 @@ function updatePage(preferences) {
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   const resultData = JSON.parse(message.action);
+  console.log(resultData);
   updatePage(resultData);
 });
