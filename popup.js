@@ -2,7 +2,7 @@
 // Format: { key: string, default: string }
 const storageKeys = [
   { key: "buttonSize", default: "default" },
-  { key: "ruler", default: "auto" }
+  { key: "ruler", default: "false" }
 ];
 
 /**
@@ -14,7 +14,18 @@ function sendData() {
   for (let item of storageKeys) {
     const storageData = localStorage.getItem(item.key);
     if (storageData) {
-      data[item.key] = storageData;
+      // Changing 'true' and 'false' values from string to boolean
+      switch (storageData) {
+        case 'true':
+          data[item.key] = true;
+          break;
+        case 'false':
+          data[item.key] = false;
+          break;
+        default:
+          data[item.key] = storageData;
+          break;
+      }
     }
     else {
       localStorage.setItem(item.key, item.default);
@@ -35,8 +46,13 @@ function updatePreference(event) {
   const target = event.target;
   const key = target.getAttribute('data-key');
   const value = target.value;
-  if (key && value) {
-    localStorage.setItem(key, value);
+  if (key) {
+    if (target.getAttribute('type') === 'checkbox') {
+      localStorage.setItem(key, target.checked);
+    }
+    else if (value) {
+      localStorage.setItem(key, value);
+    }
   }
   sendData();
 }
@@ -56,5 +72,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#ruler').addEventListener('change', updatePreference);
 
   // Update the size of the body
-  updateBodySize(500, 16); 
-})
+  updateBodySize(500, 16);
+
+  sendData();
+});
