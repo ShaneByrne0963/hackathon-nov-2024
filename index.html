@@ -16,30 +16,37 @@
     <a href="#contact" aria-label="Contact Us">Contact</a>
   </nav>
 
-  <!-- Label for Button Size Selector -->
-  <label for="button-size">Select Button Size:</label>
-  <select id="button-size" data-key="buttonSize" aria-label="Select button size">
-    <option value="default">Default</option>
-    <option value="medium">Medium</option>
-    <option value="large">Large</option>
-  </select>
+  <main>
+    <!-- Color Contrast Input -->
+    <div>
+      <input type="checkbox" id="color-contrast" data-key="colorContrast">
+      <label for="color-contrast">Colour Contrast</label>
+    </div>
 
-  <!-- Label for Ruler -->
-  <label for="ruler">Ruler</label>
-  <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler">
+    <!-- Label for Button Size Selector -->
+    <label for="button-size">Select Button Size:</label>
+    <select id="button-size" data-key="buttonSize" aria-label="Select button size">
+      <option value="default">Default</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+    </select>
 
-  <!-- Buttons with ARIA labels for clarity -->
-  <button aria-label="Action for Button 1">Button 1</button>
-  <button aria-label="Action for Button 2">Button 2</button>
-  <button aria-label="Action for Button 3">Button 3</button>
+    <!-- Label for Ruler -->
+    <label for="ruler">Ruler</label>
+    <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler">
+
+    <!-- Buttons with ARIA labels for clarity -->
+    <button aria-label="Action for Button 1">Button 1</button>
+    <button aria-label="Action for Button 2">Button 2</button>
+    <button aria-label="Action for Button 3">Button 3</button>
 
 
-  <!-- TODO: Checkbox value should be set programmatically if checkbox.checked -->
-  <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images"
-    value="true">
-  <!-- Label for Background Image Removal toggle -->
-  <label for="remove-bg-image">Hide background images</label>
-
+    <!-- TODO: Checkbox value should be set programmatically if checkbox.checked -->
+    <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images"
+      value="true">
+    <!-- Label for Background Image Removal toggle -->
+    <label for="remove-bg-image">Hide background images</label>
+  </main>
 
   <!-- To be updated when footers have been confirmed -->
   <footer>
