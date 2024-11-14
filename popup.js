@@ -67,12 +67,11 @@ function updateBodySize(maxWidth, padding) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Add your event listeners here
-  document.querySelector('#button-size').addEventListener('change', updatePreference);
-  document.querySelector('#ruler').addEventListener('change', updatePreference);
+  // Add updatePreference triggers to each element that has the 'data-key' attribute
+  [...document.querySelectorAll('*[data-key]')].map((item) => {
+    item.addEventListener('change', updatePreference);
+  })
 
   // Update the size of the body
   updateBodySize(500, 16);
-
-  sendData();
 });
