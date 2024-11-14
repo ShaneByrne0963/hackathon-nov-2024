@@ -1,19 +1,18 @@
 // Add your functions to be ran on each element here
 const functions = [
-  { func: updateColor, query: "*" }
+  { func: updateColor, targets: "*" },
 ];
 
-function updatePage() {
+function updatePage(data) {
   functions.map(data => {
-    [...document.querySelectorAll(data.query)].map(element => {
+    [...document.querySelectorAll(data.targets)].map(element => {
       data.func(element);
-    })
-  });
-  [...document.querySelectorAll('*')].map(item => {
-    functions.map(func => {
-      func(item);
     });
   });
 }
 
-updatePage();
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  const resultData = JSON.parse(message.action);
+  console.log(resultData);
+  updatePage(resultData);
+});

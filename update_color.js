@@ -1,3 +1,3 @@
 function updateColor(element) {
-  element.style.color = "#000000";
+  element.style.color = "#ffffff";
 }
