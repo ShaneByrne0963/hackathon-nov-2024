@@ -8,7 +8,39 @@
 </head>
 
 <body>
+    <!-- To be updated when navigation has been confirmed -->
+    <nav>
+        <a href="#home" aria-label="Go to Home Page">Home</a>
+        <a href="#about" aria-label="Learn more About Us">About</a>
+        <a href="#services" aria-label="View our Services">Services</a>
+        <a href="#contact" aria-label="Contact Us">Contact</a>
+    </nav>
 
+    <!-- Label for Button Size Selector -->
+    <label for="button-size">Select Button Size:</label>
+    <select id="button-size" onchange="changeButtonSize()" aria-label="Select button size">
+        <option value="default">Default</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+    </select>
+
+    <!-- Buttons with ARIA labels for clarity -->
+    <button aria-label="Action for Button 1">Button 1</button>
+    <button aria-label="Action for Button 2">Button 2</button>
+    <button aria-label="Action for Button 3">Button 3</button>
+
+    <!-- To be updated when footers have been confirmed -->
+    <footer>
+        <a href="https://twitter.com/example" aria-label="Visit our Twitter profile">
+            <i class="icon-twitter"></i> Twitter
+        </a>
+        <a href="https://facebook.com/example" aria-label="Visit our Facebook page">
+            <i class="icon-facebook"></i> Facebook
+        </a>
+        <a href="https://linkedin.com/example" aria-label="Visit our LinkedIn profile">
+            <i class="icon-linkedin"></i> LinkedIn
+        </a>
+    </footer>
 </body>
 
 </html>
