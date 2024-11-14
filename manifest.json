@@ -10,6 +10,6 @@
   },
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["background-images.js", "script.js"]
+    "js": ["ruler.js", "background-images.js", "update_color.js", "script.js"]
   }]
 }
