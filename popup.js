@@ -3,6 +3,7 @@
 const storageKeys = [
   { key: "buttonSize", default: "default" },
   { key: "removeBg", default: "false" },
+  { key: "ruler", default: "auto" }
 ];
 
 /**
@@ -55,13 +56,10 @@ function updateBodySize(maxWidth, padding) {
 
 window.addEventListener("DOMContentLoaded", () => {
   // Add your event listeners here
+  document.querySelector('#button-size').addEventListener('change', updatePreference);
+  document.querySelector('#ruler').addEventListener('change', updatePreference);
+  document.querySelector("#remove-bg-image").addEventListener("change", updatePreference);
 
-  document
-    .querySelector("#button-size")
-    .addEventListener("change", updatePreference);
-  document
-    .querySelector("#remove-bg-image")
-    .addEventListener("change", updatePreference);
 
   // Update the size of the body
   updateBodySize(500, 16);
