@@ -8,31 +8,28 @@ function retrieveData(key) {
   if (storageData) {
     // Changing 'true' and 'false' values from string to boolean
     switch (storageData) {
-      case 'true':
+      case "true":
         return true;
-      case 'false':
+      case "false":
         return false;
       default:
         return storageData;
     }
-  }
-  else {
+  } else {
     let item = document.querySelector(`*[data-key="${key}"]`);
     let value = null;
     if (!item) {
       throw new Error("Key not found!");
     }
-    if (item.getAttribute('type') === 'checkbox') {
+    if (item.getAttribute("type") === "checkbox") {
       value = item.checked;
-    }
-    else {
+    } else {
       value = item.value;
     }
     localStorage.setItem(key, value);
     return value;
   }
 }
-
 
 /**
  * Submits data from the popup tab to the main page
@@ -41,7 +38,9 @@ function sendData() {
   let data = {};
 
   // Get the data saved from the user's preferences to be sent to the page
-  const keys = [...document.querySelectorAll('*[data-key]')].map(element => element.getAttribute('data-key'));
+  const keys = [...document.querySelectorAll("*[data-key]")].map((element) =>
+    element.getAttribute("data-key")
+  );
   for (let key of keys) {
     data[key] = retrieveData(key);
   }
@@ -60,10 +59,9 @@ function updatePreference(event) {
   const key = target.getAttribute("data-key");
   const value = target.value;
   if (key) {
-    if (target.getAttribute('type') === 'checkbox') {
+    if (target.getAttribute("type") === "checkbox") {
       localStorage.setItem(key, target.checked);
-    }
-    else if (value) {
+    } else if (value) {
       localStorage.setItem(key, value);
     }
   }
@@ -82,22 +80,44 @@ function updateBodySize(maxWidth, padding) {
   )}px`;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
   // Add updatePreference triggers to each element that has the 'data-key' attribute
-  [...document.querySelectorAll('*[data-key]')].map((item) => {
-
+  [...document.querySelectorAll("*[data-key]")].map((item) => {
     // Set the input value if it exists in the localStorage
-    const inputValue = retrieveData(item.getAttribute('data-key'));
+    const inputValue = retrieveData(item.getAttribute("data-key"));
     if (typeof inputValue === "boolean") {
       item.checked = inputValue;
-    }
-    else {
+    } else {
       item.value = inputValue;
     }
 
-    item.addEventListener('change', updatePreference);
+    item.addEventListener("change", updatePreference);
   });
 
   // Update the size of the body
   updateBodySize(500, 16);
 });
+
+// Google Storage to save font and size.
+document.getElementById("btnApply").addEventListener("click", () => {
+  const fontFamily = document.getElementById("selectFontFamily").value;
+  const fontSize = document.getElementById("inputFontSize").value;
+
+  // Save configurations in Google Storage
+  chrome.storage.sync.set({ fontFamily, fontSize }, () => {
+    alert("Configurations applied!");
+    applyChanges();
+  });
+});
+
+function applyChanges() {
+  // Send configurations to content script
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.storage.sync.get(["fontFamily", "fontSize"], (settings) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        type: "applyStyles",
+        ...settings,
+      });
+    });
+  });
+}
