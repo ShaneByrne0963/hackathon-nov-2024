@@ -51,6 +51,21 @@ function createRuler() {
                 horizontalLine.style.left = `${x}px`;
                 horizontalLine.style.top = `${y + 13}px`;
         });
+
+        // Handle link interactions
+        document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                        customCursor.style.display = 'none';
+                        horizontalLine.style.display = 'none';
+                        document.body.style.cursor = 'auto';
+                });
+
+                link.addEventListener('mouseleave', () => {
+                        customCursor.style.display = 'block';
+                        horizontalLine.style.display = 'block';
+                        document.body.style.cursor = 'none';
+                });
+        });
 }
 
 function removeRuler() {
