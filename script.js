@@ -21,10 +21,10 @@ const functions = [
       equals: true,
     },
   },
-  { 
+  {
     func: splitParagraphs,
-    targets: "p, span"
- },
+    targets: "p, div"
+  },
   {
     func: ruler,
     targets: "body",
