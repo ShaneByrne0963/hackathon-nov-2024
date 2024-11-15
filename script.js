@@ -40,6 +40,7 @@ const functions = [
 ];
 
 function updatePage(preferences) {
+  console.clear();
   functions.map((data) => {
     // If there is a condition with the function, only run the function if the condition is met
     if (
