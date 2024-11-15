@@ -91,8 +91,10 @@ function removeRuler() {
         const childRulerContainer = document.getElementById("child-container");
 
         // Remove EventListeners
-        removeEventListener("mouseenter", enterLink);
-        removeEventListener("mouseleave", leaveLink);
+        document.querySelectorAll("a").forEach((link) => {
+                link.removeEventListener("mouseenter", enterLink);
+                link.removeEventListener("mouseleave", leaveLink);
+        });
 
         customCursor ? customCursor.remove() : null;
         horizontalLine ? horizontalLine.remove() : null;
