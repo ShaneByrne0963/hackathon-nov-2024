@@ -62,14 +62,16 @@ function splitParagraphs(element, data) {
         adjustedContent.push(paragraph);
       }
 
-      // Replace the current p element with a div containing all child p elements
-      const wrapper = document.createElement("div");
-      adjustedContent.forEach(p => wrapper.appendChild(p));
-      // Save the original element content
-      wrapper.setAttribute("data-original-paragraph", element.innerHTML);
-      // Replace the <p> element with the wrapper
-      element.replaceWith(wrapper);
-      // adjustedContent.forEach(p => element.appendChild(p));
+      if (adjustedContent.length > 1) {
+        // Replace the current p element with a div containing all child p elements
+        const wrapper = document.createElement("div");
+        adjustedContent.forEach(p => wrapper.appendChild(p));
+        // Save the original element content
+        wrapper.setAttribute("data-original-paragraph", element.innerHTML);
+        // Replace the <p> element with the wrapper
+        element.replaceWith(wrapper);
+        // adjustedContent.forEach(p => element.appendChild(p));
+      }
     }
 
   } else {
