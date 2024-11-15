@@ -1,8 +1,8 @@
-# The Accessibles Browser Extension 🌐
+### The Accessibles' Browser Extension
 
-A browser extension that empowers users to customize their web browsing experience based on their personal accessibility needs.
+# ![The Accessibles Logo](./icons/icon24.png) Web Accessor-Ease
 
-![The Accessibles Logo](./icons/icon128.png)
+A browser extension that empowers users to customise their web browsing experience based on their personal accessibility needs.
 
 ## 🎯 Features
 
@@ -64,34 +64,38 @@ We welcome contributions! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## ~~📝 License~~
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+~~This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.~~
 
 ## 👥 Team
 
 The Accessibles Team:
-- [Team Member 1] - Role
-- [Team Member 2] - Role
-- [Team Member 3] - Role
+- Shane Byrne - [GitHub](https://github.com/ShaneByrne0963) | [LinkedIn](https://www.linkedin.com/in/shane-byrne-00b8b3272/)
+- Vasilika Schnitzer - [GitHub](https://github.com/RikaIljina) | [LinkedIn](https://www.linkedin.com/in/.../)
+- Alan Cruz - [GitHub](https://github.com/llancruzz) | [LinkedIn](https://www.linkedin.com/in/https://www.linkedin.com/in/llancruzz/)
+- Nonty Dazana - [GitHub](https://github.com/NontyD) | [LinkedIn](https://www.linkedin.com/in/nontyd/)
+- Trevor Leslie - [GitHub](https://github.com/TrevorJamesLeslie) | [LinkedIn](https://www.linkedin.com/in/trevor-leslie-12b4493a/)
+- Mike Sealey - [GitHub](https://github.com/mikesealey) | [LinkedIn](https://www.linkedin.com/in/https://www.linkedin.com/in/mike-sealey-6439573a/)
+- Mikael Johnsson - [GitHub](https://github.com/mikael-johnsson) | [LinkedIn](https://www.linkedin.com/in/mikael-johnsson/)
 
 ## 🙌 Acknowledgments
 
-- Special thanks to [Organization/Event Name] for hosting the hackathon
-- Icons provided by [Icon Source]
+- Special thanks to [Code Institute/Event Name] for hosting the hackathon
+- Icons generated using [Icon Source: OpenAI's ChatGPT/Anthropics Claude (confirm which!)]
 - [Any other acknowledgments]
 
 ## 📧 Contact
 
-Project Link: [https://github.com/your-username/the-accessibles-extension](https://github.com/your-username/the-accessibles-extension)
+Project Link: [https://github.com/ShaneByrne0963/hackathon-nov-2024](https://github.com/ShaneByrne0963/hackathon-nov-2024)
 
-## 🔜 Roadmap
+## 🔜 Future Development Roadmap
 
+- [ ] Support for additional browsers
+- [ ] Integration with screen readers
 - [ ] Feature 1
 - [ ] Feature 2
 - [ ] Feature 3
-- [ ] Integration with screen readers
-- [ ] Support for additional browsers
 
 ---
 
