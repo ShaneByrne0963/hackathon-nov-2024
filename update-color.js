@@ -215,22 +215,23 @@ function updateColorContrast(element, data) {
           
           // Make sure to include !important tags so they override everything
           let elementStyle = element.getAttribute('style');
+          let extraStyles = '';
           if (elementStyle) {
-
+            let elementArray = elementStyle.split('; ');
+            for (let i = 0; i < elementArray.length; i++) {
+              let prop = elementArray[i].split(':')[0];
+              if (prop === 'color' || prop === 'background-color') {
+                elementArray.splice(i, 1);
+                i--;
+              }
+            }
+            extraStyles = elementArray.join('; ') + ' ';
           }
-          else {
-            element.setAttribute(
-              'style',
-              `color: rgb(${getColorParameters(textNewRgb).join()}) !important;
-                background-color: rgb(${getColorParameters(backNewRgb).join()}) !important;`
-            );
-          }
-
-          console.log('Background RGB: ', backNewRgb);
-          console.log('Text RGB: ', textNewRgb);
-          console.log('Final Contrast: ', `${newRelativeLuminace}:1`);
-          console.log(element);
-          console.log('-------------------------------------------');
+          element.setAttribute(
+            'style',
+            `${extraStyles}color: rgb(${getColorParameters(textNewRgb).join()}) !important;
+              background-color: rgb(${getColorParameters(backNewRgb).join()}) !important;`
+          );
         }
       }
     }
