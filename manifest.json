@@ -17,6 +17,6 @@
   },
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["ruler.js", "background-images.js", "update_color.js", "script.js"]
+    "js": ["ruler.js", "split-paragraphs.js", "background-images.js", "update_color.js", "script.js"]
   }]
 }
