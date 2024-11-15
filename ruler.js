@@ -7,7 +7,6 @@ function ruler(element, data) {
                 element.style.cursor = "wait"
         } else {
                 element.style.cursor = "default"
-            
         }
 }
 
