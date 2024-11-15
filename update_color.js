@@ -95,70 +95,56 @@ function getColorParameters(obj, type='rgb') {
 
 
 /**
- * Converts an RGB color value to HSV
- * Source: https://stackoverflow.com/questions/8022885/rgb-to-hsv-color-in-javascript
+ * Converts an RGB color value to HSL
+ * Source: https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
  * @param {Number} r The red value of the color (0-255)
  * @param {Number} g The green value of the color (0-255)
  * @param {Number} b The blue value of the color (0-255)
- * @returns {Object} { h: hue, s: saturation, v: value }
+ * @returns {Object} { h: hue, s: saturation, l: lightness }
  */
-function rgb2hsv (r, g, b) {
-  let rabs, gabs, babs, rr, gg, bb, h, s, v, diff, diffc, percentRoundFn;
-  rabs = r / 255;
-  gabs = g / 255;
-  babs = b / 255;
-  v = Math.max(rabs, gabs, babs),
-  diff = v - Math.min(rabs, gabs, babs);
-  diffc = c => (v - c) / 6 / diff + 1 / 2;
-  percentRoundFn = num => Math.round(num * 100) / 100;
-  if (diff == 0) {
-      h = s = 0;
-  } else {
-      s = diff / v;
-      rr = diffc(rabs);
-      gg = diffc(gabs);
-      bb = diffc(babs);
-
-      if (rabs === v) {
-          h = bb - gg;
-      } else if (gabs === v) {
-          h = (1 / 3) + rr - bb;
-      } else if (babs === v) {
-          h = (2 / 3) + gg - rr;
-      }
-      if (h < 0) {
-          h += 1;
-      }else if (h > 1) {
-          h -= 1;
-      }
-  }
+function rgb2hsl(r, g, b) {
+  r /= 255.0;
+  g /= 255.0;
+  b /= 255.0;
+  let max = Math.max(r, g, b);
+  let min = Math.min(r, g, b);
+  let d = max - min;
+  let h;
+  if (d === 0) h = 0;
+  else if (max === r) h = (((g - b) / d % 6) + 6) % 6;
+  else if (max === g) h = (((b - r) / d + 2) + 6) % 6;
+  else if (max === b) h = (((r - g) / d + 4) + 6) % 6;
+  let l = (min + max) / 2;
+  let s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
   return {
-      h: Math.round(h * 360),
-      s: percentRoundFn(s * 100),
-      v: percentRoundFn(v * 100)
+    h: h * 60,
+    s: s * 100,
+    l: l * 100
   };
 }
 
 
 /**
- * Converts a HSV color to RGB
- * Source: https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
+ * Converts an HSL color to RGB
+ * Source: https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
  * @param {Number} h The hue value of the color [0-360]
  * @param {Float} s The saturation value of the color [0-100]
- * @param {Float} v The value of the color [0-100]
+ * @param {Float} l The lightness value of the color [0-100]
  * @returns { r: int, g: int, b: int }
  */
-function hsv2rgb(h,s,v) {
-  // Converting saturation and value to be between 0 and 1
-  const saturation = (s < 1) ? s : s / 100.0
-  const value = (v < 1) ? v : v / 100.0
+function hsl2rgb(h, s, l) {
+  s /= 100
+  l /= 100
 
-  let f= (n,k=(n+h/60)%6) => value - value*saturation*Math.max( Math.min(k,4-k,1), 0);
+  const k = (n) => (n + h / 30) % 12
+  const a = s * Math.min(l, 1 - l)
+  const f = (n) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
   return {
-    r: Math.round(f(5) * 255),
-    g: Math.round(f(3) * 255),
-    b: Math.round(f(1) * 255)
-  };
+    r: Math.round(255 * f(0)),
+    g: Math.round(255 * f(8)),
+    b: Math.round(255 * f(4)),
+  }
 }
 
 
@@ -169,60 +155,75 @@ function hsv2rgb(h,s,v) {
 function updateColorContrast(element, data) {
   if (element.innerText) {
     // Get the colors of the text and its background
-    let backgroundColor = getColorRGBFromStyle(findBackgroundColor(element));
+    const backgroundColorCss = findBackgroundColor(element);
+    let backgroundColor = getColorRGBFromStyle(backgroundColorCss);
     const elementStyle = window.getComputedStyle(element);
-    let textColor = getColorRGBFromStyle(elementStyle.getPropertyValue('color'));
+    const textColorCss = elementStyle.getPropertyValue('color');
+    let textColor = getColorRGBFromStyle(textColorCss);
 
     let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
     let textLuminence = getColorLuminence(...getColorParameters(textColor));
     let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
 
-    if (relativeLuminance < 3) {
-      let backHsv = rgb2hsv(...getColorParameters(backgroundColor));
-      let textHsv = rgb2hsv(...getColorParameters(textColor));
+    if (relativeLuminance < 18) {
+      let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
+      let textHsl = rgb2hsl(...getColorParameters(textColor));
       let goodContrast = false;
-
-      // Sett the text value in the middle to reduce the amount of checks
-      textHsv.v = 50;
 
       // Gradually changing the values of the colors until the contrast is strong enough
       // Text will always be changed first
       while (!goodContrast) {
-        if (backHsv.v > 50) {
-          if (textHsv.v > 0) {
-            textHsv.v--;
+        if (backHsl.l > 50) {
+          if (textHsl.l > 0) {
+            textHsl.l--;
           }
-          else if (backHsv.v < 100) {
-            backHsv.v++;
+          else if (backHsl.l < 100) {
+            textHsl.l = 0;
+            backHsl.l++;
           }
           else {
             // Should never get to this but just in case
+            backHsl.l = 100;
             goodContrast = true;
           }
         }
         else {
-          if (textHsv.v < 100) {
-            textHsv.v++;
+          if (textHsl.l < 100) {
+            textHsl.l++;
           }
-          else if (backHsv.v > 0) {
-            backHsv.v--;
+          else if (backHsl.l > 0) {
+            textHsl.l = 100;
+            backHsl.l--;
           }
           else {
             // Should never get to this but just in case
+            backHsl.l = 0;
             goodContrast = true;
           }
         }
         // Check if the contrast is better now
-        let backNewRgb = hsv2rgb(...getColorParameters(backHsv, 'hsv'));
-        let textNewRgb = hsv2rgb(...getColorParameters(textHsv, 'hsv'));
+        let backNewRgb = hsl2rgb(...getColorParameters(backHsl, 'hsl'));
+        let textNewRgb = hsl2rgb(...getColorParameters(textHsl, 'hsl'));
         let backNewLuminence = getColorLuminence(...getColorParameters(backNewRgb));
         let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
         let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
 
-        if (newRelativeLuminace >= 3) {
+        if (newRelativeLuminace >= 18) {
           goodContrast = true;
+          element.setAttribute('accessorease-data-text-color', textColorCss);
+          element.setAttribute('accessorease-data-back-color', backgroundColorCss);
+
+          // Update the style tag
           element.style.color = `rgb(${getColorParameters(textNewRgb).join()})`;
           element.style.backgroundColor = `rgb(${getColorParameters(backNewRgb).join()})`;
+
+          let elementStyle = 
+
+          console.log('Background RGB: ', backNewRgb);
+          console.log('Text RGB: ', textNewRgb);
+          console.log('Final Contrast: ', `${newRelativeLuminace}:1`);
+          console.log(element);
+          console.log('-------------------------------------------');
         }
       }
     }
