@@ -33,9 +33,23 @@
       <option value="large">Large</option>
     </select>
 
-    <!-- Label for Ruler -->
-    <label for="ruler">Ruler</label>
-    <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler">
+        <!-- Label for Ruler -->
+        <label for="ruler">Ruler</label>
+        <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler">
+
+        <!-- Label for hover styling -->
+        <fieldset>
+            <legend>Hover styles</legend>
+            <label for="highlight">
+                <input type="checkbox" name="highlight" value="highlight" aria-label="Highlight" data-key="hoverHighlight">
+            Highlight
+            </label>
+            <label for="magnifyingGlass">
+                <input type="checkbox" name="magnifyingGlass" value="magnifyingGlass" aria-label="Magnifying Glass" data-key="hoverMagnifyingGlass">
+            Magnifying Glass
+            </label>
+        </fieldset>
+        <input type="range" min="1" max="2" data-key="lineSpacing">
 
     <!-- Buttons with ARIA labels for clarity -->
     <button aria-label="Action for Button 1">Button 1</button>
@@ -43,11 +57,29 @@
     <button aria-label="Action for Button 3">Button 3</button>
 
 
-    <!-- TODO: Checkbox value should be set programmatically if checkbox.checked -->
-    <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images"
-      value="true">
-    <!-- Label for Background Image Removal toggle -->
-    <label for="remove-bg-image">Hide background images</label>
+    <!-- Checkbox to hide/show background images -->
+    <div>
+      <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images">
+      <!-- Label for Background Image Removal toggle -->
+      <label for="remove-bg-image">Hide background images</label>
+      <br>
+      <label for="replacement-color">Image replacement color:</label>
+      <!-- TODO: If the user selected a theme or a background color for the entire page 
+             in a different feature, the value of this color picker should be automatically set
+             to that color to make sure the user doesn't have to select it again -->
+      <input type="color" id="replacement-color" data-key="replacementColor" value="#dddfdd">
+    </div>
+
+    <!-- Checkbox to break up long paragraphs -->
+    <div>
+      <input type="checkbox" id="break-paragraph" data-key="breakParagraph" aria-label="Toggle to break up long paragraphs">
+      <!-- Label for Background Image Removal toggle -->
+      <label for="break-paragraph">Break up long paragraphs</label>
+      <br>
+      
+    </div>
+
+
   </main>
 
   <!-- To be updated when footers have been confirmed -->
