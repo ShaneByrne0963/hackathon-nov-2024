@@ -27,7 +27,7 @@ const functions = [
   },
   {
     func: splitParagraphs,
-    targets: "p"
+    targets: "p, div"
   },
   {
     func: ruler,
