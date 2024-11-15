@@ -1,5 +1,5 @@
 {
-  "name": "AccessorEase",
+  "name": "Web Accessor-Ease",
   "version": "1.0.1",
   "description": "A browser extension to address website accessibility issues limiting fully diversified inclusivity",
   "manifest_version": 3,
@@ -13,7 +13,7 @@
   "action": {
     "default_icon": "icons/icon48.png",
     "default_popup": "index.html",
-    "default_title": "AccessorEase"
+    "default_title": "Web Accessor-Ease"
   },
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
