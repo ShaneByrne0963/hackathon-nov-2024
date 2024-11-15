@@ -58,7 +58,7 @@ function createRuler() {
 
                 // Inline-styling for cursor
                 customCursor.style.position = "absolute";
-                // customCursor.style.pointerEvents = "none";
+                customCursor.style.pointerEvents = "none";
                 customCursor.style.width = "3px";
                 customCursor.style.height = "15px";
                 customCursor.style.backgroundColor = "black";
