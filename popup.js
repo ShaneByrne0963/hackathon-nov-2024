@@ -111,7 +111,7 @@ document.getElementById("btnApply").addEventListener("click", () => {
 });
 
 function applyChanges() {
-  // Send configurations to content script
+  // Send configurations to script
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.storage.sync.get(["fontFamily", "fontSize"], (settings) => {
       chrome.tabs.sendMessage(tabs[0].id, {

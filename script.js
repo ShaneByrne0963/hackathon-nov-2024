@@ -25,10 +25,10 @@ const functions = [
       equals: true,
     },
   },
-  { 
+  {
     func: splitParagraphs,
-    targets: "p, span"
- },
+    targets: "p, span",
+  },
   {
     func: ruler,
     targets: "body",
@@ -36,7 +36,7 @@ const functions = [
   {
     func: hoverStyles,
     targets: "*",
-  }
+  },
 ];
 
 function updatePage(preferences) {
@@ -56,6 +56,22 @@ function updatePage(preferences) {
 
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  if (message.type === "applyStyles") {
+    const { fontFamily, fontSize } = message;
+
+    // Add style to body
+    const styleGlobal = document.createElement("style");
+    styleGlobal.innerHTML = `
+          * {
+              font-family: ${fontFamily} !important;
+              font-size: ${fontSize}px !important;
+              line-height: 1.5 !important;
+          }
+      `;
+    document.head.appendChild(styleGlobal);
+
+    sendResponse({ status: "Styles Applied" });
+  }
   const resultData = JSON.parse(message.action);
   updatePage(resultData);
 });
