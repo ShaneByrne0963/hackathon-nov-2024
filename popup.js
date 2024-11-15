@@ -95,7 +95,12 @@ window.addEventListener('DOMContentLoaded', () => {
       item.value = inputValue;
     }
 
-    item.addEventListener('change', updatePreference);
+    if (item.tagName === 'BUTTON') {
+      item.addEventListener('click', updatePreference);
+    }
+    else {
+      item.addEventListener('change', updatePreference);
+    }
   });
 
   // Update the size of the body
