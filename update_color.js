@@ -30,16 +30,21 @@ function findBackgroundColor(element) {
 /**
  * Extracts the red, green and blue values from a CSS string
  * @param {String} colorStyle A CSS style color "rgb(r, g, b)". Also works with "rgba(r, g, b, a)"
- * @returns {Array} [r, g, b]
+ * @returns {Object} {r: int, g: int, b: int, a?: float}
  */
 function getColorRGBFromStyle(colorStyle) {
-  let colorArray = colorStyle.replaceAll(' ', '').replace('a', '').replace('rgb(', '').replace(')', '').split(',').map(number => parseInt(number));
+  let colorArray = colorStyle.replaceAll(' ', '').replace('a', '').replace('rgb(', '').replace(')', '').split(',');
 
   // Remove the aplha value, if there
-  if (colorArray.length > 3) {
-    colorArray.pop();
+  let colorObject = {
+    r: parseInt(colorArray[0]),
+    g: parseInt(colorArray[1]),
+    b: parseInt(colorArray[2]),
   }
-  return colorArray;
+  if (colorArray.length > 3) {
+    colorObject.a = parseFloat(colorArray[3]);
+  }
+  return colorObject;
 }
 
 
@@ -75,6 +80,17 @@ function getColorLuminence(red, green, blue) {
  */
 function getRelativeLuminance(lum1, lum2) {
   return lum1 > lum2 ? (lum1 + 0.05) / (lum2 + 0.05) : (lum2 + 0.05) / (lum1 + 0.05);
+}
+
+
+/**
+ * Converts a color object into an array to be easily used as parameters
+ * @param {Object} obj The object containing the color values
+ * @returns {Array} The values in an array
+ */
+function getColorParameters(obj, type='rgb') {
+  const parameters = type.split('');
+  return parameters.map(key => obj[key]);
 }
 
 
@@ -130,7 +146,7 @@ function rgb2hsv (r, g, b) {
  * @param {Number} h The hue value of the color [0-360]
  * @param {Float} s The saturation value of the color [0-100]
  * @param {Float} v The value of the color [0-100]
- * @returns 
+ * @returns { r: int, g: int, b: int }
  */
 function hsv2rgb(h,s,v) {
   // Converting saturation and value to be between 0 and 1
@@ -157,14 +173,58 @@ function updateColorContrast(element, data) {
     const elementStyle = window.getComputedStyle(element);
     let textColor = getColorRGBFromStyle(elementStyle.getPropertyValue('color'));
 
-    let backLuminence = getColorLuminence(...backgroundColor);
-    let textLuminence = getColorLuminence(...textColor);
+    let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
+    let textLuminence = getColorLuminence(...getColorParameters(textColor));
     let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
 
     if (relativeLuminance < 3) {
-      // Will temporarily leave these in so you guys can test it
-      console.log('RGB: ', textColor);
-      console.log('HSV: ', rgb2hsv(...textColor));
+      let backHsv = rgb2hsv(...getColorParameters(backgroundColor));
+      let textHsv = rgb2hsv(...getColorParameters(textColor));
+      let goodContrast = false;
+
+      // Sett the text value in the middle to reduce the amount of checks
+      textHsv.v = 50;
+
+      // Gradually changing the values of the colors until the contrast is strong enough
+      // Text will always be changed first
+      while (!goodContrast) {
+        if (backHsv.v > 50) {
+          if (textHsv.v > 0) {
+            textHsv.v--;
+          }
+          else if (backHsv.v < 100) {
+            backHsv.v++;
+          }
+          else {
+            // Should never get to this but just in case
+            goodContrast = true;
+          }
+        }
+        else {
+          if (textHsv.v < 100) {
+            textHsv.v++;
+          }
+          else if (backHsv.v > 0) {
+            backHsv.v--;
+          }
+          else {
+            // Should never get to this but just in case
+            goodContrast = true;
+          }
+        }
+        // Check if the contrast is better now
+        let backNewRgb = hsv2rgb(...getColorParameters(backHsv, 'hsv'));
+        let textNewRgb = hsv2rgb(...getColorParameters(textHsv, 'hsv'));
+        let backNewLuminence = getColorLuminence(...getColorParameters(backNewRgb));
+        let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
+        let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
+
+        if (newRelativeLuminace >= 3) {
+          goodContrast = true;
+          element.style.color = `rgb(${getColorParameters(textNewRgb).join()})`;
+          element.style.backgroundColor = `rgb(${getColorParameters(backNewRgb).join()})`;
+        }
+      }
     }
   }
 }
