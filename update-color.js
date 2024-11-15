@@ -5,25 +5,37 @@
  */
 function findBackgroundColor(element) {
   let currentElement = element;
-  let backgroundColor = null;
+  let colorList = [];
 
   // Move up the DOM until a background color is found, or the top of the tree is met
-  while (!backgroundColor) {
+  while (true) {
     let style = window.getComputedStyle(currentElement);
     let elementBack = style.getPropertyValue('background-color');
 
     // If the background exists and is not transparent
     if (elementBack && elementBack !== 'rgba(0, 0, 0, 0)') {
-      backgroundColor = elementBack;
-      break;
+      colorList.unshift(getColorRGBFromStyle(elementBack));
+      // Stopping the search if the background is a solid color
+      if (!elementBack.includes('a')) {
+        break;
+      }
     }
     if (!currentElement.parentElement) {
-      backgroundColor = 'rgb(255, 255, 255)';
+      colorList.unshift(getColorRGBFromStyle('rgb(255, 255, 255)'));
       break;
     }
     currentElement = currentElement.parentElement;
   }
-  return backgroundColor;
+  // Blending the colors together
+  let finalValues = {};
+  if (colorList.length > 1) {
+    const topElement = colorList.shift();
+    finalValues = colorList.reduce((prev, current) => blendColors(current, prev), topElement);
+  }
+  else {
+    finalValues = colorList[0];
+  }
+  return `rgb(${finalValues.r}, ${finalValues.g}, ${finalValues.b})`;
 }
 
 
@@ -95,6 +107,21 @@ function getColorParameters(obj, type='rgb') {
 
 
 /**
+ * Blends two colors together
+ * @param {Object} frontColor { r, g, b, a }
+ * @param {Object} backColor { r, g, b }
+ * @returns {Object} {r, g, b}
+ */
+function blendColors(frontColor, backColor) {
+  return {
+    r: frontColor.r + ((backColor.r - frontColor.r) * (1 - frontColor.a)),
+    r: frontColor.g + ((backColor.g - frontColor.g) * (1 - frontColor.a)),
+    r: frontColor.b + ((backColor.b - frontColor.b) * (1 - frontColor.a))
+  };
+}
+
+
+/**
  * Converts an RGB color value to HSL
  * Source: https://gist.github.com/vahidk/05184faf3d92a0aa1b46aeaa93b07786
  * @param {Number} r The red value of the color (0-255)
@@ -154,6 +181,15 @@ const minRatios = {
   large: 4.5,
   graphics: 3
 }
+// A list of any class name that is used by frameworks for icons
+const iconClassNames = [
+  'fa-solid',
+  'fa-regular',
+  'fa-light',
+  'fa-thin',
+  'fa-brands',
+  'material-icons'
+]
 /***
  * Fixes text colors if contrast is not high enough
  * @param {HTMLElement} element The element to be targeted
@@ -171,10 +207,7 @@ function updateColorContrast(element, data) {
 
       // If the text has an alpha value, blend the color with the background color
       if ("a" in textColor && textColor.a < 1) {
-        textColor.r += (backgroundColor.r - textColor.r) * (1 - textColor.a);
-        textColor.g += (backgroundColor.g - textColor.g) * (1 - textColor.a);
-        textColor.b += (backgroundColor.b - textColor.b) * (1 - textColor.a);
-        delete textColor.a;
+        textColor = blendColors(textColor, backgroundColor);
       }
 
       // Finding the minimum ratio to be required
