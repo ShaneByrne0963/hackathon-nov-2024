@@ -40,6 +40,7 @@ const functions = [
 ];
 
 function updatePage(preferences) {
+  console.clear();
   functions.map((data) => {
     // If there is a condition with the function, only run the function if the condition is met
     if (
@@ -53,7 +54,8 @@ function updatePage(preferences) {
   });
 }
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+const extAPI = typeof browser !== "undefined" ? browser : chrome;
+extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   const resultData = JSON.parse(message.action);
   updatePage(resultData);
 });
