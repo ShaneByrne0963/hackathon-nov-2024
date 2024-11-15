@@ -33,6 +33,10 @@ const functions = [
     func: ruler,
     targets: "body",
   },
+  {
+    func: hoverStyles,
+    targets: "*",
+  }
 ];
 
 function updatePage(preferences) {
