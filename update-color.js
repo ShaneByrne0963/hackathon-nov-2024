@@ -148,9 +148,16 @@ function hsl2rgb(h, s, l) {
 }
 
 
+// The ratios that have to be met to be considered good contrast
+const minRatios = {
+  regular: 7,
+  large: 4.5,
+  graphics: 3
+}
 /***
  * Fixes text colors if contrast is not high enough
- * @param {HTMLElement} element the element to be targeted
+ * @param {HTMLElement} element The element to be targeted
+ * @param {Object} data The user's preferences
  */
 function updateColorContrast(element, data) {
   if (data.colorContrast) {
@@ -169,12 +176,24 @@ function updateColorContrast(element, data) {
         textColor.b += (backgroundColor.b - textColor.b) * (1 - textColor.a);
         delete textColor.a;
       }
+
+      // Finding the minimum ratio to be required
+      let minRatio = minRatios.regular;
+      let fontSize = elementStyle.getPropertyValue('font-size');
+      let fontWeight = elementStyle.getPropertyValue('font-weight');
+      const isBold = (fontWeight === 'bold' || parseInt(fontWeight) >= 700);
+      fontSize = parseFloat(fontSize.replace('px', ''));
+      
+      // Determine if the text is large
+      if ((isBold && fontSize >= 18.66) || fontSize >= 24) {
+        minRatio = minRatios.large;
+      }
   
       let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
       let textLuminence = getColorLuminence(...getColorParameters(textColor));
       let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
   
-      if (relativeLuminance < 7) {
+      if (relativeLuminance < minRatio) {
         let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
         let textHsl = rgb2hsl(...getColorParameters(textColor));
         let goodContrast = false;
@@ -217,7 +236,7 @@ function updateColorContrast(element, data) {
           let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
           let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
   
-          if (newRelativeLuminace >= 7) {
+          if (newRelativeLuminace >= minRatio) {
             goodContrast = true;
 
             // Make sure to include !important tags so they override everything
