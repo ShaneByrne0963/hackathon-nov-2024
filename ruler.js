@@ -90,22 +90,21 @@ function removeRuler() {
         const parentRulerContainer = document.getElementById("parent-container");
         const childRulerContainer = document.getElementById("child-container");
 
-       removeEventListener("mouseenter", enterLink);
-       removeEventListener("mouseleave", leaveLink);
+        // Remove EventListeners
+        removeEventListener("mouseenter", enterLink);
+        removeEventListener("mouseleave", leaveLink);
 
-        customCursor.remove();
-        horizontalLine.remove();
-        parentRulerContainer.remove();
-        childRulerContainer.remove();
-        console.log("Ruler removed");
+        customCursor ? customCursor.remove() : null;
+        horizontalLine ? horizontalLine.remove() : null;
+        parentRulerContainer ? parentRulerContainer.remove() : null;
+        childRulerContainer ? childRulerContainer.remove() : null
 
         // Restore default cursor
         document.body.style.cursor = "auto";
         document.body.style.pointerEvents = "auto";
-        console.log("cursor", document.body.style.cursor);
-        console.log("pointer", document.body.style.pointerEvents);
 }
 
+// Removes customCursor and horizontalLine when hovering over a link
 function enterLink() {
         const customCursor = document.getElementById("custom-cursor");
         const horizontalLine = document.getElementById("horizontal-line");
@@ -117,6 +116,7 @@ function enterLink() {
         }
 }
 
+// Restores customCursor and horizontalLine when leaving a link
 function leaveLink() {
         const customCursor = document.getElementById("custom-cursor");
         const horizontalLine = document.getElementById("horizontal-line");
