@@ -2,15 +2,18 @@
 function splitParagraphs(element, data) {
   //console.log(element.childNodes);
   //console.log(element.childNodes[0]);
+  // TODO: Restore the original
+
   if (data.breakParagraph) {
 
     const adjustedContent = [];
-    const maxLength = 400;
+    const maxLength = 300;
 
     if (element.innerText) {
       //console.log(element.innerText)
       let paragraph = document.createElement("p");
       let charCount = 0;
+
       element.childNodes.forEach(node => {
 
         if (node.nodeType === Node.TEXT_NODE) {
@@ -24,16 +27,17 @@ function splitParagraphs(element, data) {
 
             sentences.forEach((sentence, index) => {
               console.log(sentence.length);
+              let isFullSentence = ['.', ':', '!', '?'].some(char => sentence.endsWith(char));
               // Count the length of the paragraph so far
               // Add 1 for whitespace between sentences
               charCount += sentence.length + 1;
               console.log('char count:' + charCount);
 
-              paragraph.appendChild(document.createTextNode(`${sentence} `));
+              paragraph.appendChild(document.createTextNode(`${sentence}${isFullSentence ? " " : ""}`));
 
               // Add the sentence as a new text node with trailing whitespace
               //adjustedContent.push(document.createTextNode(`${sentence} `));
-              if (charCount >= maxLength) { // (index < sentences.length - 1) {
+              if (charCount >= maxLength && isFullSentence) { // (index < sentences.length - 1) {
                 adjustedContent.push(paragraph);
                 paragraph = document.createElement("p");
 
@@ -42,6 +46,7 @@ function splitParagraphs(element, data) {
                 //adjustedContent.push(document.createElement("br"));
                 //adjustedContent.push(document.createElement("br"));
                 // Reset counter
+                // Only if sentence ends with .
                 charCount = 0;
               }
 
@@ -64,7 +69,6 @@ function splitParagraphs(element, data) {
       if (paragraph.childNodes.length > 0) {
         adjustedContent.push(paragraph);
       }
-      // Clear the original element and append the new content
 
       // If the element is <p>, replace it with a <div> containing the split paragraphs
       if (element.tagName === "P") {
@@ -72,6 +76,7 @@ function splitParagraphs(element, data) {
         adjustedContent.forEach(p => wrapper.appendChild(p));
         element.replaceWith(wrapper); // Replace the <p> element with the wrapper
       } else {
+      // Clear the original element and append the new content
 
         element.innerHTML = "";
         adjustedContent.forEach(node => element.appendChild(node));
@@ -85,4 +90,4 @@ function splitParagraphs(element, data) {
 
 }
 
-// TODO: maket this language-specific to avoid breaking up dates etc.
+// TODO: make this language-specific to avoid breaking up dates etc.
