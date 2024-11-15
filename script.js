@@ -35,7 +35,7 @@ const functions = [
   },
   {
     func: hoverStyles,
-    targets: "*",
+    targets: "body",
   },
   {
     func: setLineSpacing,
