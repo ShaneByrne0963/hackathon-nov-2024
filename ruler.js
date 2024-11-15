@@ -13,15 +13,40 @@ function createRuler() {
         // Remove default cursor
         document.body.style.cursor = "none";
 
+        // Create parent container div
+        const parentRulerContainer = document.createElement("div");
+        parentRulerContainer.id = "parent-container";
+        document.body.appendChild(parentRulerContainer);
+
+        // Parent container styles
+        parentRulerContainer.style.position = "fixed";
+        parentRulerContainer.style.width = "100vw";
+        parentRulerContainer.style.height = "100vh";
+        parentRulerContainer.style.pointerEvents = "none";
+        parentRulerContainer.style.zIndex = "9999";
+        parentRulerContainer.style.visibility = "invisible";
+        parentRulerContainer.style.top = "0";
+        parentRulerContainer.style.left = "0";
+
+        // Create child container div
+        const childRulerContainer = document.createElement("div");
+        childRulerContainer.id = "child-container";
+        parentRulerContainer.appendChild(childRulerContainer);
+
+        // Child container styles
+        childRulerContainer.style.position = "relative";
+        childRulerContainer.style.top = "0";
+        childRulerContainer.style.left = "0";
+
         // Create and add new cursor
         const customCursor = document.createElement("div");
         customCursor.id = "custom-cursor";
-        document.body.appendChild(customCursor);
+        childRulerContainer.appendChild(customCursor);
 
         // Create and add horizontal line
         const horizontalLine = document.createElement("div");
         horizontalLine.id = "horizontal-line";
-        document.body.appendChild(horizontalLine);
+        childRulerContainer.appendChild(horizontalLine);
 
         // Uppdate position of cursor and horizontal line
         document.addEventListener("mousemove", (event) => {
@@ -33,7 +58,7 @@ function createRuler() {
 
                 // Inline-styling for cursor
                 customCursor.style.position = "absolute";
-                customCursor.style.pointerEvents = "none";
+                // customCursor.style.pointerEvents = "none";
                 customCursor.style.width = "3px";
                 customCursor.style.height = "15px";
                 customCursor.style.backgroundColor = "black";
@@ -42,7 +67,7 @@ function createRuler() {
                 // Inling-styling for horizontal line
                 horizontalLine.style.position = "absolute";
                 horizontalLine.style.pointerEvents = "none";
-                horizontalLine.style.width = "1500px";
+                horizontalLine.style.width = "100vw";
                 horizontalLine.style.height = "1px";
                 horizontalLine.style.backgroundColor = "black";
                 horizontalLine.style.transform = "translate(-50%, -50%)";
@@ -52,19 +77,9 @@ function createRuler() {
                 horizontalLine.style.top = `${y + 13}px`;
         });
 
-        // Handle link interactions
-        document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('mouseenter', () => {
-                        customCursor.style.display = 'none';
-                        horizontalLine.style.display = 'none';
-                        document.body.style.cursor = 'auto';
-                });
-
-                link.addEventListener('mouseleave', () => {
-                        customCursor.style.display = 'block';
-                        horizontalLine.style.display = 'block';
-                        document.body.style.cursor = 'none';
-                });
+        document.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("mouseenter", enterLink);
+                link.addEventListener("mouseleave", leaveLink);
         });
 }
 
@@ -72,12 +87,43 @@ function removeRuler() {
         // Remove cursor and horizontal line
         const customCursor = document.getElementById("custom-cursor");
         const horizontalLine = document.getElementById("horizontal-line");
+        const parentRulerContainer = document.getElementById("parent-container");
+        const childRulerContainer = document.getElementById("child-container");
+
+       removeEventListener("mouseenter", enterLink);
+       removeEventListener("mouseleave", leaveLink);
 
         customCursor.remove();
         horizontalLine.remove();
+        parentRulerContainer.remove();
+        childRulerContainer.remove();
+        console.log("Ruler removed");
 
         // Restore default cursor
-        document.body.style.cursor = "default";
+        document.body.style.cursor = "auto";
+        document.body.style.pointerEvents = "auto";
+        console.log("cursor", document.body.style.cursor);
+        console.log("pointer", document.body.style.pointerEvents);
 }
 
+function enterLink() {
+        const customCursor = document.getElementById("custom-cursor");
+        const horizontalLine = document.getElementById("horizontal-line");
 
+        if (customCursor && horizontalLine) {
+                customCursor.style.display = 'none';
+                horizontalLine.style.display = 'none';
+                document.body.style.cursor = 'auto';
+        }
+}
+
+function leaveLink() {
+        const customCursor = document.getElementById("custom-cursor");
+        const horizontalLine = document.getElementById("horizontal-line");
+
+        if (customCursor && horizontalLine) {
+                customCursor.style.display = 'block';
+                horizontalLine.style.display = 'block';
+                document.body.style.cursor = 'none';
+        }
+}
