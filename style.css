@@ -1,0 +1,21 @@
+/*Preference section*/
+ul {
+    list-style-type: none;
+    padding-inline-start: 0px;
+    width: 90px;
+    font-size: large;
+}
+
+/* Long underline for focus and hover */
+.focus-item:hover::after,
+.focus-item:focus::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: blue;
+  transform: scaleX(1);
+  transition: transform 0.3s ease;
+}
