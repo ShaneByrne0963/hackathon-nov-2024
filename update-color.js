@@ -161,6 +161,14 @@ function updateColorContrast(element, data) {
       const elementStyle = window.getComputedStyle(element);
       const textColorCss = elementStyle.getPropertyValue('color');
       let textColor = getColorRGBFromStyle(textColorCss);
+
+      // If the text has an alpha value, blend the color with the background color
+      if ("a" in textColor && textColor.a < 1) {
+        textColor.r += (backgroundColor.r - textColor.r) * (1 - textColor.a);
+        textColor.g += (backgroundColor.g - textColor.g) * (1 - textColor.a);
+        textColor.b += (backgroundColor.b - textColor.b) * (1 - textColor.a);
+        delete textColor.a;
+      }
   
       let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
       let textLuminence = getColorLuminence(...getColorParameters(textColor));
