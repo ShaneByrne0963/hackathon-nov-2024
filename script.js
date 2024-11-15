@@ -2,7 +2,7 @@
 /**
  * func: The function to be called
  * targets: The query selector to apply the function to
- * condition: Only runs if the localStorage value "key" is equal to "equals"
+ * condition: Only runs if the localStorage value of "key" is equal to "equals"
  */
 const functions = [
   {
@@ -27,7 +27,7 @@ const functions = [
   },
   {
     func: splitParagraphs,
-    targets: "p"
+    targets: "p, div"
   },
   {
     func: ruler,
