@@ -226,11 +226,11 @@ function updateColorContrast(element, data) {
             );
           }
 
-          console.log('Background RGB: ', backNewRgb);
-          console.log('Text RGB: ', textNewRgb);
-          console.log('Final Contrast: ', `${newRelativeLuminace}:1`);
-          console.log(element);
-          console.log('-------------------------------------------');
+          // console.log('Background RGB: ', backNewRgb);
+          // console.log('Text RGB: ', textNewRgb);
+          // console.log('Final Contrast: ', `${newRelativeLuminace}:1`);
+          // console.log(element);
+          // console.log('-------------------------------------------');
         }
       }
     }
