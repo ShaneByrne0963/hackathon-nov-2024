@@ -83,4 +83,4 @@ function splitParagraphs(element, data) {
 
 }
 
-// TODO: make this language-specific to avoid breaking up dates etc.
+// TODO: (future feature) make this language-specific to avoid breaking up dates etc.

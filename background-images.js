@@ -29,6 +29,8 @@ function removeBackgroundImage(element, data) {
       }
 
       // Color should be taken from user preferences
+      // TODO: Colors should be taken from other preferences if available (check chosen palette)
+      // Use color picker and contrast color only if no other palette has been chosen
       let userBgColor = data.replacementColor;
       let contrastColor = getMaxContrastColor(userBgColor);
 
