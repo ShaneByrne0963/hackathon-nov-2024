@@ -46,8 +46,9 @@ function sendData() {
     data[key] = retrieveData(key);
   }
   // Send the data to the page
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, { action: JSON.stringify(data) });
+  const extAPI = typeof browser !== "undefined" ? browser : chrome;
+  extAPI.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    extAPI.tabs.sendMessage(tabs[0].id, { action: JSON.stringify(data) });
   });
 }
 /**

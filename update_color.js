@@ -212,8 +212,12 @@ function updateColorContrast(element, data) {
           goodContrast = true;
           element.setAttribute('accessorease-data-text-color', textColorCss);
           element.setAttribute('accessorease-data-back-color', backgroundColorCss);
+
+          // Update the style tag
           element.style.color = `rgb(${getColorParameters(textNewRgb).join()})`;
           element.style.backgroundColor = `rgb(${getColorParameters(backNewRgb).join()})`;
+
+          let elementStyle = 
 
           console.log('Background RGB: ', backNewRgb);
           console.log('Text RGB: ', textNewRgb);

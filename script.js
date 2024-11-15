@@ -54,7 +54,8 @@ function updatePage(preferences) {
   });
 }
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+const extAPI = typeof browser !== "undefined" ? browser : chrome;
+extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   const resultData = JSON.parse(message.action);
   updatePage(resultData);
 });
