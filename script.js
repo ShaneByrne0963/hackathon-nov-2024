@@ -7,11 +7,7 @@
 const functions = [
   {
     func: updateColorContrast,
-    targets: "*",
-    condition: {
-      key: "colorContrast",
-      equals: true,
-    },
+    targets: "*"
   },
   {
     func: removeBackgroundImage,
