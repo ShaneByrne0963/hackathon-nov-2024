@@ -3,9 +3,9 @@
 function ruler(element, data) {
         let checkbox = data.ruler;
         if (checkbox) {
-                createRuler();
+              //  createRuler();
         } else {
-                removeRuler();
+             //   removeRuler();
         }
 }
 
