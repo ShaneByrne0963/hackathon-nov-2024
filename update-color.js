@@ -212,14 +212,22 @@ function updateColorContrast(element, data) {
 
       // Finding the minimum ratio to be required
       let minRatio = minRatios.regular;
-      let fontSize = elementStyle.getPropertyValue('font-size');
-      let fontWeight = elementStyle.getPropertyValue('font-weight');
-      const isBold = (fontWeight === 'bold' || parseInt(fontWeight) >= 700);
-      fontSize = parseFloat(fontSize.replace('px', ''));
-      
-      // Determine if the text is large
-      if ((isBold && fontSize >= 18.66) || fontSize >= 24) {
-        minRatio = minRatios.large;
+      // Icons / Graphics
+      const iconClasses = iconClassNames.filter(className => element.classList.contains(className));
+      if (element.tagName === 'SVG' || element.tagName === 'CANVAS' || iconClasses.length > 0) {
+        minRatio = minRatios.graphics;
+      }
+      else {
+        // Text
+        let fontSize = elementStyle.getPropertyValue('font-size');
+        let fontWeight = elementStyle.getPropertyValue('font-weight');
+        const isBold = (fontWeight === 'bold' || parseInt(fontWeight) >= 700);
+        fontSize = parseFloat(fontSize.replace('px', ''));
+        
+        // Determine if the text is large
+        if ((isBold && fontSize >= 18.66) || fontSize >= 24) {
+          minRatio = minRatios.large;
+        }
       }
   
       let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
