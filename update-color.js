@@ -153,86 +153,110 @@ function hsl2rgb(h, s, l) {
  * @param {HTMLElement} element the element to be targeted
  */
 function updateColorContrast(element, data) {
-  if (element.innerText) {
-    // Get the colors of the text and its background
-    const backgroundColorCss = findBackgroundColor(element);
-    let backgroundColor = getColorRGBFromStyle(backgroundColorCss);
-    const elementStyle = window.getComputedStyle(element);
-    const textColorCss = elementStyle.getPropertyValue('color');
-    let textColor = getColorRGBFromStyle(textColorCss);
-
-    let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
-    let textLuminence = getColorLuminence(...getColorParameters(textColor));
-    let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
-
-    if (relativeLuminance < 18) {
-      let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
-      let textHsl = rgb2hsl(...getColorParameters(textColor));
-      let goodContrast = false;
-
-      // Gradually changing the values of the colors until the contrast is strong enough
-      // Text will always be changed first
-      while (!goodContrast) {
-        if (backHsl.l > 50) {
-          if (textHsl.l > 0) {
-            textHsl.l--;
-          }
-          else if (backHsl.l < 100) {
-            textHsl.l = 0;
-            backHsl.l++;
+  if (data.colorContrast) {
+    if (element.innerText) {
+      // Get the colors of the text and its background
+      const backgroundColorCss = findBackgroundColor(element);
+      let backgroundColor = getColorRGBFromStyle(backgroundColorCss);
+      const elementStyle = window.getComputedStyle(element);
+      const textColorCss = elementStyle.getPropertyValue('color');
+      let textColor = getColorRGBFromStyle(textColorCss);
+  
+      let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
+      let textLuminence = getColorLuminence(...getColorParameters(textColor));
+      let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
+  
+      if (relativeLuminance < 7) {
+        let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
+        let textHsl = rgb2hsl(...getColorParameters(textColor));
+        let goodContrast = false;
+  
+        // Gradually changing the values of the colors until the contrast is strong enough
+        // Text will always be changed first
+        while (!goodContrast) {
+          if (backHsl.l > 50) {
+            if (textHsl.l > 0) {
+              textHsl.l--;
+            }
+            else if (backHsl.l < 100) {
+              textHsl.l = 0;
+              backHsl.l++;
+            }
+            else {
+              // Should never get to this but just in case
+              backHsl.l = 100;
+              goodContrast = true;
+            }
           }
           else {
-            // Should never get to this but just in case
-            backHsl.l = 100;
+            if (textHsl.l < 100) {
+              textHsl.l++;
+            }
+            else if (backHsl.l > 0) {
+              textHsl.l = 100;
+              backHsl.l--;
+            }
+            else {
+              // Should never get to this but just in case
+              backHsl.l = 0;
+              goodContrast = true;
+            }
+          }
+          // Check if the contrast is better now
+          let backNewRgb = hsl2rgb(...getColorParameters(backHsl, 'hsl'));
+          let textNewRgb = hsl2rgb(...getColorParameters(textHsl, 'hsl'));
+          let backNewLuminence = getColorLuminence(...getColorParameters(backNewRgb));
+          let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
+          let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
+  
+          if (newRelativeLuminace >= 7) {
             goodContrast = true;
-          }
-        }
-        else {
-          if (textHsl.l < 100) {
-            textHsl.l++;
-          }
-          else if (backHsl.l > 0) {
-            textHsl.l = 100;
-            backHsl.l--;
-          }
-          else {
-            // Should never get to this but just in case
-            backHsl.l = 0;
-            goodContrast = true;
-          }
-        }
-        // Check if the contrast is better now
-        let backNewRgb = hsl2rgb(...getColorParameters(backHsl, 'hsl'));
-        let textNewRgb = hsl2rgb(...getColorParameters(textHsl, 'hsl'));
-        let backNewLuminence = getColorLuminence(...getColorParameters(backNewRgb));
-        let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
-        let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
 
-        if (newRelativeLuminace >= 18) {
-          goodContrast = true;
-          element.setAttribute('accessorease-data-text-color', textColorCss);
-          element.setAttribute('accessorease-data-back-color', backgroundColorCss);
-          
-          // Make sure to include !important tags so they override everything
-          let elementStyle = element.getAttribute('style');
-          if (elementStyle) {
-
-          }
-          else {
+            // Make sure to include !important tags so they override everything
+            let elementStyle = element.getAttribute('style');
+            let extraStyles = '';
+            if (elementStyle) {
+              let elementArray = elementStyle.split('; ');
+              for (let i = 0; i < elementArray.length; i++) {
+                let prop = elementArray[i].split(':')[0];
+                if (prop === 'color') {
+                  element.setAttribute('accessorease-style-color', textColorCss);
+                  elementArray.splice(i, 1);
+                  i--;
+                }
+                if (prop === 'background-color') {
+                  element.setAttribute('accessorease-style-background-color', backgroundColorCss);
+                  elementArray.splice(i, 1);
+                  i--;
+                }
+              }
+              extraStyles = elementArray.join('; ') + ' ';
+            }
             element.setAttribute(
               'style',
-              `color: rgb(${getColorParameters(textNewRgb).join()}) !important;
+              `${extraStyles}color: rgb(${getColorParameters(textNewRgb).join()}) !important;
                 background-color: rgb(${getColorParameters(backNewRgb).join()}) !important;`
             );
+            element.setAttribute('accessorease-updated-contrast', true);
           }
-
-          console.log('Background RGB: ', backNewRgb);
-          console.log('Text RGB: ', textNewRgb);
-          console.log('Final Contrast: ', `${newRelativeLuminace}:1`);
-          console.log(element);
-          console.log('-------------------------------------------');
         }
       }
+    }
+  }
+  else {
+    // Setting the original colors back
+    if (element.hasAttribute('accessorease-updated-contrast')) {
+      element.style.color = '';
+      element.style.backgroundColor = '';
+      if (element.hasAttribute('accessorease-style-color')) {
+        element.style.color = element.getAttribute('accessorease-style-color');
+        element.removeAttribute('accessorease-style-color');
+      }
+      if (element.hasAttribute('accessorease-style-background-color')) {
+        element.style.color = element.getAttribute('accessorease-style-background-color');
+        element.removeAttribute('accessorease-style-background-color');
+      }
+      element.removeAttribute('accessorease-updated-contrast');
     }
   }
 }
