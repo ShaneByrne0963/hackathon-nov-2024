@@ -1,7 +1,7 @@
 
 /*This script is used to change the cursor to a ruler when ruler tool is selected*/
 function ruler(element, data) {
-        let checkbox = data.ruler
+        let checkbox = data.ruler;
         if (checkbox) {
                 createRuler();
         } else {
