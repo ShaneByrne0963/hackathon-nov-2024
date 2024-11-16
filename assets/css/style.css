@@ -2,8 +2,13 @@ h1, h2, h3 {
   font-family: "Montserrat", sans-serif;
 }
 
-.form-select {
-  border-color: rgba(0, 0, 0, 0.7);
+h2 {
+  font-size: 1.3rem;
+}
+
+.form-select,
+.form-control {
+  border-color: rgba(0, 0, 0, 0.4);
 }
 
 header {
@@ -15,4 +20,8 @@ header {
 header>img {
   width: 64px;
   height: 64px;
+}
+
+.panel-section {
+  background-color: #eeeeee;
 }
