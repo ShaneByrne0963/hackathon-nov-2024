@@ -7,12 +7,11 @@ A browser extension that empowers users to customise their web browsing experien
 ## 🎯 Features
 
 - Customize website accessibility settings on the fly
-- Save personalized accessibility preferences per website
+- Personalised accessibility preferences persist within browser through web navigation
 - Quick toggles for common accessibility needs:
   - Font size adjustments
   - Contrast enhancement
-  - Color modifications
-  - Text-to-speech integration
+  - Colour modifications
   - Navigation assistance
 
 ## 🚀 Installation
@@ -93,6 +92,7 @@ Project Link: [https://github.com/ShaneByrne0963/hackathon-nov-2024](https://git
 
 - [ ] Support for additional browsers
 - [ ] Integration with screen readers
+- [ ] Text-to-speech integration
 - [ ] Feature 1
 - [ ] Feature 2
 - [ ] Feature 3
