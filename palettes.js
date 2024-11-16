@@ -1,6 +1,6 @@
 // Define preset palettes
 const palettes = {
-        normal: null, // NORMAL mode (default styling)
+        norm: null, // NORMAL mode (default styling)
         prot: ["#0077B6", "#8E44AD", "#2ECC71", "#F1C40F"], // Protanopia
         deut: ["#1ABC9C", "#9B59B6", "#16A085", "#F4D03F"], // Deuteranopia
         trit: ["#E74C3C", "#F39C12", "#27AE60", "#8E44AD"], // Tritanopia
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load saved palette from localStorage
     const savedPalette = localStorage.getItem("selectedPalette");
     if (savedPalette) {
-        form.elements["palette"].value = savedPalette;
+        form.elements["palettes"].value = savedPalette;
         applyPalette(savedPalette);
     }
 
@@ -37,9 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Function to apply a palette
-//function palette(element,data)
-function applyPalette(paletteKey) {
-    if (paletteKey === "palette1") {
+function applyPalette(element, data) {
+    if (paletteKey === "norm") {
         // NORMAL mode: restore original styles
         document.body.style.background = originalStyles.background;
         document.body.style.color = originalStyles.color;
