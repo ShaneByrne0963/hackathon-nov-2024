@@ -115,8 +115,8 @@ function getColorParameters(obj, type='rgb') {
 function blendColors(frontColor, backColor) {
   return {
     r: frontColor.r + ((backColor.r - frontColor.r) * (1 - frontColor.a)),
-    r: frontColor.g + ((backColor.g - frontColor.g) * (1 - frontColor.a)),
-    r: frontColor.b + ((backColor.b - frontColor.b) * (1 - frontColor.a))
+    g: frontColor.g + ((backColor.g - frontColor.g) * (1 - frontColor.a)),
+    b: frontColor.b + ((backColor.b - frontColor.b) * (1 - frontColor.a))
   };
 }
 
