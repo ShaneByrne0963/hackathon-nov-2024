@@ -34,7 +34,12 @@ const functions = [
     func: setLineSpacing,
     preference: "lineSpacing",
     targets: "*"
+  },
+  {
+    func: disableAutoplay,
+    targets: "audio, video"
   }
+  
 ];
 const defaultValues = {
 
@@ -83,6 +88,20 @@ const observer = new MutationObserver((mutationsList, obs) => {
   // Only update the page under specific conditions
   let canUpdate = false;
   for (let mutation of mutationsList) {
+
+    ////////////
+
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === "AUDIO" || node.tagName === "VIDEO")) {
+        node.autoplay = false;
+        node.removeAttribute("autoplay");
+        node.pause();
+        console.log("Autoplay disabled for ", node);
+      }
+    });
+
+    //////////////
+
     // Always update the page if elements are added/deleted
     if (mutation.type === 'childList') {
       canUpdate = true;
