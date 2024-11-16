@@ -5,12 +5,12 @@ function hoverStyles(element, data) {
     
     // Test
     if (hoverHighlight) {
-        mouseTracker();
-    } 
+        mouseTracker('highlight');
+    }
 }
 
 // Follow mouse
-function mouseTracker() {
+function mouseTracker(checkedOption) {
     console.log('Mouse tracker is running');
     // Create the active area element
     const activeArea = document.createElement('div');
@@ -38,6 +38,23 @@ function mouseTracker() {
         activeArea.style.left = `${mouseX - areaSizeWidth / 2}px`;
         activeArea.style.top = `${mouseY - areaSizeHeight / 2}px`;
         activeArea.style.display = 'block'; // Ensure the active area is visible
+
+        // Get bounding box of the active area
+        const areaRect = {
+            left: mouseX - areaSizeWidth / 2,
+            right: mouseX + areaSizeWidth / 2,
+            top: mouseY - areaSizeHeight / 2,
+            bottom: mouseY + areaSizeHeight / 2
+        };
     });
 
+    if (checkedOption === 'highlight') {
+        highlight();
+    }
+}
+
+function highlight() {
+    console.log('Highlight func is running');
+    const textContainer = document.querySelector('p')
+    console.log('Text container', textContainer);
 }
