@@ -40,12 +40,12 @@ function createRuler() {
 
         // Create and add new cursor
         const customCursor = document.createElement("div");
-        customCursor.id = "custom-cursor";
+        customCursor.id = "accessorease-ruler";
         childRulerContainer.appendChild(customCursor);
 
         // Create and add horizontal line
         const horizontalLine = document.createElement("div");
-        horizontalLine.id = "horizontal-line";
+        horizontalLine.id = "accessorease-horizontal-line";
         childRulerContainer.appendChild(horizontalLine);
 
         // Uppdate position of cursor and horizontal line
@@ -85,8 +85,8 @@ function createRuler() {
 
 function removeRuler() {
         // Remove cursor and horizontal line
-        const customCursor = document.getElementById("custom-cursor");
-        const horizontalLine = document.getElementById("horizontal-line");
+        const customCursor = document.getElementById("accessorease-ruler");
+        const horizontalLine = document.getElementById("accessorease-horizontal-line");
         const parentRulerContainer = document.getElementById("parent-container");
         const childRulerContainer = document.getElementById("child-container");
 
@@ -108,8 +108,8 @@ function removeRuler() {
 
 // Removes customCursor and horizontalLine when hovering over a link
 function enterLink() {
-        const customCursor = document.getElementById("custom-cursor");
-        const horizontalLine = document.getElementById("horizontal-line");
+        const customCursor = document.getElementById("accessorease-ruler");
+        const horizontalLine = document.getElementById("accessorease-horizontal-line");
 
         if (customCursor && horizontalLine) {
                 customCursor.style.display = 'none';
@@ -120,8 +120,8 @@ function enterLink() {
 
 // Restores customCursor and horizontalLine when leaving a link
 function leaveLink() {
-        const customCursor = document.getElementById("custom-cursor");
-        const horizontalLine = document.getElementById("horizontal-line");
+        const customCursor = document.getElementById("accessorease-ruler");
+        const horizontalLine = document.getElementById("accessorease-horizontal-line");
 
         if (customCursor && horizontalLine) {
                 customCursor.style.display = 'block';
