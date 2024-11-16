@@ -11,15 +11,7 @@ const functions = [
   },
   {
     func: removeBackgroundImage,
-    targets: "body, header, div, section, article",
-  },
-  {
-    func: updateReplacementColor,
-    targets: "body, header, div, section, article",
-    condition: {
-      key: "removeBg",
-      equals: true,
-    },
+    targets: "body, header, footer, div, section, article, aside",
   },
   {
     func: splitParagraphs,
@@ -60,8 +52,8 @@ function updatePage() {
         });
       }
     });
-    // Allow for automatic changes again after 3 seconds
-    setTimeout(() => observer.observe(document.body, config), 3000);
+    // Allow for automatic changes again after 1 second
+    setTimeout(() => observer.observe(document.body, config), 1000);
   });
 }
 
@@ -73,13 +65,36 @@ extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 });
 
 // Create a MutationObserver instance
-const observer = new MutationObserver((mutationsList, obs) => updatePage());
+const observer = new MutationObserver((mutationsList, obs) => {
+  // Only update the page under specific conditions
+  let canUpdate = false;
+  for (let mutation of mutationsList) {
+    // Always update the page if elements are added/deleted
+    if (mutation.type === 'childList') {
+      canUpdate = true;
+      break;
+    }
+    // If an attribute change is detected, only update the page if the element has updated its style element or its class list
+    else if (mutation.type === 'attributes' && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+      // Do not update the page if the affected element is the ruler
+      const mutatedElement = mutation.target;
+      if (mutatedElement.id !== 'accessorease-ruler' && mutatedElement.id !== 'accessorease-horizontal-line') {
+        canUpdate = true;
+        break;
+      }
+    }
+  }
+  if (canUpdate) {
+    updatePage();
+  }
+});
 
 // Configuration options
 const config = {
   childList: true,
   subtree: true,
-  attributes: true
+  attributes: true,
+  characterData: false,
 };
 
 // Start observing the document body
