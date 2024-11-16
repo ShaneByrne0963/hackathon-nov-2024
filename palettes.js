@@ -30,7 +30,7 @@ function applyPalette(element, data) {
     console.log(paletteKey);
     const allElements = document.querySelectorAll("*");
 
-    if (paletteKey === "norm") {
+    if (paletteKey === "normal") {
         // NORMAL mode: restore original styles
         for (const key in originalStyles) {
             const { element, backgroundColor, color, borderColor } = originalStyles[key];
