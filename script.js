@@ -93,7 +93,6 @@ const observer = new MutationObserver((mutationsList, obs) => {
     }
   }
   if (canUpdate) {
-    console.log('Changes detected!');
     updatePage();
   }
 });
