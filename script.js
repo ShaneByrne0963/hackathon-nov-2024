@@ -81,7 +81,6 @@ function updatePage(preference = null) {
 // Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.action === "update") {
-    console.log(message.preference);
     updatePage(message.preference || null);
   }
 });
