@@ -61,13 +61,13 @@ function getColorRGBFromStyle(colorStyle) {
 
 
 /**
- * Gets the relative luminence of an RGB color
+ * Gets the relative luminance of an RGB color
  * @param {Number} red The red value of the color (0-255)
  * @param {Number} green The green value of the color (0-255)
  * @param {Number} blue The blue value of the color (0-255)
- * @returns {Float} The relative luminence
+ * @returns {Float} The relative luminance
  */
-function getColorLuminence(red, green, blue) {
+function getColorLuminance(red, green, blue) {
 
   const redRange = red / 255.0;
   const greenRange = green / 255.0;
@@ -78,9 +78,9 @@ function getColorLuminence(red, green, blue) {
   const blueLum = (blueRange <= 0.03928) ? blueRange / 12.92 : Math.pow((blueRange + 0.055) / 1.055, 2.4);
 
   // For the sRGB colorspace, the relative luminance of a color is defined as: 
-  const luminence = 0.2126 * redLum + 0.7152 * greenLum + 0.0722 * blueLum;
+  const luminance = 0.2126 * redLum + 0.7152 * greenLum + 0.0722 * blueLum;
 
-  return luminence;
+  return luminance;
 }
 
 
@@ -175,6 +175,87 @@ function hsl2rgb(h, s, l) {
 }
 
 
+/**
+ * Updates an element's inline style attribute, keeping any unchanged styles
+ * @param {HTMLElement} element The element to change the styles
+ * @param {Object} styles The styles in format {"key": "value"}
+ */
+function updateStyles(element, styles) {
+  let elementStyle = element.getAttribute('style');
+  let extraStyles = '';
+  if (elementStyle) {
+    let elementArray = elementStyle.split('; ');
+    for (let i = 0; i < elementArray.length; i++) {
+      let prop = elementArray[i].split(':')[0];
+
+      if (prop in styles) {
+        element.setAttribute('accessorease-style-' + prop, styles[prop]);
+        elementArray.splice(i, 1);
+        i--;
+      }
+      else {
+        // Remove the semicolon to be added later
+        elementArray[i] = elementArray[i].replace(';', '');
+      }
+    }
+    if (elementArray.length > 0) {
+      extraStyles = elementArray.join('; ') + '; ';
+    }
+  }
+  let newStyles = ``;
+  let first = true;
+  for (let [key, value] of Object.entries(styles)) {
+    if (!first) {
+      newStyles += ` `;
+    }
+    first = false;
+    newStyles += `${key}: ${value} !important;`;
+  }
+  element.setAttribute('style', extraStyles + newStyles);
+}
+
+
+/**
+ * Resets a set of style properties for an element
+ * @param {HTMLElement} element The target element
+ * @param {Array} styles The list of style properties to be reset
+ */
+function resetStyles(element, styles) {
+  let elementStyle = element.getAttribute('style');
+  let extraStyles = '';
+  if (elementStyle) {
+    let elementArray = elementStyle.split('; ');
+    for (let i = 0; i < elementArray.length; i++) {
+      let prop = elementArray[i].split(':')[0];
+
+      if (styles.includes(prop)) {
+        elementArray.splice(i, 1);
+        i--;
+      }
+      else {
+        // Remove the semicolon to be added later
+        elementArray[i] = elementArray[i].replace(';', '');
+      }
+    }
+    if (elementArray.length > 0) {
+      extraStyles = elementArray.join('; ') + '; ';
+    }
+  }
+  let newStyles = ``;
+  let first = true;
+  for (let style of styles) {
+    if (element.hasAttribute(`accessorease-style-${style}`)) {
+      if (!first) {
+        newStyles += ` `;
+      }
+      first = false;
+      newStyles += `${style}: ${element.getAttribute(`accessorease-style-${style}`)}`;
+    }
+  }
+  element.setAttribute('style', extraStyles + newStyles);
+}
+
+
 // The ratios that have to be met to be considered good contrast
 const minRatios = {
   regular: 7,
@@ -230,9 +311,9 @@ function updateColorContrast(element, data) {
         }
       }
   
-      let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
-      let textLuminence = getColorLuminence(...getColorParameters(textColor));
-      let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
+      let backLuminance = getColorLuminance(...getColorParameters(backgroundColor));
+      let textLuminance = getColorLuminance(...getColorParameters(textColor));
+      let relativeLuminance = getRelativeLuminance(backLuminance, textLuminance);
   
       if (relativeLuminance < minRatio) {
         let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
@@ -273,38 +354,19 @@ function updateColorContrast(element, data) {
           // Check if the contrast is better now
           let backNewRgb = hsl2rgb(...getColorParameters(backHsl, 'hsl'));
           let textNewRgb = hsl2rgb(...getColorParameters(textHsl, 'hsl'));
-          let backNewLuminence = getColorLuminence(...getColorParameters(backNewRgb));
-          let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
-          let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
+          let backNewLuminance = getColorLuminance(...getColorParameters(backNewRgb));
+          let textNewLuminance = getColorLuminance(...getColorParameters(textNewRgb));
+          let newRelativeLuminance = getRelativeLuminance(backNewLuminance, textNewLuminance);
   
-          if (newRelativeLuminace >= minRatio) {
+          if (newRelativeLuminance >= minRatio) {
             goodContrast = true;
 
             // Make sure to include !important tags so they override everything
-            let elementStyle = element.getAttribute('style');
-            let extraStyles = '';
-            if (elementStyle) {
-              let elementArray = elementStyle.split('; ');
-              for (let i = 0; i < elementArray.length; i++) {
-                let prop = elementArray[i].split(':')[0];
-                if (prop === 'color') {
-                  element.setAttribute('accessorease-style-color', textColorCss);
-                  elementArray.splice(i, 1);
-                  i--;
-                }
-                if (prop === 'background-color') {
-                  element.setAttribute('accessorease-style-background-color', backgroundColorCss);
-                  elementArray.splice(i, 1);
-                  i--;
-                }
-              }
-              extraStyles = elementArray.join('; ') + ' ';
+            const newStyles = {
+              "color": `rgb(${getColorParameters(textNewRgb).join()})`,
+              "background-color": `rgb(${getColorParameters(backNewRgb).join()})`
             }
-            element.setAttribute(
-              'style',
-              `${extraStyles}color: rgb(${getColorParameters(textNewRgb).join()}) !important;
-                background-color: rgb(${getColorParameters(backNewRgb).join()}) !important;`
-            );
+            updateStyles(element, newStyles);
             element.setAttribute('accessorease-updated-contrast', true);
           }
         }
@@ -314,17 +376,7 @@ function updateColorContrast(element, data) {
   else {
     // Setting the original colors back
     if (element.hasAttribute('accessorease-updated-contrast')) {
-      element.style.color = '';
-      element.style.backgroundColor = '';
-      if (element.hasAttribute('accessorease-style-color')) {
-        element.style.color = element.getAttribute('accessorease-style-color');
-        element.removeAttribute('accessorease-style-color');
-      }
-      if (element.hasAttribute('accessorease-style-background-color')) {
-        element.style.color = element.getAttribute('accessorease-style-background-color');
-        element.removeAttribute('accessorease-style-background-color');
-      }
-      element.removeAttribute('accessorease-updated-contrast');
+      resetStyles(element, ['color', 'background-color']);
     }
   }
 }
