@@ -45,6 +45,11 @@ const functions = [
     preference: "fontSize",
     targets: "body",
   },
+  {
+    func: setFocusMode,
+    preference: "focusMode",
+    targets: "body",
+  },
 ];
 const defaultValues = {};
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
@@ -57,9 +62,10 @@ function updatePage(preference = null) {
     let runFunctions;
 
     if (preference) {
-      runFunctions = functions.filter(item => (item.preference && item.preference.includes(preference)));
-    }
-    else {
+      runFunctions = functions.filter(
+        (item) => item.preference && item.preference.includes(preference)
+      );
+    } else {
       runFunctions = functions;
     }
     runFunctions.map((data) => {
