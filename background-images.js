@@ -1,11 +1,11 @@
-/**
- * Calls function that replaces the background image with the selected color
- * @param {element} Element whose bg image will be removed and text colors updated
- * @param {data} User preferences
- */
-function updateReplacementColor(element, data) {
-  removeBackgroundImage(element, data);
-}
+// /**
+//  * Calls function that replaces the background image with the selected color
+//  * @param {element} Element whose bg image will be removed and text colors updated
+//  * @param {data} User preferences
+//  */
+// function updateReplacementColor(element, data) {
+//   removeBackgroundImage(element, data);
+// }
 
 /**
  * Processes the replacement and reinstatement of background images.
@@ -51,13 +51,13 @@ function removeBackgroundImage(element, data) {
       element.style.backgroundColor = "transparent";
       // Go through each child element and check if it has text
       childElements.forEach((child) => {
-        if (child.textContent.trim()) {
+        if (child.textContent.trim() !== '') {
           // Save the original text color
           if (!child.getAttribute("data-original-color")) {
             const childStyle = window.getComputedStyle(child);
             child.setAttribute("data-original-color", childStyle.color);
           }
-          if (!data.colorContrast) {
+          if (!data.colorContrast && findBackgroundColor(child) === findBackgroundColor(element)) {
             child.style.color = contrastColor;
           }
         }
@@ -102,19 +102,19 @@ function getLuminance(r, g, b) {
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
-function hexToRgb(hex) {
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-    return r + r + g + g + b + b;
-  });
+// function hexToRgb(hex) {
+//   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+//   hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+//     return r + r + g + g + b + b;
+//   });
 
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16)
-  ] : null;
-}
+//   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+//   return result ? [
+//     parseInt(result[1], 16),
+//     parseInt(result[2], 16),
+//     parseInt(result[3], 16)
+//   ] : null;
+// }
 
 function getMaxContrastColor(hexColor) {
   const [r, g, b] = hexColor.match(/\d+/g).map(Number);; //hexToRgb(hexColor);

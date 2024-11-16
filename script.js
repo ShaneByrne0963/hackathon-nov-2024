@@ -11,15 +11,7 @@ const functions = [
   },
   {
     func: removeBackgroundImage,
-    targets: "body, header, div, section, article",
-  },
-  {
-    func: updateReplacementColor,
-    targets: "body, header, div, section, article",
-    condition: {
-      key: "removeBg",
-      equals: true,
-    },
+    targets: "body, header, footer, div, section, article, aside",
   },
   {
     func: splitParagraphs,
