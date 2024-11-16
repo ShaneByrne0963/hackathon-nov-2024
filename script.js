@@ -57,10 +57,9 @@ function updatePage(preference = null) {
     let runFunctions;
 
     if (preference) {
-      runFunctions = functions.filter((item) =>
-        item.preference.includes(preference)
-      );
-    } else {
+      runFunctions = functions.filter(item => (item.preference && item.preference.includes(preference)));
+    }
+    else {
       runFunctions = functions;
     }
     runFunctions.map((data) => {
