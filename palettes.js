@@ -46,26 +46,13 @@ function applyPalette(paletteKey) {
     }
 }
 
-// Initialize the form and load the saved selection
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("palette-form");
-
-    // Save original styles when the page loads
-    saveOriginalStyles();
-
-    // Load saved palette from localStorage
-    const savedPalette = localStorage.getItem("selectedPalette");
-    if (savedPalette) {
-        form.elements["vision"].value = savedPalette;
-        applyPalette(savedPalette);
-    }
-
-    // Add event listener to save user's selection
-    form.addEventListener("change", (event) => {
-        const selected = event.target.value;
-        if (palettes.hasOwnProperty(selected)) {
-            localStorage.setItem("selectedPalette", selected);
-            applyPalette(selected);
+// Listen for messages from the popup script
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.action === "applyPalette") {
+        const { palette } = message;
+        if (!Object.keys(originalStyles).length) {
+            saveOriginalStyles();
         }
-    });
+        applyPalette(palette);
+    }
 });
