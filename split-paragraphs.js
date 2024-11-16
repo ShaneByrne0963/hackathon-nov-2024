@@ -11,8 +11,8 @@ function splitParagraphs(element, data) {
     if (element.innerText) {
 
       const origAttributes = getAllAttributes(element);
-
       let paragraph = document.createElement("p");
+      // Apply the original paragraph attributes to the new paragraph
       if (origAttributes) {
         origAttributes.forEach(attr => paragraph.setAttribute(attr.nodeName, attr.nodeValue));
       }
@@ -43,7 +43,7 @@ function splitParagraphs(element, data) {
 
                 adjustedContent.push(paragraph);
                 paragraph = document.createElement("p");
-
+                // Apply the original paragraph attributes to the new paragraph
                 if (origAttributes) {
                   origAttributes.forEach(attr => paragraph.setAttribute(attr.nodeName, attr.nodeValue));
                 }
@@ -85,7 +85,7 @@ function splitParagraphs(element, data) {
     if (element.getAttribute("data-original-paragraph")) {
       // Retrieve the original element content if available
       restoredParagraph = document.createElement("p");
-
+      // Restore original attributes
       if (element.children[0].hasAttributes()) {
         Array.from(element.children[0].attributes).forEach(attr => restoredParagraph.setAttribute(attr.nodeName, attr.nodeValue));
       }
