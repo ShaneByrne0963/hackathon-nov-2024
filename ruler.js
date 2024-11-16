@@ -67,13 +67,13 @@ function createRuler() {
                 // Inling-styling for horizontal line
                 horizontalLine.style.position = "absolute";
                 horizontalLine.style.pointerEvents = "none";
-                horizontalLine.style.width = "100vw";
+                horizontalLine.style.width = "180vw";
                 horizontalLine.style.height = "1px";
                 horizontalLine.style.backgroundColor = "black";
                 horizontalLine.style.transform = "translate(-50%, -50%)";
 
                 // Place horizontal line just below mouse position
-                horizontalLine.style.left = `${x}px`;
+                horizontalLine.style.left = '50vh';
                 horizontalLine.style.top = `${y + 13}px`;
         });
 
