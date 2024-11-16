@@ -24,12 +24,12 @@ function splitParagraphs(element, data) {
             const sentences = node.textContent.split(/(?<=[.:?!])\s+/).filter(sentence => sentence.trim() !== "");
 
             sentences.forEach((sentence, index) => {
-              console.log(sentence.length);
+              // console.log(sentence.length);
               let isFullSentence = ['.', ':', '!', '?'].some(char => sentence.endsWith(char));
               // Count the length of the paragraph so far
               // Add 1 for whitespace between sentences
               charCount += sentence.length + 1;
-              console.log('char count:' + charCount);
+              // console.log('char count:' + charCount);
 
               // Add the node as a new text node with trailing whitespace after full sentences
               paragraph.appendChild(document.createTextNode(`${sentence}${isFullSentence ? " " : ""}`));
