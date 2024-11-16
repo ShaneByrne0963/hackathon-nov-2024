@@ -61,13 +61,13 @@ function getColorRGBFromStyle(colorStyle) {
 
 
 /**
- * Gets the relative luminence of an RGB color
+ * Gets the relative luminance of an RGB color
  * @param {Number} red The red value of the color (0-255)
  * @param {Number} green The green value of the color (0-255)
  * @param {Number} blue The blue value of the color (0-255)
- * @returns {Float} The relative luminence
+ * @returns {Float} The relative luminance
  */
-function getColorLuminence(red, green, blue) {
+function getColorLuminance(red, green, blue) {
 
   const redRange = red / 255.0;
   const greenRange = green / 255.0;
@@ -78,9 +78,9 @@ function getColorLuminence(red, green, blue) {
   const blueLum = (blueRange <= 0.03928) ? blueRange / 12.92 : Math.pow((blueRange + 0.055) / 1.055, 2.4);
 
   // For the sRGB colorspace, the relative luminance of a color is defined as: 
-  const luminence = 0.2126 * redLum + 0.7152 * greenLum + 0.0722 * blueLum;
+  const luminance = 0.2126 * redLum + 0.7152 * greenLum + 0.0722 * blueLum;
 
-  return luminence;
+  return luminance;
 }
 
 
@@ -311,9 +311,9 @@ function updateColorContrast(element, data) {
         }
       }
   
-      let backLuminence = getColorLuminence(...getColorParameters(backgroundColor));
-      let textLuminence = getColorLuminence(...getColorParameters(textColor));
-      let relativeLuminance = getRelativeLuminance(backLuminence, textLuminence);
+      let backLuminance = getColorLuminance(...getColorParameters(backgroundColor));
+      let textLuminance = getColorLuminance(...getColorParameters(textColor));
+      let relativeLuminance = getRelativeLuminance(backLuminance, textLuminance);
   
       if (relativeLuminance < minRatio) {
         let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
@@ -354,11 +354,11 @@ function updateColorContrast(element, data) {
           // Check if the contrast is better now
           let backNewRgb = hsl2rgb(...getColorParameters(backHsl, 'hsl'));
           let textNewRgb = hsl2rgb(...getColorParameters(textHsl, 'hsl'));
-          let backNewLuminence = getColorLuminence(...getColorParameters(backNewRgb));
-          let textNewLuminence = getColorLuminence(...getColorParameters(textNewRgb));
-          let newRelativeLuminace = getRelativeLuminance(backNewLuminence, textNewLuminence);
+          let backNewLuminance = getColorLuminance(...getColorParameters(backNewRgb));
+          let textNewLuminance = getColorLuminance(...getColorParameters(textNewRgb));
+          let newRelativeLuminance = getRelativeLuminance(backNewLuminance, textNewLuminance);
   
-          if (newRelativeLuminace >= minRatio) {
+          if (newRelativeLuminance >= minRatio) {
             goodContrast = true;
 
             // Make sure to include !important tags so they override everything
