@@ -20,7 +20,7 @@
   ],
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "update-color.js", "background-images.js", "font.js","script.js"],
+    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "update-color.js", "background-images.js", "font.js", "palettes.js", "script.js"],
     "css": ["assets/css/main.css"]
   }]
 }
