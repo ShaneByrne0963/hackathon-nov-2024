@@ -11,6 +11,11 @@ const functions = [
     targets: "*",
   },
   {
+    func: applyPalette,
+    preference: "colorPalette",
+    targets: "body"
+  },
+  {
     func: removeBackgroundImage,
     preference: "removeBg",
     targets: "body, header, footer, div, section, article, aside",
