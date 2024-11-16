@@ -207,10 +207,7 @@ function updateColorContrast(element, data) {
 
       // If the text has an alpha value, blend the color with the background color
       if ("a" in textColor && textColor.a < 1) {
-        console.log(element);
-        console.log("Before: ", textColor);
         textColor = blendColors(textColor, backgroundColor);
-        console.log("After: ", textColor);
       }
 
       // Finding the minimum ratio to be required
