@@ -4,7 +4,6 @@
  * @param {data} User preferences
  */
 function updateReplacementColor(element, data) {
-
   removeBackgroundImage(element, data);
 }
 
@@ -15,7 +14,8 @@ function updateReplacementColor(element, data) {
  * @param {data} User preferences
  */
 function removeBackgroundImage(element, data) {
-  console.log("remove bg is ", data.removeBg);
+  // console.log("remove bg is ", data.removeBg);
+
   const childElements = element.querySelectorAll("*");
 
   if (data.removeBg && childElements.length) {
@@ -31,8 +31,8 @@ function removeBackgroundImage(element, data) {
       // Color should be taken from user preferences
       // TODO: Colors should be taken from other preferences if available (check chosen palette)
       // Use color picker and contrast color only if no other palette has been chosen
-      let userBgColor = data.replacementColor;
-      let contrastColor = getMaxContrastColor(userBgColor);
+      let userBgColor = 'rgba(0,0,0,0)';//data.replacementColor;
+      let contrastColor = getMaxContrastColor(findBackgroundColor(element));
 
       // Keep background properties that affect layout and appearance
       element.style.backgroundSize = style.backgroundSize;
@@ -55,9 +55,12 @@ function removeBackgroundImage(element, data) {
         if (child.textContent.trim()) {
           // Save the original text color
           if (!child.getAttribute("data-original-color")) {
-            child.setAttribute("data-original-color", child.style.color);
+            const childStyle = window.getComputedStyle(child);
+            child.setAttribute("data-original-color", childStyle.color);
           }
-          child.style.color = contrastColor;
+          if (!data.colorContrast) {
+            child.style.color = contrastColor;
+          }
         }
       });
     }
@@ -74,15 +77,15 @@ function removeBackgroundImage(element, data) {
 
       element.style.backgroundImage = originalBg;
       element.style.backgroundColor = "";
-      element.removeAttribute("data-original-bg");
+      // element.removeAttribute("data-original-bg");
 
       // Restore the original text color for each child
       childElements.forEach((child) => {
         if (child.textContent.trim()) {
           originalTextColor = child.getAttribute("data-original-color");
-          if (originalTextColor) {
+          if (originalTextColor && !data.colorContrast) {
             child.style.color = originalTextColor;
-            child.removeAttribute("data-original-color");
+            // child.removeAttribute("data-original-color");
           }
         }
       });
@@ -115,7 +118,7 @@ function hexToRgb(hex) {
 }
 
 function getMaxContrastColor(hexColor) {
-  const [r, g, b] = hexToRgb(hexColor);
+  const [r, g, b] = hexColor; //hexToRgb(hexColor);
   const luminance = getLuminance(r, g, b);
 
   // Return black for light colors and white for dark colors
