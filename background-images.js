@@ -12,11 +12,11 @@ function removeBackgroundImage(element, data) {
 
     const style = window.getComputedStyle(element);
 
-    if (hasBackgroundImage(style) || element.getAttribute("accessorease-style-background-image")) {
+    if (hasBackgroundImage(style)) { //} || element.getAttribute("accessorease-style-background-image")) {
       // Save the original background image URL if it hasn't been saved already
-      if (!element.getAttribute("accessorease-style-background-image")) {
-        element.setAttribute("accessorease-style-background-image", style.backgroundImage);
-      }
+      // if (!element.getAttribute("accessorease-style-background-image")) {
+      //   element.setAttribute("accessorease-style-background-image", style.backgroundImage);
+      // }
 
       // Color should be taken from user preferences
       // TODO: Colors should be taken from other preferences if available (check chosen palette)
@@ -25,55 +25,84 @@ function removeBackgroundImage(element, data) {
       let contrastColor = getMaxContrastColor(origBgColor);
 
       // Keep background properties that affect layout and appearance
-      element.style.backgroundSize = style.backgroundSize;
-      element.style.backgroundPosition = style.backgroundPosition;
-      element.style.backgroundRepeat = style.backgroundRepeat;
+      // element.style.backgroundSize = style.backgroundSize;
+      // element.style.backgroundPosition = style.backgroundPosition;
+      // element.style.backgroundRepeat = style.backgroundRepeat;
 
       // For elements with size set by the background image, apply explicit dimensions
+      let stylesUpdate = {
+        'background-image': 'none',
+        // 'background-color': 'transparent',
+        'background-size': style.backgroundSize,
+        'background-position': style.backgroundPosition,
+        'background-repeat': style.backgroundRepeat,
+      };
+
       if (
         style.backgroundSize === "cover" ||
         style.backgroundSize === "contain"
       ) {
-        element.style.width = style.width;
-        element.style.height = style.height;
+        stylesUpdate['width'] = style.width;
+        stylesUpdate['height'] = style.height;
+
+        // element.style.width = style.width;
+        // element.style.height = style.height;
       }
 
-      element.setAttribute('style', `background-image: none !important; background-color: transparent !important;`)
+      //  element.style.backgroundImage = 'none';
+      //  element.style.backgroundColor = 'transparent';
+      updateStyles(element, stylesUpdate);
+      element.setAttribute('accessorease-bg-image-updated', true);
+      data['colorContrast'] = true;
+      updateColorContrast(element, data);
+      // TODO: call shane's function
+      //  element.setAttribute('style', `background-image: none !important; background-color: transparent !important;`)
       // Go through each child element and check if it has text
       childElements.forEach((child) => {
         if (child.textContent.trim() !== '') {
           // Save the original text color
-          if (!child.getAttribute("accessorease-style-color")) {
-            const childStyle = window.getComputedStyle(child);
-            child.setAttribute("accessorease-style-color", childStyle.color);
-          }
-          if (!data.colorContrast && findBackgroundColor(child) === origBgColor) {
-            child.style.color = contrastColor;
+          // if (!child.getAttribute("accessorease-style-color")) {
+          //   const childStyle = window.getComputedStyle(child);
+          //   child.setAttribute("accessorease-style-color", childStyle.color);
+          // }
+
+          // data['colorContrast'] = true;
+          if (findBackgroundColor(child) === origBgColor) {
+            //   // child.style.color = contrastColor;
+           // child.setAttribute('accessorease-font-color-updated', true);
+            updateColorContrast(child, data);
+
+
+            //   updateStyles(child, { 'color': contrastColor });
           }
         }
       });
     }
 
-    // Function to check if an element has a background image
-    function hasBackgroundImage(style) {
-      // Return True if a background image is set in the element style AND if it is not none
-      return style.backgroundImage && style.backgroundImage !== "none";
-    }
+
   } else {
     // Restore the original background image if present
-    const originalBg = element.getAttribute("accessorease-style-background-image");
-    if (originalBg) {
+    // const originalBg = element.getAttribute("accessorease-style-background-image");
+    if (element.hasAttribute('accessorease-bg-image-updated')) {
+      let stylesUpdate = ['width', 'height', 'background-image', 'background-color', 'background-size', 'background-position', 'background-repeat'];
 
-      element.style.backgroundImage = originalBg;
-      element.style.backgroundColor = "";
+      if (element.hasAttribute('accessorease-updated-contrast')) {
+        stylesUpdate.push('color');
+      }
+      resetStyles(element, stylesUpdate);
+
+      // element.style.backgroundImage = originalBg;
+      // element.style.backgroundColor = "";
 
       // Restore the original text color for each child
       childElements.forEach((child) => {
-        if (child.textContent.trim()) {
-          originalTextColor = child.getAttribute("accessorease-style-color");
-          if (originalTextColor && !data.colorContrast) {
-            child.style.color = originalTextColor;
-          }
+        if (child.hasAttribute('accessorease-updated-contrast')) {
+          // originalTextColor = child.getAttribute("accessorease-style-color");
+          //    if (!data.colorContrast) {
+          resetStyles(child, ['color', 'background-color']);
+
+          // child.style.color = originalTextColor;
+          //    }
         }
       });
     }
@@ -97,4 +126,10 @@ function getMaxContrastColor(hexColor) {
 
   // Return black for light colors and white for dark colors
   return luminance > 0.5 ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)";
+}
+
+// Function to check if an element has a background image
+function hasBackgroundImage(style) {
+  // Return True if a background image is set in the element style AND if it is not none
+  return style.backgroundImage && style.backgroundImage !== "none";
 }
