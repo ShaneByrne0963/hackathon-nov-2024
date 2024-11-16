@@ -1,4 +1,3 @@
-
 function splitParagraphs(element, data) {
 
   if (data.breakParagraph) {
@@ -11,7 +10,12 @@ function splitParagraphs(element, data) {
 
     if (element.innerText) {
 
+      const origAttributes = getAllAttributes(element);
+
       let paragraph = document.createElement("p");
+      if (origAttributes) {
+        origAttributes.forEach(attr => paragraph.setAttribute(attr.nodeName, attr.nodeValue));
+      }
       let charCount = 0;
 
       element.childNodes.forEach(node => {
@@ -39,6 +43,10 @@ function splitParagraphs(element, data) {
 
                 adjustedContent.push(paragraph);
                 paragraph = document.createElement("p");
+
+                if (origAttributes) {
+                  origAttributes.forEach(attr => paragraph.setAttribute(attr.nodeName, attr.nodeValue));
+                }
 
                 // Reset counter
                 charCount = 0;
@@ -70,7 +78,6 @@ function splitParagraphs(element, data) {
         wrapper.setAttribute("data-original-paragraph", element.innerHTML);
         // Replace the <p> element with the wrapper
         element.replaceWith(wrapper);
-        // adjustedContent.forEach(p => element.appendChild(p));
       }
     }
 
@@ -78,11 +85,23 @@ function splitParagraphs(element, data) {
     if (element.getAttribute("data-original-paragraph")) {
       // Retrieve the original element content if available
       restoredParagraph = document.createElement("p");
+
+      if (element.children[0].hasAttributes()) {
+        Array.from(element.children[0].attributes).forEach(attr => restoredParagraph.setAttribute(attr.nodeName, attr.nodeValue));
+      }
       restoredParagraph.innerHTML = element.getAttribute("data-original-paragraph");
       element.replaceWith(restoredParagraph);
     }
   }
 
+}
+
+function getAllAttributes(element) {
+  if (element.hasAttributes()) {
+    return Array.from(element.attributes);
+  } else {
+    return NaN;
+  }
 }
 
 // TODO: (future feature) make this language-specific to avoid breaking up dates etc.
