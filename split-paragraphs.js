@@ -75,21 +75,21 @@ function splitParagraphs(element, data) {
         const wrapper = document.createElement("div");
         adjustedContent.forEach(p => wrapper.appendChild(p));
         // Save the original element content
-        wrapper.setAttribute("data-original-paragraph", element.innerHTML);
+        wrapper.setAttribute("accessorease-original-paragraph-content", element.innerHTML);
         // Replace the <p> element with the wrapper
         element.replaceWith(wrapper);
       }
     }
 
   } else {
-    if (element.getAttribute("data-original-paragraph")) {
+    if (element.getAttribute("accessorease-original-paragraph-content")) {
       // Retrieve the original element content if available
       restoredParagraph = document.createElement("p");
       // Restore original attributes
       if (element.children[0].hasAttributes()) {
         Array.from(element.children[0].attributes).forEach(attr => restoredParagraph.setAttribute(attr.nodeName, attr.nodeValue));
       }
-      restoredParagraph.innerHTML = element.getAttribute("data-original-paragraph");
+      restoredParagraph.innerHTML = element.getAttribute("accessorease-original-paragraph-content");
       element.replaceWith(restoredParagraph);
     }
   }
