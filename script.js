@@ -13,7 +13,7 @@ const functions = [
   {
     func: removeBackgroundImage,
     preference: "removeBg",
-    targets: "body, header, footer, div, section, article, aside",
+    targets: "body, header, footer, div, section, article, aside, nav",
   },
   {
     func: splitParagraphs,
