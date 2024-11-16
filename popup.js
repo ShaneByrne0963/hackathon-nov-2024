@@ -37,7 +37,7 @@ const extAPI = typeof browser !== "undefined" ? browser : chrome;
 /**
  * Submits data from the popup tab to the main page
  */
-function sendData() {
+function sendData(preference=null) {
   // Get the data saved from the user's preferences to be sent to the page
   let data = {};
   document.querySelectorAll('*[data-key]').forEach(element => {
@@ -51,10 +51,16 @@ function sendData() {
     }
     data[key] = value;
   });
+  let messageData = {
+    action: 'update'
+  }
+  if (preference) {
+    messageData.preference = preference;
+  }
   extAPI.storage.local.set({ accessorEasePreferences: data }, () => {
     // Send a message to the page
     extAPI.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      extAPI.tabs.sendMessage(tabs[0].id, { action: 'update' });
+      extAPI.tabs.sendMessage(tabs[0].id, messageData);
     });
   })
 }
@@ -99,7 +105,8 @@ window.addEventListener('DOMContentLoaded', () => {
     keyElements.forEach((item) => {
   
       // Set the input value if it exists in the localStorage
-      const inputValue = data[item.getAttribute('data-key')];
+      const key = item.getAttribute('data-key');
+      const inputValue = data[key];
       if (typeof inputValue === "boolean") {
         item.checked = inputValue;
       }
@@ -108,10 +115,14 @@ window.addEventListener('DOMContentLoaded', () => {
       }
   
       if (item.tagName === 'BUTTON') {
-        item.addEventListener('click', sendData);
+        item.addEventListener('click', () => {
+          sendData(key);
+        });
       }
       else {
-        item.addEventListener('change', sendData);
+        item.addEventListener('change', () => {
+          sendData(key);
+        });
       }
     });
   });

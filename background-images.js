@@ -1,11 +1,3 @@
-// /**
-//  * Calls function that replaces the background image with the selected color
-//  * @param {element} Element whose bg image will be removed and text colors updated
-//  * @param {data} User preferences
-//  */
-// function updateReplacementColor(element, data) {
-//   removeBackgroundImage(element, data);
-// }
 
 /**
  * Processes the replacement and reinstatement of background images.
@@ -20,17 +12,17 @@ function removeBackgroundImage(element, data) {
 
     const style = window.getComputedStyle(element);
 
-    if (hasBackgroundImage(style) || element.getAttribute("data-original-bg")) {
+    if (hasBackgroundImage(style) || element.getAttribute("accessorease-style-background-image")) {
       // Save the original background image URL if it hasn't been saved already
-      if (!element.getAttribute("data-original-bg")) {
-        element.setAttribute("data-original-bg", style.backgroundImage);
+      if (!element.getAttribute("accessorease-style-background-image")) {
+        element.setAttribute("accessorease-style-background-image", style.backgroundImage);
       }
 
       // Color should be taken from user preferences
       // TODO: Colors should be taken from other preferences if available (check chosen palette)
       // Use color picker and contrast color only if no other palette has been chosen
-      //let userBgColor = 'rgba(0,0,0,0)';//data.replacementColor;
-      let contrastColor = getMaxContrastColor(findBackgroundColor(element));
+      const origBgColor = findBackgroundColor(element);
+      let contrastColor = getMaxContrastColor(origBgColor);
 
       // Keep background properties that affect layout and appearance
       element.style.backgroundSize = style.backgroundSize;
@@ -46,18 +38,16 @@ function removeBackgroundImage(element, data) {
         element.style.height = style.height;
       }
 
-      element.style.backgroundImage = "none";
-      //element.style.backgroundColor = userBgColor;
-      element.style.backgroundColor = "transparent";
+      element.setAttribute('style', `background-image: none !important; background-color: transparent !important;`)
       // Go through each child element and check if it has text
       childElements.forEach((child) => {
         if (child.textContent.trim() !== '') {
           // Save the original text color
-          if (!child.getAttribute("data-original-color")) {
+          if (!child.getAttribute("accessorease-style-color")) {
             const childStyle = window.getComputedStyle(child);
-            child.setAttribute("data-original-color", childStyle.color);
+            child.setAttribute("accessorease-style-color", childStyle.color);
           }
-          if (!data.colorContrast && findBackgroundColor(child) === findBackgroundColor(element)) {
+          if (!data.colorContrast && findBackgroundColor(child) === origBgColor) {
             child.style.color = contrastColor;
           }
         }
@@ -71,20 +61,18 @@ function removeBackgroundImage(element, data) {
     }
   } else {
     // Restore the original background image if present
-    const originalBg = element.getAttribute("data-original-bg");
+    const originalBg = element.getAttribute("accessorease-style-background-image");
     if (originalBg) {
 
       element.style.backgroundImage = originalBg;
       element.style.backgroundColor = "";
-      // element.removeAttribute("data-original-bg");
 
       // Restore the original text color for each child
       childElements.forEach((child) => {
         if (child.textContent.trim()) {
-          originalTextColor = child.getAttribute("data-original-color");
+          originalTextColor = child.getAttribute("accessorease-style-color");
           if (originalTextColor && !data.colorContrast) {
             child.style.color = originalTextColor;
-            // child.removeAttribute("data-original-color");
           }
         }
       });
@@ -102,19 +90,6 @@ function getLuminance(r, g, b) {
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
-// function hexToRgb(hex) {
-//   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-//   hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-//     return r + r + g + g + b + b;
-//   });
-
-//   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-//   return result ? [
-//     parseInt(result[1], 16),
-//     parseInt(result[2], 16),
-//     parseInt(result[3], 16)
-//   ] : null;
-// }
 
 function getMaxContrastColor(hexColor) {
   const [r, g, b] = hexColor.match(/\d+/g).map(Number);; //hexToRgb(hexColor);
