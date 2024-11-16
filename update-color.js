@@ -115,8 +115,8 @@ function getColorParameters(obj, type='rgb') {
 function blendColors(frontColor, backColor) {
   return {
     r: frontColor.r + ((backColor.r - frontColor.r) * (1 - frontColor.a)),
-    r: frontColor.g + ((backColor.g - frontColor.g) * (1 - frontColor.a)),
-    r: frontColor.b + ((backColor.b - frontColor.b) * (1 - frontColor.a))
+    g: frontColor.g + ((backColor.g - frontColor.g) * (1 - frontColor.a)),
+    b: frontColor.b + ((backColor.b - frontColor.b) * (1 - frontColor.a))
   };
 }
 
@@ -207,7 +207,10 @@ function updateColorContrast(element, data) {
 
       // If the text has an alpha value, blend the color with the background color
       if ("a" in textColor && textColor.a < 1) {
+        console.log(element);
+        console.log("Before: ", textColor);
         textColor = blendColors(textColor, backgroundColor);
+        console.log("After: ", textColor);
       }
 
       // Finding the minimum ratio to be required
