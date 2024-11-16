@@ -10,7 +10,7 @@ function ruler(element, data) {
 }
 
 function createRuler() {
-        const oldParentContainer = document.getElementById("parent-container");
+        const oldParentContainer = document.getElementById("accessorease-parent-container");
         if (oldParentContainer) {
                 return
         }
@@ -20,7 +20,7 @@ function createRuler() {
 
         // Create parent container div
         const parentRulerContainer = document.createElement("div");
-        parentRulerContainer.id = "parent-container";
+        parentRulerContainer.id = "accessorease-parent-container";
         document.body.appendChild(parentRulerContainer);
 
         // Parent container styles
@@ -35,7 +35,7 @@ function createRuler() {
         
         // Create child container div
         const childRulerContainer = document.createElement("div");
-        childRulerContainer.id = "child-container";
+        childRulerContainer.id = "accessorease-child-container";
         parentRulerContainer.appendChild(childRulerContainer);
 
         // Child container styles
@@ -92,8 +92,8 @@ function removeRuler() {
         // Remove cursor and horizontal line
         const customCursor = document.getElementById("accessorease-ruler");
         const horizontalLine = document.getElementById("accessorease-horizontal-line");
-        const parentRulerContainer = document.getElementById("parent-container");
-        const childRulerContainer = document.getElementById("child-container");
+        const parentRulerContainer = document.getElementById("accessorease-parent-container");
+        const childRulerContainer = document.getElementById("accessorease-child-container");
 
         // Remove EventListeners
         document.querySelectorAll("a").forEach((link) => {
