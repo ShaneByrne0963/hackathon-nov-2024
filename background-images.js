@@ -14,8 +14,6 @@ function updateReplacementColor(element, data) {
  * @param {data} User preferences
  */
 function removeBackgroundImage(element, data) {
-  // console.log("remove bg is ", data.removeBg);
-
   const childElements = element.querySelectorAll("*");
 
   if (data.removeBg && childElements.length) {
