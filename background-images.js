@@ -31,7 +31,7 @@ function removeBackgroundImage(element, data) {
       // Color should be taken from user preferences
       // TODO: Colors should be taken from other preferences if available (check chosen palette)
       // Use color picker and contrast color only if no other palette has been chosen
-      let userBgColor = 'rgba(0,0,0,0)';//data.replacementColor;
+      //let userBgColor = 'rgba(0,0,0,0)';//data.replacementColor;
       let contrastColor = getMaxContrastColor(findBackgroundColor(element));
 
       // Keep background properties that affect layout and appearance
@@ -49,7 +49,8 @@ function removeBackgroundImage(element, data) {
       }
 
       element.style.backgroundImage = "none";
-      element.style.backgroundColor = userBgColor;
+      //element.style.backgroundColor = userBgColor;
+      element.style.backgroundColor = "transparent";
       // Go through each child element and check if it has text
       childElements.forEach((child) => {
         if (child.textContent.trim()) {
@@ -118,7 +119,7 @@ function hexToRgb(hex) {
 }
 
 function getMaxContrastColor(hexColor) {
-  const [r, g, b] = hexColor; //hexToRgb(hexColor);
+  const [r, g, b] = hexColor.match(/\d+/g).map(Number);; //hexToRgb(hexColor);
   const luminance = getLuminance(r, g, b);
 
   // Return black for light colors and white for dark colors
