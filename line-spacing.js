@@ -17,4 +17,31 @@ function setLineSpacing(element, data) {
   }
 
   // TODO: Write something that considers what to do when the lineHeight is set with units (px, %, em, rem, etc)
+  if (computedStyle.lineHeight !== "normal") {
+    // Split the value into characters in an array - eg ["1", "0", "p", "x"]
+    let lineHeightCharArray = computedStyle.lineHeight.split("")
+    let lineHeightNumbers = []
+    let lineHeightUnits = []
+
+    // Loop over the characters in the array
+    for (let i = 0; i < lineHeightCharArray.length; i++) {
+
+      // If they're actually numbers pretending to be strings, add them to the numbers array
+      if (Number(lineHeightCharArray[i]) !== NaN) {
+        lineHeightNumbers.push(lineHeightCharArray[i])
+      } else {
+        // If they're letters, add them to the units array.
+        lineHeightUnits.push(lineHeightCharArray[i])
+      }
+    }
+  }
+
+  // Connect the numbers array back together as a string, and convert it to a number and multiply it by data.lineSpacing
+  let lineHeightNumber = (Number(lineHeightNumbers.join(""))) * data.lineSpacing
+
+  // Set the element's line height to the new number (stringified) with the units tacked on the end.
+  element.style.lineHeight = lineHeightNumber.toString() + lineHeightUnits.join("")
+
+
 }
+
