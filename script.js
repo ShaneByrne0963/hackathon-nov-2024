@@ -8,7 +8,7 @@ const functions = [
   {
     func: updateColorContrast,
     preference: "colorContrast",
-    targets: "*"
+    targets: "*",
   },
   {
     func: removeBackgroundImage,
@@ -18,7 +18,7 @@ const functions = [
   {
     func: splitParagraphs,
     preference: "breakParagraph",
-    targets: "p, div"
+    targets: "p, div",
   },
   {
     func: ruler,
@@ -33,25 +33,34 @@ const functions = [
   {
     func: setLineSpacing,
     preference: "lineSpacing",
-    targets: "*"
-  }
+    targets: "*",
+  },
+  {
+    func: setFontFamily,
+    preference: "fontFamily",
+    targets: "body",
+  },
+  {
+    func: setFontSize,
+    preference: "fontSize",
+    targets: "body",
+  },
 ];
-const defaultValues = {
-
-};
+const defaultValues = {};
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
-function updatePage(preference=null) {
+function updatePage(preference = null) {
   // Disable DOM change detection while the process is running
   observer.disconnect();
-  extAPI.storage.local.get('accessorEasePreferences', (result) => {
+  extAPI.storage.local.get("accessorEasePreferences", (result) => {
     const preferences = result.accessorEasePreferences || defaultValues;
     let runFunctions;
 
     if (preference) {
-      runFunctions = functions.filter(item => item.preference.includes(preference));
-    }
-    else {
+      runFunctions = functions.filter((item) =>
+        item.preference.includes(preference)
+      );
+    } else {
       runFunctions = functions;
     }
     runFunctions.map((data) => {
@@ -72,7 +81,7 @@ function updatePage(preference=null) {
 
 // Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (message.action === 'update') {
+  if (message.action === "update") {
     console.log(message.preference);
     updatePage(message.preference || null);
   }
@@ -84,15 +93,21 @@ const observer = new MutationObserver((mutationsList, obs) => {
   let canUpdate = false;
   for (let mutation of mutationsList) {
     // Always update the page if elements are added/deleted
-    if (mutation.type === 'childList') {
+    if (mutation.type === "childList") {
       canUpdate = true;
       break;
     }
     // If an attribute change is detected, only update the page if the element has updated its style element or its class list
-    else if (mutation.type === 'attributes' && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+    else if (
+      mutation.type === "attributes" &&
+      (mutation.attributeName === "style" || mutation.attributeName === "class")
+    ) {
       // Do not update the page if the affected element is the ruler
       const mutatedElement = mutation.target;
-      if (mutatedElement.id !== 'accessorease-ruler' && mutatedElement.id !== 'accessorease-horizontal-line') {
+      if (
+        mutatedElement.id !== "accessorease-ruler" &&
+        mutatedElement.id !== "accessorease-horizontal-line"
+      ) {
         canUpdate = true;
         break;
       }
@@ -114,6 +129,6 @@ const config = {
 // Start observing the document body
 observer.observe(document.body, config);
 // Disconnect the observer before page unload
-window.addEventListener('beforeunload', () => {
+window.addEventListener("beforeunload", () => {
   observer.disconnect();
 });
