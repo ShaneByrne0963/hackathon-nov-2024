@@ -1,168 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <!-- To be updated when navigation has been confirmed -->
-    <!--
-  <nav>
-    <a href="#home" aria-label="Go to Home Page">Home</a>
-    <a href="#about" aria-label="Learn more About Us">About</a>
-    <a href="#services" aria-label="View our Services">Services</a>
-    <a href="#contact" aria-label="Contact Us">Contact</a>
-  </nav>
-  -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+</head>
 
-    <main>
-      <!-- Color Contrast Input -->
-      <div>
-        <input type="checkbox" id="color-contrast" data-key="colorContrast" />
-        <label for="color-contrast">Colour Contrast</label>
-      </div>
+<body class="px-4 py-2">
+  <header>
+    <img src="icons/icon128.png" alt="Web Accessor-Ease Logo">
+    <h1>Web Accessor-Ease</h1>
+  </header>
 
-      <!-- Label for Button Size Selector -->
-      <label for="button-size">Select Button Size:</label>
-      <select
-        id="button-size"
-        data-key="buttonSize"
-        aria-label="Select button size"
-      >
-        <option value="default">Default</option>
-        <option value="medium">Medium</option>
-        <option value="large">Large</option>
+  <main>
+    <!-- Color Contrast Input -->
+    <div>
+      <input type="checkbox" id="color-contrast" data-key="colorContrast" />
+      <label for="color-contrast">Colour Contrast</label>
+    </div>
+
+    <!-- Label for Button Size Selector -->
+    <label for="button-size">Select Button Size:</label>
+    <select id="button-size" class="form-select" data-key="buttonSize" aria-label="Select button size">
+      <option value="default" selected>Default</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+    </select>
+
+    <!-- Label for Ruler -->
+    <label for="ruler">Ruler</label>
+    <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler" />
+
+    <!-- Label for hover styling -->
+    <fieldset>
+      <legend>Hover styles</legend>
+      <label for="highlight">
+        <input type="checkbox" name="highlight" value="highlight" aria-label="Highlight" data-key="hoverHighlight" />
+        Highlight
+      </label>
+      <label for="magnifyingGlass">
+        <input type="checkbox" name="magnifyingGlass" value="magnifyingGlass" aria-label="Magnifying Glass"
+          data-key="hoverMagnifyingGlass" />
+        Magnifying Glass
+      </label>
+    </fieldset>
+    <input type="range" min="1" max="2" data-key="lineSpacing" />
+
+    <!-- Buttons with ARIA labels for clarity -->
+    <button aria-label="Action for Button 1">Button 1</button>
+    <button aria-label="Action for Button 2">Button 2</button>
+    <button aria-label="Action for Button 3">Button 3</button>
+
+    <!-- Checkbox to hide/show background images -->
+    <div>
+      <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images" />
+      <!-- Label for Background Image Removal toggle -->
+      <label for="remove-bg-image">Hide background images</label>
+    </div>
+
+    <!-- Checkbox to break up long paragraphs -->
+    <div>
+      <input type="checkbox" id="break-paragraph" data-key="breakParagraph"
+        aria-label="Toggle to break up long paragraphs" />
+      <!-- Label for Background Image Removal toggle -->
+      <label for="break-paragraph">Break up long paragraphs</label>
+      <br />
+    </div>
+
+    <!-- Radio buttons for colour palettes -->
+    <div>
+      <h4>Palette</h4>
+      <label>
+        <input type="radio" name="vision" value="normal" data-key="colorPalette" checked /> Normal
+      </label>
+      <label>
+        <input type="radio" name="vision" value="prot" data-key="colorPalette" /> Protanopia
+      </label>
+      <label>
+        <input type="radio" name="vision" value="deut" data-key="colorPalette" /> Deuteranopia
+      </label>
+      <label>
+        <input type="radio" name="vision" value="trit" data-key="colorPalette" /> Tritanopia
+      </label>
+    </div>
+
+    <!-- Font Customization -->
+    <fieldset>
+      <legend>Font Customization</legend>
+      <label for="selectFontFamily">Select Font Family:</label>
+      <select id="selectFontFamily" class="form-select" data-key="fontFamily">
+        <option value="Arial" selected>Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Georgia">Georgia</option>
       </select>
 
-      <!-- Label for Ruler -->
-      <label for="ruler">Ruler</label>
-      <input
-        type="checkbox"
-        id="ruler"
-        data-key="ruler"
-        aria-label="Select a ruler"
-      />
+      <label for="inputFontSize">Minimum Font Size (px):</label>
+      <input type="number" id="inputFontSize" min="10" max="100" step="1" placeholder="16" data-key="fontSize" />
+    </fieldset>
+  </main>
 
-      <!-- Label for hover styling -->
-      <fieldset>
-        <legend>Hover styles</legend>
-        <label for="highlight">
-          <input
-            type="checkbox"
-            name="highlight"
-            value="highlight"
-            aria-label="Highlight"
-            data-key="hoverHighlight"
-          />
-          Highlight
-        </label>
-        <label for="magnifyingGlass">
-          <input
-            type="checkbox"
-            name="magnifyingGlass"
-            value="magnifyingGlass"
-            aria-label="Magnifying Glass"
-            data-key="hoverMagnifyingGlass"
-          />
-          Magnifying Glass
-        </label>
-      </fieldset>
-      <input type="range" min="1" max="2" data-key="lineSpacing" />
+  <script src="popup.js"></script>
+</body>
 
-      <!-- Buttons with ARIA labels for clarity -->
-      <button aria-label="Action for Button 1">Button 1</button>
-      <button aria-label="Action for Button 2">Button 2</button>
-      <button aria-label="Action for Button 3">Button 3</button>
-
-      <!-- Checkbox to hide/show background images -->
-      <div>
-        <input
-          type="checkbox"
-          id="remove-bg-image"
-          data-key="removeBg"
-          aria-label="Toggle to remove background images"
-        />
-        <!-- Label for Background Image Removal toggle -->
-        <label for="remove-bg-image">Hide background images</label>
-      </div>
-
-      <!-- Checkbox to break up long paragraphs -->
-      <div>
-        <input
-          type="checkbox"
-          id="break-paragraph"
-          data-key="breakParagraph"
-          aria-label="Toggle to break up long paragraphs"
-        />
-        <!-- Label for Background Image Removal toggle -->
-        <label for="break-paragraph">Break up long paragraphs</label>
-        <br />
-      </div>
-
-      <!-- Radio buttons for colour palettes -->
-      <div>
-        <form id="palette-form"></form>
-        <h4>Palette</h4>
-        <label>
-          <input type="radio" name="vision" value="normal" checked /> Normal
-        </label>
-        <label>
-          <input type="radio" name="vision" value="prot" /> Protanopia
-        </label>
-        <label>
-          <input type="radio" name="vision" value="deut" /> Deuteranopia
-        </label>
-        <label>
-          <input type="radio" name="vision" value="trit" /> Tritanopia
-        </label>
-      </form> 
-      <script src="palettes.js"></script> 
-      </div>
-
-      <!-- Font Customization -->
-      <fieldset>
-        <legend>Font Customization</legend>
-        <label for="selectFontFamily">Select Font Family:</label>
-        <select id="selectFontFamily" data-key="fontFamily">
-          <option value="Arial">Arial</option>
-          <option value="Verdana">Verdana</option>
-          <option value="Times New Roman">Times New Roman</option>
-          <option value="Tahoma">Tahoma</option>
-          <option value="Georgia">Georgia</option>
-        </select>
-
-        <label for="inputFontSize">Minimum Font Size (px):</label>
-        <input
-          type="number"
-          id="inputFontSize"
-          min="10"
-          max="100"
-          step="1"
-          placeholder="16"
-          data-key="fontSize"
-        />
-      </fieldset>
-    </main>
-
-    <!--
-  To be updated when footers have been confirmed 
-  
-  <footer>
-    <a href="https://twitter.com/example" aria-label="Visit our Twitter profile">
-      <i class="icon-twitter"></i> Twitter
-    </a>
-    <a href="https://facebook.com/example" aria-label="Visit our Facebook page">
-      <i class="icon-facebook"></i> Facebook
-    </a>
-    <a href="https://linkedin.com/example" aria-label="Visit our LinkedIn profile">
-      <i class="icon-linkedin"></i> LinkedIn
-    </a>
-  </footer>
-  
-  -->
-
-    <script src="popup.js"></script>
-  </body>
 </html>

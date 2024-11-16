@@ -42,14 +42,22 @@ function sendData(preference=null) {
   let data = {};
   document.querySelectorAll('*[data-key]').forEach(element => {
     const key = element.getAttribute('data-key');
-    let value;
-    if (element.getAttribute('type') === 'checkbox') {
+    const elType = element.getAttribute('type');
+    let value = null;
+    if (elType === 'checkbox') {
       value = element.checked;
     }
-    else {
-      value = element.value; 
+    else if (elType === 'radio') {
+      if (element.checked) {
+        value = element.value;
+      }
     }
-    data[key] = value;
+    else {
+      value = element.value;
+    }
+    if (value) {
+      data[key] = value;
+    }
   });
   let messageData = {
     action: 'update'
@@ -91,8 +99,14 @@ window.addEventListener('DOMContentLoaded', () => {
     const data = result.accessorEasePreferences || [...keyElements].reduce((dataObj, element) => {
       const key = element.getAttribute('data-key');
       let value;
-      if (element.getAttribute('type') === 'checkbox') {
+      let elType = element.getAttribute('type');
+      if (elType === 'checkbox') {
         value = element.checked;
+      }
+      else if (elType === 'radio') {
+        if (element.checked) {
+          value = element.value;
+        }
       }
       else {
         value = element.value; 
@@ -106,15 +120,19 @@ window.addEventListener('DOMContentLoaded', () => {
   
       // Set the input value if it exists in the localStorage
       const key = item.getAttribute('data-key');
+      const elType = item.getAttribute('type');
       const inputValue = data[key];
       if (typeof inputValue === "boolean") {
         item.checked = inputValue;
+      }
+      else if (elType === 'radio') {
+        item.checked = (item.value === inputValue);
       }
       else {
         item.value = inputValue;
       }
   
-      if (item.tagName === 'BUTTON') {
+      if (item.tagName === 'BUTTON' || elType === 'radio') {
         item.addEventListener('click', () => {
           sendData(key);
         });

@@ -24,7 +24,10 @@ function saveOriginalStyles() {
 }
 
 // Function to apply a palette
-function applyPalette(paletteKey) {
+function applyPalette(element, data) {
+    console.log(data);
+    const paletteKey = data.colorPalette;
+    console.log(paletteKey);
     const allElements = document.querySelectorAll("*");
 
     if (paletteKey === "norm") {
@@ -47,12 +50,12 @@ function applyPalette(paletteKey) {
 }
 
 // Listen for messages from the popup script
-chrome.runtime.onMessage.addListener((message) => {
-    if (message.action === "applyPalette") {
-        const { palette } = message;
-        if (!Object.keys(originalStyles).length) {
-            saveOriginalStyles();
-        }
-        applyPalette(palette);
-    }
-});
+// chrome.runtime.onMessage.addListener((message) => {
+//     if (message.action === "applyPalette") {
+//         const { palette } = message;
+//         if (!Object.keys(originalStyles).length) {
+//             saveOriginalStyles();
+//         }
+//         applyPalette(palette);
+//     }
+// });
