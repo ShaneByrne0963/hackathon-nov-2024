@@ -62,12 +62,6 @@
       <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images">
       <!-- Label for Background Image Removal toggle -->
       <label for="remove-bg-image">Hide background images</label>
-      <br>
-      <label for="replacement-color">Image replacement color:</label>
-      <!-- TODO: If the user selected a theme or a background color for the entire page 
-             in a different feature, the value of this color picker should be automatically set
-             to that color to make sure the user doesn't have to select it again -->
-      <input type="color" id="replacement-color" data-key="replacementColor" value="#dddfdd">
     </div>
 
     <!-- Checkbox to break up long paragraphs -->
@@ -79,10 +73,29 @@
       
     </div>
 
+    <!-- Radio buttons for colour palettes -->
+    <div>
+      <h4>Palette</h4>
+      <label>
+        <input type="radio" name="vision" value="normal" checked> Normal
+      </label>
+      <label>
+        <input type="radio" name="vision" value="prot"> Protanopia
+      </label>
+      <label>
+        <input type="radio" name="vision" value="deut"> Deuteranopia
+      </label>
+      <label>
+        <input type="radio" name="vision" value="trit"> Tritanopia
+      </label>  
+    </div>
+
 
   </main>
 
-  <!-- To be updated when footers have been confirmed -->
+  <!--
+  To be updated when footers have been confirmed 
+  
   <footer>
     <a href="https://twitter.com/example" aria-label="Visit our Twitter profile">
       <i class="icon-twitter"></i> Twitter
@@ -94,6 +107,9 @@
       <i class="icon-linkedin"></i> LinkedIn
     </a>
   </footer>
+  
+  -->
+  
   <script src="popup.js"></script>
 </body>
 

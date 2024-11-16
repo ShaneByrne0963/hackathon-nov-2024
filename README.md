@@ -72,11 +72,11 @@ We welcome contributions! Please follow these steps:
 
 The Accessibles Team:
 - Shane Byrne - [GitHub](https://github.com/ShaneByrne0963) | [LinkedIn](https://www.linkedin.com/in/shane-byrne-00b8b3272/)
-- Vasilika Schnitzer - [GitHub](https://github.com/RikaIljina) | [LinkedIn](https://www.linkedin.com/in/.../)
-- Alan Cruz - [GitHub](https://github.com/llancruzz) | [LinkedIn](https://www.linkedin.com/in/https://www.linkedin.com/in/llancruzz/)
+- Vasilika Schnitzer - [GitHub](https://github.com/RikaIljina) | [LinkedIn](https://www.linkedin.com/in/vasilika-schnitzer/)
+- Alan Cruz - [GitHub](https://github.com/llancruzz) | [LinkedIn](https://www.linkedin.com/in/llancruzz/)
 - Nonty Dazana - [GitHub](https://github.com/NontyD) | [LinkedIn](https://www.linkedin.com/in/nontyd/)
 - Trevor Leslie - [GitHub](https://github.com/TrevorJamesLeslie) | [LinkedIn](https://www.linkedin.com/in/trevor-leslie-12b4493a/)
-- Mike Sealey - [GitHub](https://github.com/mikesealey) | [LinkedIn](https://www.linkedin.com/in/https://www.linkedin.com/in/mike-sealey-6439573a/)
+- Mike Sealey - [GitHub](https://github.com/mikesealey) | [LinkedIn](https://www.linkedin.com/in/mike-sealey-6439573a/)
 - Mikael Johnsson - [GitHub](https://github.com/mikael-johnsson) | [LinkedIn](https://www.linkedin.com/in/mikael-johnsson/)
 
 ## 🙌 Acknowledgments

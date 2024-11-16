@@ -15,8 +15,11 @@
     "default_popup": "index.html",
     "default_title": "Web Accessor-Ease"
   },
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "background-images.js", "update-color.js", "script.js"]
+    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "update-color.js", "background-images.js", "script.js"]
   }]
 }
