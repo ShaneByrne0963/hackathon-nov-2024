@@ -30,23 +30,53 @@ const functions = [
     targets: "*"
   }
 ];
+const defaultValues = {
 
-function updatePage(preferences) {
-  functions.map((data) => {
-    // If there is a condition with the function, only run the function if the condition is met
-    if (
-      !("condition" in data) ||
-      preferences[data.condition.key] === data.condition.equals
-    ) {
-      [...document.querySelectorAll(data.targets)].map((element) => {
-        data.func(element, preferences);
-      });
-    }
+};
+const extAPI = typeof browser !== "undefined" ? browser : chrome;
+
+function updatePage() {
+  // Disable DOM change detection while the process is running
+  observer.disconnect();
+  extAPI.storage.local.get('accessorEasePreferences', (result) => {
+    const preferences = result.accessorEasePreferences || defaultValues;
+    functions.map((data) => {
+      updateStatus = 'updating';
+      // If there is a condition with the function, only run the function if the condition is met
+      if (
+        !("condition" in data) ||
+        preferences[data.condition.key] === data.condition.equals
+      ) {
+        [...document.querySelectorAll(data.targets)].map((element) => {
+          data.func(element, preferences);
+        });
+      }
+    });
+    // Allow for automatic changes again after 3 seconds
+    setTimeout(() => observer.observe(document.body, config), 3000);
   });
 }
 
-const extAPI = typeof browser !== "undefined" ? browser : chrome;
+// Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  const resultData = JSON.parse(message.action);
-  updatePage(resultData);
+  if (message.action === 'update') {
+    updatePage();
+  }
+});
+
+// Create a MutationObserver instance
+const observer = new MutationObserver((mutationsList, obs) => updatePage());
+
+// Configuration options
+const config = {
+  childList: true,
+  subtree: true,
+  attributes: true
+};
+
+// Start observing the document body
+observer.observe(document.body, config);
+// Disconnect the observer before page unload
+window.addEventListener('beforeunload', () => {
+  observer.disconnect();
 });

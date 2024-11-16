@@ -33,41 +33,30 @@ function retrieveData(key) {
   }
 }
 
-
+const extAPI = typeof browser !== "undefined" ? browser : chrome;
 /**
  * Submits data from the popup tab to the main page
  */
 function sendData() {
-  let data = {};
-
   // Get the data saved from the user's preferences to be sent to the page
-  const keys = [...document.querySelectorAll('*[data-key]')].map(element => element.getAttribute('data-key'));
-  for (let key of keys) {
-    data[key] = retrieveData(key);
-  }
-  // Send the data to the page
-  const extAPI = typeof browser !== "undefined" ? browser : chrome;
-  extAPI.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    extAPI.tabs.sendMessage(tabs[0].id, { action: JSON.stringify(data) });
+  let data = {};
+  document.querySelectorAll('*[data-key]').forEach(element => {
+    const key = element.getAttribute('data-key');
+    let value;
+    if (element.getAttribute('type') === 'checkbox') {
+      value = element.checked;
+    }
+    else {
+      value = element.value; 
+    }
+    data[key] = value;
   });
-}
-/**
- * Updates the preference in the local storage if the element has a data-key and value attribute, then sends the data to the page
- * @param {Event} event The event that triggered the function
- */
-function updatePreference(event) {
-  const target = event.target;
-  const key = target.getAttribute("data-key");
-  const value = target.value;
-  if (key) {
-    if (target.getAttribute('type') === 'checkbox') {
-      localStorage.setItem(key, target.checked);
-    }
-    else if (value) {
-      localStorage.setItem(key, value);
-    }
-  }
-  sendData();
+  extAPI.storage.local.set({ accessorEasePreferences: data }, () => {
+    // Send a message to the page
+    extAPI.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      extAPI.tabs.sendMessage(tabs[0].id, { action: 'update' });
+    });
+  })
 }
 
 /**
@@ -82,25 +71,49 @@ function updateBodySize(maxWidth, padding) {
   )}px`;
 }
 
+// Send the preferences to the page when requested
+extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.update) {
+    sendData();
+  }
+});
+
 window.addEventListener('DOMContentLoaded', () => {
-  // Add updatePreference triggers to each element that has the 'data-key' attribute
-  [...document.querySelectorAll('*[data-key]')].map((item) => {
+  // Retrieve the preferences from the local storage
+  extAPI.storage.local.get('accessorEasePreferences', (result) => {
+    const keyElements = document.querySelectorAll('*[data-key]');
+    const data = result.accessorEasePreferences || [...keyElements].reduce((dataObj, element) => {
+      const key = element.getAttribute('data-key');
+      let value;
+      if (element.getAttribute('type') === 'checkbox') {
+        value = element.checked;
+      }
+      else {
+        value = element.value; 
+      }
+      dataObj[key] = value;
+      return dataObj;
+    }, {});
 
-    // Set the input value if it exists in the localStorage
-    const inputValue = retrieveData(item.getAttribute('data-key'));
-    if (typeof inputValue === "boolean") {
-      item.checked = inputValue;
-    }
-    else {
-      item.value = inputValue;
-    }
-
-    if (item.tagName === 'BUTTON') {
-      item.addEventListener('click', updatePreference);
-    }
-    else {
-      item.addEventListener('change', updatePreference);
-    }
+    // Add sendData triggers to each element that has the 'data-key' attribute
+    keyElements.forEach((item) => {
+  
+      // Set the input value if it exists in the localStorage
+      const inputValue = data[item.getAttribute('data-key')];
+      if (typeof inputValue === "boolean") {
+        item.checked = inputValue;
+      }
+      else {
+        item.value = inputValue;
+      }
+  
+      if (item.tagName === 'BUTTON') {
+        item.addEventListener('click', sendData);
+      }
+      else {
+        item.addEventListener('change', sendData);
+      }
+    });
   });
 
   // Update the size of the body
