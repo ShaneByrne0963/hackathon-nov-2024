@@ -4,14 +4,14 @@
   "description": "A browser extension to address website accessibility issues limiting fully diversified inclusivity",
   "manifest_version": 3,
   "icons": {
-    "16": "assets/icons/icon16.ico",
-    "32": "assets/icons/icon32.ico",
-    "48": "assets/icons/icon48.ico",
-    "128": "assets/icons/icon128.ico"
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
   },
   "author": "The Accessibles",
   "action": {
-    "default_icon": "icons/icon48.png",
+    "default_icon": "assets/icons/icon48.png",
     "default_popup": "index.html",
     "default_title": "Web Accessor-Ease"
   },
