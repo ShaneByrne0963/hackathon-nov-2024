@@ -102,7 +102,7 @@ function highlight(areaRect) {
                 }
             });
         }
-    })
+    });
 }
 
 /**

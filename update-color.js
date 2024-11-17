@@ -193,11 +193,13 @@ function updateStyles(element, styles, type) {
   if (elementStyle) {
     let elementArray = elementStyle.split('; ');
     for (let i = 0; i < elementArray.length; i++) {
-      let prop = elementArray[i].split(':')[0];
+      let styleData = elementArray[i].split(':');
+      let prop = styleData[0];
+      let value = styleData[1].replace(';', '').trim();
 
       if (prop in styles) {
         if (!editedStyles.includes(prop)) {
-          element.setAttribute('accessorease-style-' + prop, styles[prop]);
+          element.setAttribute('accessorease-style-' + prop, value);
         }
         elementArray.splice(i, 1);
         i--;
@@ -241,7 +243,6 @@ function resetStyles(element, styles, type) {
     let extraStyles = '';
     if (elementStyle) {
       let elementArray = elementStyle.split('; ');
-      console.log(elementArray);
       for (let i = 0; i < elementArray.length; i++) {
         let prop = elementArray[i].split(':')[0];
   
@@ -408,4 +409,17 @@ function updateColorContrast(element, data) {
     // Setting the original colors back
     resetStyles(element, ['color', 'background-color'], 'updated-contrast');
   }
+}
+
+/**
+ * Runs updateColorContrast, regardless of whether colorContrast is true or not
+ * @param {HTMLElement} element The element that is being targeted
+ * @param {Object} data The user's preferences
+ * @returns {[Function]} Any functions to be run after updateColorContrast
+ */
+function forceColorContrast(element, data) {
+  let fakeData = {...data};
+  fakeData.colorContrast = true;
+  console.log("Forcing updateColorContrast");
+  return updateColorContrast(element, fakeData);
 }

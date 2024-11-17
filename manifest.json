@@ -20,7 +20,7 @@
   ],
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["update-color.js", "hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "adjust-bttn-size.js", "background-images.js", "font.js", "palettes.js", "script.js"],
+    "js": ["update-color.js", "disable-autoplay.js", "hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "adjust-bttn-size.js", "background-images.js", "font.js", "palettes.js","focusMode.js", "script.js"],
     "css": ["assets/css/main.css"]
   }]
 }
