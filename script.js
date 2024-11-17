@@ -22,7 +22,7 @@ const functions = [
   {
     func: applyPalette,
     preference: "colorPalette",
-    targets: "body",
+    targets: "body, header, footer, nav",
   },
   {
     func: splitParagraphs,
