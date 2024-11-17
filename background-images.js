@@ -12,57 +12,32 @@ function removeBackgroundImage(element, data) {
 
     const style = window.getComputedStyle(element);
 
-    if (hasBackgroundImage(style)) { //} || element.getAttribute("accessorease-style-background-image")) {
+    if (hasBackgroundImage(style)) {
       // Save the original background image URL if it hasn't been saved already
-      // if (!element.getAttribute("accessorease-style-background-image")) {
-      //   element.setAttribute("accessorease-style-background-image", style.backgroundImage);
-      // }
 
-      // Color should be taken from user preferences
-      // TODO: Colors should be taken from other preferences if available (check chosen palette)
-      // Use color picker and contrast color only if no other palette has been chosen
       const origBgColor = findBackgroundColor(element);
-      let contrastColor = getMaxContrastColor(origBgColor);
-
-      // Keep background properties that affect layout and appearance
-      // element.style.backgroundSize = style.backgroundSize;
-      // element.style.backgroundPosition = style.backgroundPosition;
-      // element.style.backgroundRepeat = style.backgroundRepeat;
 
       // For elements with size set by the background image, apply explicit dimensions
-      let stylesUpdate = {
+      let newStyles = {
         'background-image': 'none',
-        // 'background-color': 'transparent',
         'background-size': style.backgroundSize,
         'background-position': style.backgroundPosition,
         'background-repeat': style.backgroundRepeat,
       };
-
-      let stylesOrig = {
-        'background-image': style.backgroundImage,
-        // 'background-color': 'transparent',
-        'background-size': style.backgroundSize,
-        'background-position': style.backgroundPosition,
-        'background-repeat': style.backgroundRepeat,
-      };
-
 
       if (
         style.backgroundSize === "cover" ||
         style.backgroundSize === "contain"
       ) {
-        stylesUpdate['width'] = style.width;
-        stylesUpdate['height'] = style.height;
+        newStyles['width'] = style.width;
+        newStyles['height'] = style.height;
       }
 
-
-      updateStyles(element, stylesUpdate, 'bg-image-updated');
-
+      updateStyles(element, newStyles, 'bg-image-updated');
     }
 
   } else {
     // Restore the original background image if present
-    // const originalBg = element.getAttribute("accessorease-style-background-image");
     if (element.hasAttribute('accessorease-bg-image-updated')) {
       let stylesUpdate = ['width', 'height', 'background-image', 'background-color', 'background-size', 'background-position', 'background-repeat'];
 
@@ -70,14 +45,11 @@ function removeBackgroundImage(element, data) {
         stylesUpdate.push('color');
       }
       resetStyles(element, stylesUpdate, 'bg-image-updated');
-
-      }
+    }
   }
 }
 
-
 function isButton(element) {
-  //let isButton = false;
 
   if (
     (element.hasAttribute('role') && element.getAttribute('role').includes('button')) ||
@@ -88,8 +60,8 @@ function isButton(element) {
   return false;
 
 }
-// Adapted from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
 
+// Adapted from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
 function getLuminance(r, g, b) {
   const a = [r, g, b].map((v) => {
     v /= 255;
@@ -98,9 +70,8 @@ function getLuminance(r, g, b) {
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
-
 function getMaxContrastColor(hexColor) {
-  const [r, g, b] = hexColor.match(/\d+/g).map(Number);; //hexToRgb(hexColor);
+  const [r, g, b] = hexColor.match(/\d+/g).map(Number);
   const luminance = getLuminance(r, g, b);
 
   // Return black for light colors and white for dark colors

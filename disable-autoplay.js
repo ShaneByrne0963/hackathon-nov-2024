@@ -1,5 +1,4 @@
 function disableAutoplay(element) {
-  //const mediaElements = document.querySelectorAll("audio, video");
   if (element.tagName === 'VIDEO') { // && !element.getAttribute('accessorease-video-eventlistener')) {
     console.log('trying to add event listnener');
   // Only set once!!
@@ -17,7 +16,6 @@ function disableAutoplay(element) {
 
   }
   
-  // mediaElements.forEach(element => {
     if (!element.getAttribute('accessorease-ignore')) {
       // Check iframes! allow autoplay?
   
@@ -31,9 +29,7 @@ function disableAutoplay(element) {
   
       console.log(element.attributes);
   
-      //element.setAttribute('accessorease-autoplay-disabled', true);
     }
-    // });
 
   //console.log('Trying to disable ' + element.tagName);
   if (element.tagName === 'IFRAME') {

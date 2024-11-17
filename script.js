@@ -56,10 +56,7 @@ const functions = [
     preference: "buttonSize",
     targets: "button",
   },
-  {
-    func: disableAutoplay,
-    targets: "audio, video, iframe",
-  }
+
 ];
 // These functions are always run on page load. These functions are independent of preferences
 // Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
@@ -68,9 +65,12 @@ const functions = [
  * targets: The query selector to apply the function to
  */
 const startFunctions = [
-  disableAutoplay,
+  {
+    func: disableAutoplay,
+    targets: "audio, video, iframe",
+  },
+];
 
-]
 const defaultValues = {
   colorContrast: true,
   removeBg: false,
@@ -174,5 +174,4 @@ observer.observe(document.body, config);
 // Disconnect the observer before page unload
 window.addEventListener("beforeunload", () => {
   observer.disconnect();
-
 });
