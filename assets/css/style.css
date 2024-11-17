@@ -25,3 +25,14 @@ header>img {
 .panel-section {
   background-color: #eeeeee;
 }
+
+#palette-inputs {
+  display: grid;
+  grid-template-columns: 4fr 5fr 6fr 4fr;
+}
+
+@media screen and (max-width: 499px) {
+  #palette-inputs {
+    display: block;
+  }
+}
