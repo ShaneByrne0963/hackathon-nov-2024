@@ -88,7 +88,7 @@ function highlight(areaRect) {
                 }
             });
         }
-    })
+    });
 }
 
 /**
