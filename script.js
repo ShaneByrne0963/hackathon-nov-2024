@@ -61,6 +61,14 @@ const functions = [
     targets: "img, aside, footer",
   },
 ];
+// Like functions, but aren't run on page load/update. Can only be called by returning in a function
+const resultFunctions = [
+  {
+    func: forceColorContrast,
+    preference: "colorContrast",
+    targets: "*",
+  },
+]
 // These functions are always run on page load. These functions are independent of preferences
 // Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
 /**
@@ -90,23 +98,42 @@ function updatePage(preference = null) {
     let runFunctions;
 
     if (preference) {
-      runFunctions = functions.filter(
+      runFunctions = [...functions].filter(
         (item) => item.preference && item.preference.includes(preference)
       );
     } else {
-      runFunctions = functions;
+      runFunctions = [...functions];
     }
-    runFunctions.map((data) => {
-      // If there is a condition with the function, only run the function if the condition is met
-      if (
-        !("condition" in data) ||
-        preferences[data.condition.key] === data.condition.equals
-      ) {
-        document.querySelectorAll(data.targets).forEach((element) => {
-          data.func(element, preferences);
-        });
-      }
-    });
+    while (runFunctions.length > 0) {
+      let data = runFunctions[0];
+      document.querySelectorAll(data.targets).forEach((element) => {
+        const result = data.func(element, preferences);
+        // Check if any other functions need to be ran after the function has been run
+        if (result) {
+          let resultArray = [result];
+          // Check if the output is an array
+          if (typeof result === 'object' && result.map) {
+            resultArray = result;
+          }
+          // Remove the functions that will be run later in the process anyway
+          const functionsToRun = resultArray.filter(res => runFunctions.filter(fnc => fnc.func === res).length === 0);
+          runFunctions.push(...functionsToRun.map(item => {
+            // Finding the data of the function
+            for (let fnc of functions) {
+              if (fnc.func === item) {
+                return fnc;
+              }
+            }
+            for (let fnc of resultFunctions) {
+              if (fnc.func === item) {
+                return fnc;
+              }
+            }
+          }));
+        }
+      });
+      runFunctions.splice(0, 1);
+    }
     // Allow for automatic changes again after 1 second
     setTimeout(() => observer.observe(document.body, config), 1000);
   });

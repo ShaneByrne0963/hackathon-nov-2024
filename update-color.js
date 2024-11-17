@@ -243,7 +243,6 @@ function resetStyles(element, styles, type) {
     let extraStyles = '';
     if (elementStyle) {
       let elementArray = elementStyle.split('; ');
-      console.log(elementArray);
       for (let i = 0; i < elementArray.length; i++) {
         let prop = elementArray[i].split(':')[0];
   
@@ -410,4 +409,17 @@ function updateColorContrast(element, data) {
     // Setting the original colors back
     resetStyles(element, ['color', 'background-color'], 'updated-contrast');
   }
+}
+
+/**
+ * Runs updateColorContrast, regardless of whether colorContrast is true or not
+ * @param {HTMLElement} element The element that is being targeted
+ * @param {Object} data The user's preferences
+ * @returns {[Function]} Any functions to be run after updateColorContrast
+ */
+function forceColorContrast(element, data) {
+  let fakeData = {...data};
+  fakeData.colorContrast = true;
+  console.log("Forcing updateColorContrast");
+  return updateColorContrast(element, fakeData);
 }
