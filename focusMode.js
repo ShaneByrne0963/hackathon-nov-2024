@@ -2,7 +2,10 @@
 let isFocusModeOn = false;
 
 function setFocusMode(data) {
+  const focusModeButton = document.getElementById("focusModeButton");
+
   const focusMode = data.focusMode;
+
   isFocusModeOn = !isFocusModeOn;
 
   if (isFocusModeOn) {
@@ -14,5 +17,6 @@ function setFocusMode(data) {
   }
 }
 
-// JavaScript
-const focusModeButton = document.getElementById("focusModeButton");
+// focusModeButton.addEventListener("click", setFocusMode);
+
+document.addEventListener("DOMContentLoaded", setFocusMode);
