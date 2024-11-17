@@ -113,10 +113,11 @@ function updatePage(preference = null) {
     setTimeout(() => observer.observe(document.body, config), 1000);
   });
 }
-
+console.log('Starting...');
 startFunctions.map(data => {
   document.querySelectorAll(data.targets).forEach((element) => {
     data.func(element);
+
   });
 });
 
