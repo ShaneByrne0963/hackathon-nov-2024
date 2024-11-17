@@ -1,24 +1,22 @@
 function disableAutoplay(element, data) {
 
-  if (element.tagName === 'VIDEO' && !element.getAttribute('accessorease-video-eventlistener')) {
+  if (element.tagName === 'VIDEO'
+    && !element.getAttribute('accessorease-video-eventlistener')
+    && !element.getAttribute('accessorease-ignore')) {
     console.log('Trying to add event listener to ', element.tagName);
     const parentSiblings = Array.from(element.parentNode.parentNode.children);
     const siblings = Array.from(element.parentNode.children);
-    const boundClickHandler = clickHandler.bind(null, data, element);
     let listenerGroup = [];
 
-
-    function clickHandler(data, element, event) {
+    const clickHandler = function (event) {
       console.log('Video clicked:', event.target);
       console.log(data.eventListeners.length);
       let groupIndex = NaN;
       const group = data.eventListeners;
 
       for (let i = 0; i < data.eventListeners.length; i++) {
-        console.log('looking for matches!!', i, group);
-
-        if (group[i].includes(event.target)) {
-          console.log('Clicked!!', i);
+        if (group[i].includes(element)) {
+          console.log('Found group with listeners in index: ', i);
           groupIndex = i;
           break;
         }
@@ -26,13 +24,12 @@ function disableAutoplay(element, data) {
       if (!isNaN(groupIndex)) {
         console.log(group[groupIndex]);
         for (let el of group[groupIndex]) {
-          el.removeEventListener('click', boundClickHandler);
-          console.log('event listener removed:', el);
+          el.removeEventListener('click', clickHandler);
+          console.log('Event listener removed:', el);
         }
         element.setAttribute('accessorease-ignore', true);
+        element.removeAttribute('accessorease-video-eventlistener');
         data.eventListeners.splice(groupIndex, 1);
-        console.log("Current data: ", data);
-        console.log("Current data: ", data.eventListeners);
 
       } else {
         console.log('No matching group found for the clicked target');
@@ -42,17 +39,17 @@ function disableAutoplay(element, data) {
 
     listenerGroup.push(element);
     listenerGroup.push(element.parentNode);
-    element.addEventListener('click', boundClickHandler);
-    element.parentNode.addEventListener('click', boundClickHandler);
+    element.addEventListener('click', clickHandler);
+    element.parentNode.addEventListener('click', clickHandler);
 
     siblings.forEach(sibling => {
-      sibling.addEventListener('click', boundClickHandler);
+      sibling.addEventListener('click', clickHandler);
       listenerGroup.push(sibling);
     });
 
-    parentSiblings.forEach(sibling => {
-      sibling.addEventListener('click', boundClickHandler);
-      listenerGroup.push(sibling);
+    parentSiblings.forEach(pSibling => {
+      pSibling.addEventListener('click', clickHandler);
+      listenerGroup.push(pSibling);
     });
 
     element.setAttribute('accessorease-video-eventlistener', true);
@@ -62,21 +59,13 @@ function disableAutoplay(element, data) {
 
   if (!element.getAttribute('accessorease-ignore')) {
     element.autoplay = false;
-    element.removeAttribute("autoplay");
+
+    if (element.hasAttribute("autoplay")) {
+      element.removeAttribute("autoplay");
+    }
 
     if (typeof element.pause === "function" && !element.paused) {
       element.pause();
     }
-  }
-
-  if (element.tagName === 'IFRAME') {
-    try {
-      const iframeDocument = element.contentDocument || element.contentWindow.document;
-      const videos = iframeDocument.querySelectorAll("video");
-      videos.forEach((video) => video.pause());
-    } catch (error) {
-      console.error("Cannot access iframe content:", error);
-    }
-    return;
   }
 }
