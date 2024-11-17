@@ -99,11 +99,23 @@ window.addEventListener('DOMContentLoaded', () => {
   
       if (item.tagName === 'BUTTON' || elType === 'radio') {
         item.addEventListener('click', () => {
+          if (item.hasAttribute('data-enables')) {
+            document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+          }
+          if (item.hasAttribute('data-disables')) {
+            document.querySelector(item.getAttribute('data-enables')).disabled = item.checked;
+          }
           sendData(key);
         });
       }
       else {
         item.addEventListener('change', () => {
+          if (item.hasAttribute('data-enables')) {
+            document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+          }
+          if (item.hasAttribute('data-disables')) {
+            document.querySelector(item.getAttribute('data-enables')).disabled = item.checked;
+          }
           sendData(key);
         });
       }

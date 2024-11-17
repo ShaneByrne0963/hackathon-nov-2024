@@ -87,7 +87,7 @@
 
     <section id="fonts" class="panel-section mb-3 p-3">
       <h2>Fonts</h2>
-      <div>
+      <div class="form-group mb-3">
         <label for="selectFontFamily">Select Font Family:</label>
         <select id="selectFontFamily" class="form-select" data-key="fontFamily">
           <option value="Default" selected>Default</option>
@@ -99,9 +99,13 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="inputFontSize">Minimum Font Size (px):</label>
-        <input type="number" class="form-control" id="inputFontSize" min="10" max="100" step="1" placeholder="16"
-          data-key="fontSize" value="10" />
+        <input type="checkbox" id="enable-min-font-size" data-key="isMinFontSize" data-enables="#inputFontSize">
+        <label for="enable-min-font-size">Enable Minimum Font Size</label>
+        <div class="d-flex align-items-center gap-3">
+          <label for="inputFontSize" class="text-nowrap">Size (px):</label>
+          <input type="number" class="form-control" id="inputFontSize" min="10" max="100" step="1" placeholder="16"
+            data-key="fontSize" value="10" />
+        </div>
       </div>
     </section>
 
