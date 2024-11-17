@@ -60,7 +60,18 @@ const functions = [
 const startFunctions = [
   
 ]
-const defaultValues = {};
+const defaultValues = {
+  colorContrast: true,
+  removeBg: false,
+  colorPalette: "palette-default",
+  breakParagraph: true,
+  buttonSize: "default",
+  fontFamily: "Default",
+  fontSize: "10",
+  ruler: false,
+  highlight: false,
+  hoverMagnifyingGlass: false
+};
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
 function updatePage(preference = null) {
