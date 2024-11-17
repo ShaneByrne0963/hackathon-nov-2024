@@ -1,6 +1,6 @@
 // Define preset palettes
 const palettes = {
-    norm: null, // NORMAL mode (default styling)
+    norm: [], // NORMAL mode (default styling)
     prot: ["#0077B6", "#8E44AD", "#2ECC71", "#F1C40F"], // Protanopia
     deut: ["#1ABC9C", "#9B59B6", "#16A085", "#F4D03F"], // Deuteranopia
     trit: ["#E74C3C", "#F39C12", "#27AE60", "#8E44AD"], // Tritanopia
