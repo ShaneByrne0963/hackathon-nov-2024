@@ -1,5 +1,5 @@
 {
-  "name": "AccessorEase",
+  "name": "Web Accessor-Ease",
   "version": "1.0.1",
   "description": "A browser extension to address website accessibility issues limiting fully diversified inclusivity",
   "manifest_version": 3,
@@ -13,10 +13,14 @@
   "action": {
     "default_icon": "icons/icon48.png",
     "default_popup": "index.html",
-    "default_title": "AccessorEase"
+    "default_title": "Web Accessor-Ease"
   },
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "background-images.js", "update_color.js", "script.js"]
+    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "update-color.js", "background-images.js", "font.js", "palettes.js", "script.js"],
+    "css": ["assets/css/main.css"]
   }]
 }
