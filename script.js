@@ -55,7 +55,11 @@ const functions = [
     preference: "buttonSize",
     targets: "button",
   },
-
+  {
+    func: setFocusMode,
+    preference: "focusMode",
+    targets: "img, aside, footer",
+  },
 ];
 // These functions are always run on page load. These functions are independent of preferences
 // Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
