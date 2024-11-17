@@ -77,15 +77,13 @@ const resultFunctions = [
     preference: "colorContrast",
     targets: "*",
   },
+  {
+    func: clearColorContrast,
+    preference: "colorContrast",
+    targets: "*",
+  },
 ]
-// These functions are always run on page load. These functions are independent of preferences
-// Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
-/**
- * func: The function to be run
- * targets: The query selector to apply the function to
- */
-const startFunctions = [
-];
+
 const defaultValues = {
   colorContrast: false,
   removeBg: false,
@@ -109,10 +107,8 @@ function updatePage(preference = null) {
   observer.disconnect();
   extAPI.storage.local.get("accessorEasePreferences", (result) => {
     let preferences = defaultValues;
-    console.log(result.accessorEasePreferences.runExtension);
     if (result.accessorEasePreferences && result.accessorEasePreferences.runExtension) {
       preferences = result.accessorEasePreferences;
-      console.log(preferences);
     }
     let runFunctions;
 
@@ -157,12 +153,6 @@ function updatePage(preference = null) {
     setTimeout(() => observer.observe(document.body, config), 1000);
   });
 }
-
-startFunctions.map(data => {
-  document.querySelectorAll(data.targets).forEach((element) => {
-    data.func(element);
-  });
-});
 
 // Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
