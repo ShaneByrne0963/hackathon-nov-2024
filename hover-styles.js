@@ -3,15 +3,20 @@ function hoverStyles(element, data) {
     const hoverHighlight = data.hoverHighlight; 
     const hoverMagnifyingGlass = data.hoverMagnifyingGlass;
     
+    // this need to be changed
+    // as of now, two mousetracker functions are called
     if (hoverHighlight) {
         mouseTracker("highlight");
-    } else if (hoverMagnifyingGlass) {
+    }
+    
+    if (hoverMagnifyingGlass) {
         mouseTracker("magnifyingGlass");
     }
 }
 
 // Creates an active area that follows the mouse
 function mouseTracker(checkedOption) {
+
     // Create the active area element
     const activeArea = document.createElement('div');
     activeArea.id = 'active-area';
