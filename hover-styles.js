@@ -28,16 +28,8 @@ function mouseTracker(checkedOption) {
     activeArea.id = 'active-area';
     document.body.appendChild(activeArea);
 
-    // Placeholder active area styles
-    activeArea.style.position = 'absolute';
-    activeArea.style.width = '100px';
-    checkedOption === 'highlight' ? activeArea.style.height = '15px' : activeArea.style.height = '50px';
-
-    // Placeholder styles for development
-    activeArea.style.background = 'rgba(0, 255, 0, 0.2)';
-    activeArea.style.border = '1px solid green';
-    activeArea.style.pointerEvents = 'none';
-    activeArea.style.display = 'none';
+    //styles for active area
+    activeAreaStyles(checkedOption, activeArea);
 
     // Mousemove event listener
     document.addEventListener('mousemove', (event) => {
@@ -60,6 +52,7 @@ function mouseTracker(checkedOption) {
         };
         
         checkedOption === "highlight" ? highlight(areaRect) : null;
+        checkedOption === "magnifyingGlass" ? magnifyingGlass(areaRect) : null;
     });
 }
 
@@ -129,4 +122,44 @@ function clearHighlights() {
     words.forEach((word) => {
         word.style.backgroundColor = 'transparent';
     });
+}
+
+function magnifyingGlass(areaRect){
+    console.log("inside magnifyingGlass")
+    // Check for old magnifying glass
+    const oldMagnifyingGlass = document.getElementById('magnifying-glass');
+    if (oldMagnifyingGlass) {
+        return;
+    }
+
+    const magnifyingGlass = document.createElement('div');
+    magnifyingGlass.id = 'magnifying-glass';
+    document.body.appendChild(magnifyingGlass);
+
+    // Placeholder styles for development
+    magnifyingGlass.style.position = 'absolute';
+    magnifyingGlass.style.width = '100px';
+}
+
+function activeAreaStyles(checkedOption, activeArea) {
+    if (checkedOption === 'highlight') { 
+        activeArea.style.position = 'absolute';
+        activeArea.style.width = '100px';
+        activeArea.style.height = '15px';
+        activeArea.style.pointerEvents = 'none';
+        activeArea.style.display = 'none';
+    }
+
+    if (checkedOption === 'magnifyingGlass') {
+        activeArea.style.position = 'absolute';
+        activeArea.style.width = '100px';
+        activeArea.style.height = '100px';
+        activeArea.style.borderRadius = '50%';
+        activeArea.style.pointerEvents = 'none';
+        activeArea.style.display = 'none';
+
+        //placeholder
+        activeArea.style.background = 'rgba(0, 255, 0, 0.1)';
+        activeArea.style.border = '1px solid green';
+    }
 }
