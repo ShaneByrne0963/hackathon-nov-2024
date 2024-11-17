@@ -29,11 +29,13 @@ function applyPalette(element, data) {
     if (paletteKey === "norm") {
         const styles = ["background-color"];
         resetStyles(element, styles, 'color-palette');
+        return updateColorContrast;
     }
     else if (palettes[paletteKey]) {
         const styles = {
             "background-color": palettes[paletteKey][0]
         };
         updateStyles(element, styles, 'color-palette');
+        return forceColorContrast;
     }
 }
