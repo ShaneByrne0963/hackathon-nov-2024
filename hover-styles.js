@@ -67,28 +67,27 @@ function highlight(areaRect) {
             paragraphRect.bottom >= areaRect.top &&
             paragraphRect.top <= areaRect.bottom;
         
-            if(isInside) {
-                wrapWords(paragraph);
+        if (isInside) {
+            wrapWords(paragraph);
 
-                const words = paragraph.querySelectorAll('span');
-                words.forEach((word) => {
-                    const wordRect = word.getBoundingClientRect();
-        
-                    // Check if word intersects with the active area
-                    const isInside =
-                        wordRect.right >= areaRect.left &&
-                        wordRect.left <= areaRect.right &&
-                        wordRect.bottom >= areaRect.top &&
-                        wordRect.top <= areaRect.bottom;
-        
-                    if (isInside) {
-                        word.style.backgroundColor = 'yellow';
-                    } else {
-                        word.style.backgroundColor = 'transparent';
-                    }
-                });
+            const words = paragraph.querySelectorAll('span');
+            words.forEach((word) => {
+                const wordRect = word.getBoundingClientRect();
 
-            } else {}
+                // Check if word intersects with the active area
+                const isInside =
+                    wordRect.right >= areaRect.left &&
+                    wordRect.left <= areaRect.right &&
+                    wordRect.bottom >= areaRect.top &&
+                    wordRect.top <= areaRect.bottom;
+                    
+                if (isInside) {
+                    word.style.backgroundColor = 'yellow';
+                } else {
+                    word.style.backgroundColor = 'transparent';
+                }
+            });
+        }
     })
 }
 
