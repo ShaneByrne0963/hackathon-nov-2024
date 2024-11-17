@@ -13,7 +13,6 @@ function setFontFamily(element, data) {
     styleGlobal.innerHTML = `
            * {
                font-family: ${fontFamily} !important;
-               line-height: 1.5 !important;
            }
        `;
 
@@ -25,15 +24,22 @@ function setFontFamily(element, data) {
 
 function setFontSize(element, data) {
   const fontSize = data.fontSize;
+
+  let existingFontSize = document.querySelector(".dynamic-font-size");
+
+  if (existingFontSize) {
+    existingFontSize.remove();
+  }
+
   // Add style to body
   const styleGlobal = document.createElement("style");
   styleGlobal.innerHTML = `
          * {
-
              font-size: ${fontSize}px !important;
-             line-height: 1.5 !important;
          }
      `;
+
+  styleGlobal.className = "dynamic-font-size";
+
   document.head.appendChild(styleGlobal);
-  console.log(fontSize);
 }
