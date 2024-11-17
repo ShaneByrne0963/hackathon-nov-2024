@@ -19,6 +19,17 @@
   </header>
 
   <main>
+    <section id="page-enable" class="d-flex align-items-center justify-content-between w-100 mb-3">
+      <div id="extension-feedback">Web Accessor-Ease is running on this page</div>
+      <div class="switch">
+        <label>
+          Off
+          <input type="checkbox" id="enable-extension" data-key="runExtension">
+          <span class="lever"></span>
+          On
+        </label>
+      </div>
+    </section>
     <!-- Color Contrast Input -->
     <section id="colors" class="panel-section mb-3 p-3">
       <h2>Clarity & Colour</h2>
@@ -109,29 +120,18 @@
       </div>
     </section>
 
-      <section id="mouse-tools" class="panel-section mb-3 p-3">
-        <h2>Mouse Tools</h2>
-        <div>
-          <input
-            type="checkbox"
-            id="ruler"
-            data-key="ruler"
-            aria-label="Select a ruler"
-          />
-          <label for="ruler">Ruler</label>
-        </div>
-          <div>
-            <input
-              type="checkbox"
-              name="hover-style"
-              value="highlight"
-              aria-label="Highlight"
-              data-key="hoverHighlight"
-            />
-            <label for="highlight">Highlight</label>
-          </div>
-      </section>
-    </main>
+    <section id="mouse-tools" class="panel-section mb-3 p-3">
+      <h2>Mouse Tools</h2>
+      <div>
+        <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler" />
+        <label for="ruler">Ruler</label>
+      </div>
+      <div>
+        <input type="checkbox" name="hover-style" value="highlight" aria-label="Highlight" data-key="hoverHighlight" />
+        <label for="highlight">Highlight</label>
+      </div>
+    </section>
+  </main>
 
   <script src="popup.js"></script>
 </body>

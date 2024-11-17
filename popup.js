@@ -50,6 +50,38 @@ function updateBodySize(maxWidth, padding) {
   )}px`;
 }
 
+/**
+ * Disabled a target input element, 
+ * @param {HTMLElement} item The item that can disable an element
+ */
+function checkDisabled(item) {
+  if (item.hasAttribute('data-enables')) {
+    document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+  }
+  if (item.hasAttribute('data-disables')) {
+    document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
+  }
+}
+
+/**
+ * Enables/Disables inputs if the extension switch is turned on or not
+ */
+function updateExtensionController() {
+  if (document.querySelector('#enable-extension').checked) {
+    document.querySelectorAll('input:not(#enable-extension), select').forEach(element => element.disabled = false);
+    // Enabling/Disabling inputs that depend on checkboxes being checked
+    document.querySelectorAll('[data-enables]').forEach((item) => {
+      document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+    });
+    document.querySelectorAll('[data-disables]').forEach((item) => {
+      document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
+    });
+  }
+  else {
+    document.querySelectorAll('input:not(#enable-extension), select').forEach(element => element.disabled = true);
+  }
+}
+
 // Send the preferences to the page when requested
 extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.update) {
@@ -99,35 +131,20 @@ window.addEventListener('DOMContentLoaded', () => {
   
       if (item.tagName === 'BUTTON' || elType === 'radio') {
         item.addEventListener('click', () => {
-          if (item.hasAttribute('data-enables')) {
-            document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
-          }
-          if (item.hasAttribute('data-disables')) {
-            document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
-          }
+          checkDisabled(item);
           sendData(key);
         });
       }
       else {
         item.addEventListener('change', () => {
-          if (item.hasAttribute('data-enables')) {
-            document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
-          }
-          if (item.hasAttribute('data-disables')) {
-            document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
-          }
+          checkDisabled(item);
           sendData(key);
         });
       }
     });
 
-    // Enabling/Disabling inputs that depend on checkboxes being checked
-    document.querySelectorAll('[data-enables]').forEach((item) => {
-      document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
-    });
-    document.querySelectorAll('[data-disables]').forEach((item) => {
-      document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
-    });
+    document.querySelector('#enable-extension').addEventListener('change', updateExtensionController);
+    updateExtensionController();
   });
 
   // Update the size of the body
