@@ -35,16 +35,25 @@
         <label for="remove-bg-image">Hide Background Images</label>
       </div>
       <!-- Radio buttons for colour palettes -->
-      <div>
-        <div>Palette Preference:</div>
-        <input type="radio" id="palette-default" name="vision" value="norm" data-key="colorPalette" checked />
-        <label for="palette-default">Neutral</label>
-        <input type="radio" id="palette-prot" name="vision" value="prot" data-key="colorPalette" />
-        <label for="palette-prot">Protanopia</label>
-        <input type="radio" id="palette-deut" name="vision" value="deut" data-key="colorPalette" />
-        <label for="palette-deut">Deuteranopia</label>
-        <input type="radio" id="palette-trit" name="vision" value="trit" data-key="colorPalette" />
-        <label for="palette-trit">Tritanopia</label>
+      <div>Palette Preference:</div>
+        <div id="palette-inputs">
+          <div>
+            <input type="radio" id="palette-default" name="vision" value="norm" data-key="colorPalette" checked />
+            <label for="palette-default">Neutral</label>
+          </div>
+          <div>
+            <input type="radio" id="palette-prot" name="vision" value="prot" data-key="colorPalette" />
+            <label for="palette-prot">Protanopia</label>
+          </div>
+          <div>
+            <input type="radio" id="palette-deut" name="vision" value="deut" data-key="colorPalette" />
+            <label for="palette-deut">Deuteranopia</label>
+          </div>
+          <div>
+            <input type="radio" id="palette-trit" name="vision" value="trit" data-key="colorPalette" />
+            <label for="palette-trit">Tritanopia</label>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -1,19 +1,24 @@
-function changeButtonSize() {
-    // Get the selected size from the dropdown
-    const size = document.getElementById("button-size").value;
-    
-    // Get all buttons on the page
-    const buttons = document.querySelectorAll("button");
+/* This script adjusts the size of all buttons on the page based on user preferences */
+function changeButtonSize(element, data) {
+  // Retrieve the button size preference from the `data` object
+  const selectedSize = data.buttonSize || "default";
 
-    // Remove any existing size classes
-    buttons.forEach(button => {
-        button.classList.remove("button-medium", "button-large");
-        
-        // Apply the selected size class
-        if (size === "medium") {
-            button.classList.add("button-medium");
-        } else if (size === "large") {
-            button.classList.add("button-large");
-        }
-    });
+  // Apply the new size class based on the preference
+  if (selectedSize === "medium") {
+    const styles = {
+      "font-size": "16px",
+      "padding": "10px 15px"
+    }
+    updateStyles(element, styles, "button-size");
+  } else if (selectedSize === "large") {
+    const styles = {
+      "font-size": "20px",
+      "padding": "15px 20px"
+    }
+    updateStyles(element, styles, "button-size");
+  } else {
+    resetStyles(element, ["font-size", "padding"], "button-size");
+  }
+
 }
+  

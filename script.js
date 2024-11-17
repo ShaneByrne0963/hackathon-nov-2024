@@ -50,6 +50,11 @@ const functions = [
     preference: "fontSize",
     targets: "body",
   },
+  {
+    func: changeButtonSize,
+    preference: "buttonSize",
+    targets: "button",
+  },
 ];
 // These functions are always run on page load. These functions are independent of preferences
 // Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
@@ -58,7 +63,6 @@ const functions = [
  * targets: The query selector to apply the function to
  */
 const startFunctions = [
-  
 ]
 const defaultValues = {
   colorContrast: true,
