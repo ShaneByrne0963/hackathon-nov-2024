@@ -1,8 +1,10 @@
 function setLineSpacing(element, data) {
+  console.log("Function Running!")
   console.log(element.style.lineHeight)
+  console.log(data.lineSpacing)
+
   // Get the style from the element
   const computedStyle = window.getComputedStyle(element)
-  console.log(computedStyle)
 
   // If there's no originalLineHeight set, take the unchanged line height and add it again on a new key
   // This will only happen once per element, and gives us a point of safety to go back to
@@ -15,7 +17,7 @@ function setLineSpacing(element, data) {
     element.style.lineHeight = element.style.originalLineHeight
   }
 
-  let propertyArray = element.style.lineHeight.split("")
+  let propertyArray = element.style.originalLineHeight.split("")
 
   // Loop over the characters in the style to separate the numbers from the units
   let numbersArray = []
