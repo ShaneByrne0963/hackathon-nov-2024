@@ -1,12 +1,75 @@
 function disableAutoplay(element, data) {
   //const mediaElements = document.querySelectorAll("audio, video");
-  console.log('Trying to disable ' + element);
+  if (element.tagName === 'VIDEO') { // && !element.getAttribute('accessorease-video-eventlistener')) {
+    console.log('trying to add event listnener');
+  // Only set once!!
+    const clickHandler = function (event) {
+      console.log('Video clicked:', event.target);
+      element.setAttribute('accessorease-ignore', true);
+      element.removeEventListener('click', clickHandler);
+      console.log('event listener removed:', element.attributes);
+
+    };
+  
+    element.addEventListener('click', clickHandler);
+    element.setAttribute('accessorease-video-eventlistener', true);
+    console.log('event listener set:', element.attributes);
+
+  }
+  
   // mediaElements.forEach(element => {
-    element.autoplay = false; // Programmatically disable autoplay
-    element.removeAttribute("autoplay"); // Remove autoplay attribute if it exists
-    element.pause(); // Pause any playing media
-  // });
+    if (!element.getAttribute('accessorease-ignore')) {
+      // Check iframes! allow autoplay?
+  
+      if (typeof element.pause === "function") {
+        console.log('Trying to pause');
+  
+        element.pause();
+      }
+      element.autoplay = false;
+      element.removeAttribute("autoplay");
+  
+      console.log(element.attributes);
+  
+      //element.setAttribute('accessorease-autoplay-disabled', true);
+    }
+    // });
+
+  //console.log('Trying to disable ' + element.tagName);
+  if (element.tagName === 'IFRAME') {
+    try {
+      const iframeDocument = element.contentDocument || element.contentWindow.document;
+      const videos = iframeDocument.querySelectorAll("video");
+      videos.forEach((video) => video.pause());
+    } catch (error) {
+      console.error("Cannot access iframe content:", error);
+    }
+  
+    return;
+  }
+
+  
 }
+
+// Add event listener to process user clicks on videos
+// If clicked, set accessorease-ignore to true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Set up observer to detect
 // Just do it once
@@ -23,7 +86,9 @@ function disableAutoplayOnLoad(element, data) {
           if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === "AUDIO" || node.tagName === "VIDEO")) {
             node.autoplay = false;
             node.removeAttribute("autoplay");
-            node.pause();
+            if (typeof node.pause === "function") {
+              node.pause();
+            }
             console.log("Autoplay disabled for dynamically added element:", node);
           }
         });

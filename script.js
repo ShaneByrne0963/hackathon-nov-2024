@@ -47,7 +47,7 @@ const functions = [
   },
   {
     func: disableAutoplay,
-    targets: "audio, video",
+    targets: "audio, video, iframe",
   }
 ];
 const defaultValues = {};
@@ -73,6 +73,10 @@ function updatePage(preference = null) {
         preferences[data.condition.key] === data.condition.equals
       ) {
         [...document.querySelectorAll(data.targets)].map((element) => {
+
+          if (data.func === disableAutoplay) {
+            console.log(element.tagName);
+          }
           data.func(element, preferences);
         });
       }
@@ -90,24 +94,48 @@ extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 });
 
+const videoObserver = new MutationObserver((mutationsList, obs) => {
+  for (let mutation of mutationsList) {
+
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === "AUDIO" || node.tagName === "VIDEO")) {
+        console.log('Mutations observed: ', node)
+
+        if (element.tagName === 'VIDEO' && !element.getAttribute('accessorease-video-eventlistener-obs')) {
+
+          const clickHandler = function (event) {
+            console.log('Video clicked:', event.target);
+            node.setAttribute('accessorease-ignore', true);
+            node.removeEventListener('click', clickHandler);
+            console.log('event listener removed:', node.attributes);
+
+          };
+
+          node.addEventListener('click', clickHandler);
+          node.setAttribute('accessorease-video-eventlistener-obs', true);
+          console.log('event listener set:', node.attributes);
+
+          node.autoplay = false;
+          node.removeAttribute("autoplay");
+          if (typeof node.pause === "function") {
+            node.pause();
+          }
+          //node.setAttribute('accessorease-autoplay-disabled', true);
+          console.log("in observer: Autoplay disabled for ", node);
+        }
+      }
+    });
+
+  }
+});
+
+
 // Create a MutationObserver instance
 const observer = new MutationObserver((mutationsList, obs) => {
   // Only update the page under specific conditions
   let canUpdate = false;
+
   for (let mutation of mutationsList) {
-
-    ////////////
-
-    mutation.addedNodes.forEach(node => {
-      if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === "AUDIO" || node.tagName === "VIDEO")) {
-        node.autoplay = false;
-        node.removeAttribute("autoplay");
-        node.pause();
-        console.log("Autoplay disabled for ", node);
-      }
-    });
-
-    //////////////
 
     // Always update the page if elements are added/deleted
     if (mutation.type === "childList") {
@@ -145,7 +173,11 @@ const config = {
 
 // Start observing the document body
 observer.observe(document.body, config);
+videoObserver.observe(document, config);
+
 // Disconnect the observer before page unload
 window.addEventListener("beforeunload", () => {
   observer.disconnect();
+  videoObserver.disconnect();
+
 });
