@@ -1,3 +1,15 @@
+h1, h2, h3 {
+  font-family: "Montserrat", sans-serif;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+.form-select,
+.form-control {
+  border-color: rgba(0, 0, 0, 0.4);
+}
 
 header {
   display: flex;
@@ -8,4 +20,19 @@ header {
 header>img {
   width: 64px;
   height: 64px;
+}
+
+.panel-section {
+  background-color: #eeeeee;
+}
+
+#palette-inputs {
+  display: grid;
+  grid-template-columns: 4fr 5fr 6fr 4fr;
+}
+
+@media screen and (max-width: 499px) {
+  #palette-inputs {
+    display: block;
+  }
 }

@@ -179,17 +179,28 @@ function hsl2rgb(h, s, l) {
  * Updates an element's inline style attribute, keeping any unchanged styles
  * @param {HTMLElement} element The element to change the styles
  * @param {Object} styles The styles in format {"key": "value"}
+ * @param {String} type The type of style change
  */
-function updateStyles(element, styles) {
+function updateStyles(element, styles, type) {
+  element.setAttribute('accessorease-' + type, true);
   let elementStyle = element.getAttribute('style');
+  let editedStyles = [];
+  if (element.hasAttribute('accessorease-css')) {
+    editedStyles = element.getAttribute('accessorease-css').split(',');
+  }
+
   let extraStyles = '';
   if (elementStyle) {
     let elementArray = elementStyle.split('; ');
     for (let i = 0; i < elementArray.length; i++) {
-      let prop = elementArray[i].split(':')[0];
+      let styleData = elementArray[i].split(':');
+      let prop = styleData[0];
+      let value = styleData[1].replace(';', '').trim();
 
       if (prop in styles) {
-        element.setAttribute('accessorease-style-' + prop, styles[prop]);
+        if (!editedStyles.includes(prop)) {
+          element.setAttribute('accessorease-style-' + prop, value);
+        }
         elementArray.splice(i, 1);
         i--;
       }
@@ -205,12 +216,16 @@ function updateStyles(element, styles) {
   let newStyles = ``;
   let first = true;
   for (let [key, value] of Object.entries(styles)) {
+    if (!editedStyles.includes(key)) {
+      editedStyles.push(key);
+    }
     if (!first) {
       newStyles += ` `;
     }
     first = false;
     newStyles += `${key}: ${value} !important;`;
   }
+  element.setAttribute('accessorease-css', editedStyles.join());
   element.setAttribute('style', extraStyles + newStyles);
 }
 
@@ -219,40 +234,59 @@ function updateStyles(element, styles) {
  * Resets a set of style properties for an element
  * @param {HTMLElement} element The target element
  * @param {Array} styles The list of style properties to be reset
+ * @param {String} type The type of style change
  */
-function resetStyles(element, styles) {
-  let elementStyle = element.getAttribute('style');
-  let extraStyles = '';
-  if (elementStyle) {
-    let elementArray = elementStyle.split('; ');
-    for (let i = 0; i < elementArray.length; i++) {
-      let prop = elementArray[i].split(':')[0];
-
-      if (styles.includes(prop)) {
-        elementArray.splice(i, 1);
-        i--;
+function resetStyles(element, styles, type) {
+  if (element.hasAttribute('accessorease-' + type)) {
+    element.removeAttribute('accessorease-' + type);
+    let elementStyle = element.getAttribute('style');
+    let extraStyles = '';
+    if (elementStyle) {
+      let elementArray = elementStyle.split('; ');
+      console.log(elementArray);
+      for (let i = 0; i < elementArray.length; i++) {
+        let prop = elementArray[i].split(':')[0];
+  
+        if (styles.includes(prop)) {
+          elementArray.splice(i, 1);
+          i--;
+        }
+        else {
+          // Remove the semicolon to be added later
+          elementArray[i] = elementArray[i].replace(';', '');
+        }
       }
-      else {
-        // Remove the semicolon to be added later
-        elementArray[i] = elementArray[i].replace(';', '');
+      if (elementArray.length > 0) {
+        extraStyles = elementArray.join('; ');
+        if (extraStyles[extraStyles.length - 1] !== ';') {
+          extraStyles += ';';
+        }
       }
     }
-    if (elementArray.length > 0) {
-      extraStyles = elementArray.join('; ') + '; ';
+    let newStyles = ``;
+    let first = true;
+    let editedStyles = [];
+    if (element.hasAttribute('accessorease-css')) {
+      editedStyles = element.getAttribute('accessorease-css').split(',');
+      element.removeAttribute('accessorease-css');
     }
+    for (let style of styles) {
+      if (editedStyles.includes(style)) {
+        editedStyles.splice(editedStyles.indexOf(style), 1);
+      }
+      if (element.hasAttribute(`accessorease-style-${style}`)) {
+        if (!first) {
+          newStyles += ` `;
+        }
+        first = false;
+        newStyles += `${style}: ${element.getAttribute(`accessorease-style-${style}`)};`;
+      }
+    }
+    if (editedStyles.length > 0) {
+      element.setAttribute('accessorease-css', editedStyles.join());
+    }
+    element.setAttribute('style', extraStyles + newStyles);
   }
-  let newStyles = ``;
-  let first = true;
-  for (let style of styles) {
-    if (element.hasAttribute(`accessorease-style-${style}`)) {
-      if (!first) {
-        newStyles += ` `;
-      }
-      first = false;
-      newStyles += `${style}: ${element.getAttribute(`accessorease-style-${style}`)}`;
-    }
-  }
-  element.setAttribute('style', extraStyles + newStyles);
 }
 
 
@@ -366,8 +400,7 @@ function updateColorContrast(element, data) {
               "color": `rgb(${getColorParameters(textNewRgb).join()})`,
               "background-color": `rgb(${getColorParameters(backNewRgb).join()})`
             }
-            updateStyles(element, newStyles);
-            element.setAttribute('accessorease-updated-contrast', true);
+            updateStyles(element, newStyles, 'updated-contrast');
           }
         }
       }
@@ -375,8 +408,6 @@ function updateColorContrast(element, data) {
   }
   else {
     // Setting the original colors back
-    if (element.hasAttribute('accessorease-updated-contrast')) {
-      resetStyles(element, ['color', 'background-color']);
-    }
+    resetStyles(element, ['color', 'background-color'], 'updated-contrast');
   }
 }
