@@ -23,48 +23,19 @@
       <h1 class="mb-0 bold">Web Accessor-Ease</h1>
     </header>
 
-<body class="px-3 py-2">
-  <header class="mb-3">
-    <img src="assets/icons/icon128.png" alt="Web Accessor-Ease Logo">
-    <h1 class="mb-0 bold">Web Accessor-Ease</h1>
-  </header>
-
-  <main>
-    <!-- Color Contrast Input -->
-    <section id="colors" class="panel-section mb-3 p-3">
-      <h2>Clarity & Colour</h2>
-      <div>
-        <input type="checkbox" id="color-contrast" data-key="colorContrast"
-          aria-label="Toggle to fix any colors with low contrast" checked />
-        <label for="color-contrast">Fix Low Colour Contrast</label>
-      </div>
-      <!-- Checkbox to hide/show background images -->
-      <div class="mb-3">
-        <input type="checkbox" id="remove-bg-image" data-key="removeBg"
-          aria-label="Toggle to remove background images" />
-        <!-- Label for Background Image Removal toggle -->
-        <label for="remove-bg-image">Hide Background Images</label>
-      </div>
-      <!-- Radio buttons for colour palettes -->
-      <div>
-        <div>Palette Preference:</div>
-        <div id="palette-inputs">
-          <div>
-            <input type="radio" id="palette-default" name="vision" value="norm" data-key="colorPalette" checked />
-            <label for="palette-default">Neutral</label>
-          </div>
-          <div>
-            <input type="radio" id="palette-prot" name="vision" value="prot" data-key="colorPalette" />
-            <label for="palette-prot">Protanopia</label>
-          </div>
-          <div>
-            <input type="radio" id="palette-deut" name="vision" value="deut" data-key="colorPalette" />
-            <label for="palette-deut">Deuteranopia</label>
-          </div>
-          <div>
-            <input type="radio" id="palette-trit" name="vision" value="trit" data-key="colorPalette" />
-            <label for="palette-trit">Tritanopia</label>
-          </div>
+    <main>
+      <!-- Color Contrast Input -->
+      <section id="colors" class="panel-section mb-3 p-3">
+        <h2>Clarity & Colour</h2>
+        <div>
+          <input
+            type="checkbox"
+            id="color-contrast"
+            data-key="colorContrast"
+            aria-label="Toggle to fix any colors with low contrast"
+            checked
+          />
+          <label for="color-contrast">Fix Low Colour Contrast</label>
         </div>
         <!-- Checkbox to hide/show background images -->
         <div class="mb-3">
@@ -75,159 +46,84 @@
             aria-label="Toggle to remove background images"
           />
           <!-- Label for Background Image Removal toggle -->
-          <label for="remove-bg-image">Hide background images</label>
+          <label for="remove-bg-image">Hide Background Images</label>
         </div>
         <!-- Radio buttons for colour palettes -->
         <div>
-          <div>Colourblindness Palette:</div>
-          <input
-            type="radio"
-            id="palette-default"
-            name="vision"
-            value="normal"
-            data-key="colorPalette"
-            checked
-          />
-          <label for="palette-default">Default</label>
-          <input
-            type="radio"
-            id="palette-prot"
-            name="vision"
-            value="prot"
-            data-key="colorPalette"
-          />
-          <label for="palette-prot">Protanopia</label>
-          <input
-            type="radio"
-            id="palette-deut"
-            name="vision"
-            value="deut"
-            data-key="colorPalette"
-          />
-          <label for="palette-deut">Deuteranopia</label>
-          <input
-            type="radio"
-            id="palette-trit"
-            name="vision"
-            value="trit"
-            data-key="colorPalette"
-          />
-          <label for="palette-trit">Tritanopia</label>
+          <div>Palette Preference:</div>
+          <div id="palette-inputs">
+            <div>
+              <input
+                type="radio"
+                id="palette-default"
+                name="vision"
+                value="norm"
+                data-key="colorPalette"
+                checked
+              />
+              <label for="palette-default">Neutral</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="palette-prot"
+                name="vision"
+                value="prot"
+                data-key="colorPalette"
+              />
+              <label for="palette-prot">Protanopia</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="palette-deut"
+                name="vision"
+                value="deut"
+                data-key="colorPalette"
+              />
+              <label for="palette-deut">Deuteranopia</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="palette-trit"
+                name="vision"
+                value="trit"
+                data-key="colorPalette"
+              />
+              <label for="palette-trit">Tritanopia</label>
+            </div>
+          </div>
         </div>
       </section>
 
-    <section id="sizing" class="panel-section mb-3 p-3">
-      <h2>Spacing & Sizing</h2>
-      <!-- Checkbox to break up long paragraphs -->
-      <div class="mb-2">
-        <input type="checkbox" id="break-paragraph" data-key="breakParagraph"
-          aria-label="Toggle to break up long paragraphs" checked />
-        <!-- Label for Background Image Removal toggle -->
-        <label for="break-paragraph">Fragment Large Paragraphs</label>
-      </div>
-      <!-- Label for Button Size Selector -->
-      <label for="button-size">Button Size:</label>
-      <select id="button-size" class="form-select" data-key="buttonSize" aria-label="Select button size">
-        <option value="default" selected>Default</option>
-        <option value="medium">Medium</option>
-        <option value="large">Large</option>
-      </select>
-    </section>
-
-        <section id="sizing" class="panel-section mb-3 p-3">
-          <h2>Spacing & Sizing</h2>
-          <!-- Checkbox to break up long paragraphs -->
-          <div class="mb-2">
-            <input
-              type="checkbox"
-              id="break-paragraph"
-              data-key="breakParagraph"
-              aria-label="Toggle to break up long paragraphs"
-              checked
-            />
-            <!-- Label for Background Image Removal toggle -->
-            <label for="break-paragraph">Break up long paragraphs</label>
-          </div>
-          <!-- Label for Button Size Selector -->
-          <label for="button-size">Button Size:</label>
-          <select
-            id="button-size"
-            class="form-select"
-            data-key="buttonSize"
-            aria-label="Select button size"
-          >
-            <option value="default" selected>Default</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-        </section>
-
-        <section id="fonts" class="panel-section mb-3 p-3">
-          <h2>Fonts</h2>
-          <div>
-            <label for="selectFontFamily">Select Font Family:</label>
-            <select
-              id="selectFontFamily"
-              class="form-select"
-              data-key="fontFamily"
-            >
-              <option value="Default" selected>Default</option>
-              <option value="Arial">Arial</option>
-              <option value="Verdana">Verdana</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Tahoma">Tahoma</option>
-              <option value="Georgia">Georgia</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="inputFontSize">Minimum Font Size (px):</label>
-            <input
-              type="number"
-              class="form-control"
-              id="inputFontSize"
-              min="10"
-              max="100"
-              step="1"
-              placeholder="16"
-              data-key="fontSize"
-              value="10"
-            />
-          </div>
-        </section>
-
-        <section id="mouse-tools" class="panel-section mb-3 p-3">
-          <h2>Mouse Tools</h2>
-          <div>
-            <input
-              type="checkbox"
-              id="ruler"
-              data-key="ruler"
-              aria-label="Select a ruler"
-            />
-            <label for="ruler">Ruler</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="highlight"
-              value="highlight"
-              aria-label="Highlight"
-              data-key="hoverHighlight"
-            />
-            <label for="highlight">Highlight</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="magnifyingGlass"
-              value="magnifyingGlass"
-              aria-label="Magnifying Glass"
-              data-key="hoverMagnifyingGlass"
-            />
-            <label for="magnifyingGlass">Magnifying Glass</label>
-          </div>
-        </section>
-      </main>
+      <section id="sizing" class="panel-section mb-3 p-3">
+        <h2>Spacing & Sizing</h2>
+        <!-- Checkbox to break up long paragraphs -->
+        <div class="mb-2">
+          <input
+            type="checkbox"
+            id="break-paragraph"
+            data-key="breakParagraph"
+            aria-label="Toggle to break up long paragraphs"
+            checked
+          />
+          <!-- Label for Background Image Removal toggle -->
+          <label for="break-paragraph">Fragment Large Paragraphs</label>
+        </div>
+        <!-- Label for Button Size Selector -->
+        <label for="button-size">Button Size:</label>
+        <select
+          id="button-size"
+          class="form-select"
+          data-key="buttonSize"
+          aria-label="Select button size"
+        >
+          <option value="default" selected>Default</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+      </section>
 
       <section id="fonts" class="panel-section mb-3 p-3">
         <h2>Fonts</h2>
@@ -257,11 +153,12 @@
             step="1"
             placeholder="16"
             data-key="fontSize"
+            value="10"
           />
         </div>
       </section>
 
-      <section id="mouse-tools" class="panel-section mb-3 p-2">
+      <section id="mouse-tools" class="panel-section mb-3 p-3">
         <h2>Mouse Tools</h2>
         <div>
           <input
@@ -293,10 +190,6 @@
           <label for="magnifyingGlass">Magnifying Glass</label>
         </div>
       </section>
-
-      <button id="focusModeButton" data-key="focusMode">
-        Activate Focus Mode
-      </button>
     </main>
 
     <script src="popup.js"></script>
