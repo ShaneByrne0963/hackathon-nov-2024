@@ -1,55 +1,73 @@
+//global variable to support removeEventListener
+let eventListenerWrapper;
+
 function hoverStyles(element, data) {
     // constants are true if checkbox is checked, false if not checked
     const hoverHighlight = data.hoverHighlight; 
-    const hoverMagnifyingGlass = data.hoverMagnifyingGlass;
     
     if (hoverHighlight) {
         mouseTracker("highlight");
-    } else if (hoverMagnifyingGlass) {
-        mouseTracker("magnifyingGlass");
+
+    } else {
+        if (document.body.classList.contains('accessorease-event-listener')) {
+            document.body.classList.remove('accessorease-event-listener');
+            document.removeEventListener('mousemove', eventListenerWrapper);
+        }
+        clearHighlights();
     }
 }
 
 // Creates an active area that follows the mouse
 function mouseTracker(checkedOption) {
+
+    //Check if activeArea already exists
+    const oldActiveArea = document.getElementById('accessorease-active-area');
+    if (oldActiveArea) {
+        return;
+    } 
+
     // Create the active area element
     const activeArea = document.createElement('div');
-    activeArea.id = 'active-area';
+    activeArea.id = 'accessorease-active-area';
     document.body.appendChild(activeArea);
 
-    // Placeholder active area styles
-    activeArea.style.position = 'absolute';
-    activeArea.style.width = '100px';
-    checkedOption === 'highlight' ? activeArea.style.height = '20px' : activeArea.style.height = '50px';
-
-    // Placeholder styles for development
-    // activeArea.style.background = 'rgba(0, 255, 0, 0.2)';
-    // activeArea.style.border = '1px solid green';
-    activeArea.style.pointerEvents = 'none';
-    activeArea.style.display = 'none';
+    //styles for active area
+    activeAreaStyles(checkedOption, activeArea);
 
     // Mousemove event listener
-    document.addEventListener('mousemove', (event) => {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
+    if (!document.body.classList.contains('accessorease-event-listener')) {
+        document.body.classList.add('accessorease-event-listener');
+        eventListenerWrapper = createEventListenerWrapper(checkedOption, activeArea);
+        document.addEventListener('mousemove', eventListenerWrapper);
+    }
+}
 
-        // Position the active area around the mouse
-        const areaWidth = 100;
-        const areaHeight = checkedOption === 'highlight' ? 20 : 50;
-        activeArea.style.left = `${mouseX - areaWidth - 40 / 2}px`;
-        activeArea.style.top = `${mouseY - areaHeight / 2}px`;
-        activeArea.style.display = 'block';
+function createEventListenerWrapper(checkedOption, activeArea) {
+    return function(event) {
+        eventListenerCreator(event, checkedOption, activeArea);
+    };
+}
 
-        // Get bounding box of the active area
-        const areaRect = {
-            left: mouseX - areaWidth - 40 / 2,
-            right: mouseX + areaWidth / 2,
-            top: mouseY - areaHeight / 2,
-            bottom: mouseY + areaHeight / 2
-        };
-        
-        checkedOption === "highlight" ? highlight(areaRect) : null;
-    });
+function eventListenerCreator(event, checkedOption, activeArea) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+    
+            // Position the active area around the mouse
+            const areaWidth = 100;
+            const areaHeight = checkedOption === 'highlight' ? 15 : 50;
+            activeArea.style.left = `${mouseX - areaWidth - 40 / 2}px`;
+            activeArea.style.top = `${mouseY - areaHeight / 2}px`;
+            activeArea.style.display = 'block';
+    
+            // Get bounding box of the active area
+            const areaRect = {
+                left: mouseX - areaWidth - 40 / 2,
+                right: mouseX + areaWidth / 2,
+                top: mouseY - areaHeight / 2,
+                bottom: mouseY + areaHeight / 2
+            };
+            
+            checkedOption ? highlight(areaRect) : null; 
 }
 
 /**
@@ -111,4 +129,27 @@ function wrapWords(container) {
                 container.appendChild(document.createTextNode(' '));
             }
         });
+}
+
+function clearHighlights() {
+    const activeArea = document.getElementById('accessorease-active-area');
+    if (activeArea) {
+        activeArea.remove();
+    }
+    
+    const words = document.querySelectorAll('.accessorease-highlight-word');
+    words.forEach((word) => {
+        word.style.backgroundColor = 'transparent';
+    });
+}
+
+
+function activeAreaStyles(checkedOption, activeArea) {
+    if (checkedOption === 'highlight') { 
+        activeArea.style.position = 'absolute';
+        activeArea.style.width = '100px';
+        activeArea.style.height = '15px';
+        activeArea.style.pointerEvents = 'none';
+        activeArea.style.display = 'none';
+    }
 }

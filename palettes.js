@@ -6,34 +6,19 @@ const palettes = {
     trit: ["#E74C3C", "#F39C12", "#27AE60", "#8E44AD"], // Tritanopia
 };
 
-// Store original styles to restore NORMAL mode
-let originalStyles = {};
-
-// Function to save original styles of all elements
-function saveOriginalStyles() {
-    const allElements = document.querySelectorAll("*");
-    originalStyles = {};
-    allElements.forEach((el, index) => {
-        originalStyles[index] = {
-            element: el,
-            backgroundColor: el.style.backgroundColor || "",
-            color: el.style.color || "",
-            borderColor: el.style.borderColor || "",
-        };
-    });
-}
-
 // Function to apply a palette
 function applyPalette(element, data) {
     const paletteKey = data.colorPalette;
     if (paletteKey === "norm") {
-        const styles = ["background-color"];
+        const styles = ["background-color", "color", "border-color"];
         resetStyles(element, styles, 'color-palette');
         return updateColorContrast;
     }
     else if (palettes[paletteKey]) {
         const styles = {
-            "background-color": palettes[paletteKey][0]
+            "background-color": palettes[paletteKey][0],
+            "color": palettes[paletteKey][1],
+            "border-color": palettes[paletteKey][2]
         };
         updateStyles(element, styles, 'color-palette');
         return forceColorContrast;
