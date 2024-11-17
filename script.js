@@ -18,9 +18,8 @@ const functions = [
   {
     func: applyPalette,
     preference: "colorPalette",
-    targets: "body"
+    targets: "body",
   },
-
   {
     func: splitParagraphs,
     preference: "breakParagraph",
@@ -70,7 +69,6 @@ const startFunctions = [
     targets: "audio, video, iframe",
   },
 ];
-
 const defaultValues = {
   colorContrast: true,
   removeBg: false,
@@ -81,7 +79,7 @@ const defaultValues = {
   fontSize: "10",
   ruler: false,
   highlight: false,
-  hoverMagnifyingGlass: false
+  hoverMagnifyingGlass: false,
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
@@ -93,9 +91,10 @@ function updatePage(preference = null) {
     let runFunctions;
 
     if (preference) {
-      runFunctions = functions.filter(item => (item.preference && item.preference.includes(preference)));
-    }
-    else {
+      runFunctions = functions.filter(
+        (item) => item.preference && item.preference.includes(preference)
+      );
+    } else {
       runFunctions = functions;
     }
     runFunctions.map((data) => {
@@ -113,7 +112,7 @@ function updatePage(preference = null) {
     setTimeout(() => observer.observe(document.body, config), 1000);
   });
 }
-console.log('Starting...');
+
 startFunctions.map(data => {
   document.querySelectorAll(data.targets).forEach((element) => {
     data.func(element);
