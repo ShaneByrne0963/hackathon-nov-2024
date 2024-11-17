@@ -83,6 +83,9 @@
         <option value="medium">Medium</option>
         <option value="large">Large</option>
       </select>
+      <!-- Slider for line spacing -->
+      <label for="lineSpacing">Line Spacing</label>
+      <input id="lineSpacing" type="range" min="1" max="2" step="0.25" data-key="lineSpacing" />
     </section>
 
     <section id="fonts" class="panel-section mb-3 p-3">
@@ -106,6 +109,17 @@
           <input type="number" class="form-control" id="inputFontSize" min="10" max="100" step="1" placeholder="16"
             data-key="fontSize" value="10" />
         </div>
+      </div>
+      <div>
+        <label for="selectColor">Select Color:</label>
+        <select id="selectColor" class="form-select" data-key="color">
+          <option value="Default" selected>Default</option>
+          <option value="Red">Red</option>
+          <option value="Green">Green</option>
+          <option value="Blue">Blue</option>
+          <option value="Black">Black</option>
+          <option value="White">White</option>
+        </select>
       </div>
     </section>
 
