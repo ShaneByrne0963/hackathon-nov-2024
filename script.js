@@ -6,6 +6,10 @@
  */
 const functions = [
   {
+    func: disableAutoplay,
+    targets: "audio, video, iframe",
+  },
+  {
     func: removeBackgroundImage,
     preference: "removeBg",
     targets: "body, header, footer, div, section, article, aside, nav",
@@ -68,10 +72,6 @@ const functions = [
  * targets: The query selector to apply the function to
  */
 const startFunctions = [
-  {
-    func: disableAutoplay,
-    targets: "audio, video, iframe",
-  },
 ];
 const defaultValues = {
   colorContrast: true,

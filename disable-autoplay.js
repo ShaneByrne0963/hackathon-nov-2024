@@ -1,38 +1,43 @@
 function disableAutoplay(element) {
-  console.log('disable Autoplay running');
-  if (element.tagName === 'VIDEO') { // && !element.getAttribute('accessorease-video-eventlistener')) {
+  // console.log('disable-autoplay running ... ');
+
+  if (element.tagName === 'VIDEO' && !element.getAttribute('accessorease-video-eventlistener')) {
     console.log('trying to add event listnener');
     // Only set once!!
     const clickHandler = function (event) {
+      const siblings = Array.from(element.parentNode.parentNode.children);
       console.log('Video clicked:', event.target);
       element.setAttribute('accessorease-ignore', true);
       element.removeEventListener('click', clickHandler);
+      siblings.forEach(sibling => sibling.removeEventListener('click', clickHandler));
+      element.parentElement.removeEventListener('click', clickHandler);
+
       console.log('event listener removed:', element.attributes);
 
     };
 
+    const siblings = Array.from(element.parentNode.parentNode.children);
+
     element.addEventListener('click', clickHandler);
+    element.parentElement.addEventListener('click', clickHandler);
+    siblings.forEach(sibling => sibling.addEventListener('click', clickHandler));
     element.setAttribute('accessorease-video-eventlistener', true);
     console.log('event listener set:', element.attributes);
 
   }
 
   if (!element.getAttribute('accessorease-ignore')) {
-    // Check iframes! allow autoplay?
+    element.autoplay = false;
+    element.removeAttribute("autoplay");
 
-    if (typeof element.pause === "function") {
+    if (typeof element.pause === "function" && !element.paused) {
       console.log('Trying to pause');
 
       element.pause();
     }
-    element.autoplay = false;
-    element.removeAttribute("autoplay");
-
-    console.log(element.attributes);
 
   }
 
-  //console.log('Trying to disable ' + element.tagName);
   if (element.tagName === 'IFRAME') {
     try {
       const iframeDocument = element.contentDocument || element.contentWindow.document;
