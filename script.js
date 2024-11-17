@@ -67,7 +67,7 @@ const functions = [
  * targets: The query selector to apply the function to
  */
 const startFunctions = [
-  
+  disableAutoplay,
 ]
 const defaultValues = {
   colorContrast: true,

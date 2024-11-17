@@ -56,7 +56,7 @@ function removeBackgroundImage(element, data) {
       }
 
 
-      updateStyles(element, stylesUpdate, stylesOrig);
+      updateStyles(element, stylesUpdate, 'hello-world');
       element.setAttribute('accessorease-bg-image-updated', true);
 
       data['colorContrast'] = true;

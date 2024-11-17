@@ -180,7 +180,7 @@ function hsl2rgb(h, s, l) {
  * @param {HTMLElement} element The element to change the styles
  * @param {Object} styles The styles in format {"key": "value"}
  */
-function updateStyles(element, styles, stylesOrig=false) {
+function updateStyles(element, styles) {
   let elementStyle = element.getAttribute('style');
   let extraStyles = '';
   if (elementStyle) {
@@ -189,7 +189,7 @@ function updateStyles(element, styles, stylesOrig=false) {
       let prop = elementArray[i].split(':')[0];
 
       if (prop in styles) {
-        element.setAttribute('accessorease-style-' + prop, stylesOrig ? stylesOrig[prop] : styles[prop]);
+        element.setAttribute('accessorease-style-' + prop, styles[prop]);
         elementArray.splice(i, 1);
         i--;
       }

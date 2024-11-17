@@ -1,4 +1,4 @@
-function disableAutoplay(element, data) {
+function disableAutoplay(element) {
   //const mediaElements = document.querySelectorAll("audio, video");
   if (element.tagName === 'VIDEO') { // && !element.getAttribute('accessorease-video-eventlistener')) {
     console.log('trying to add event listnener');
