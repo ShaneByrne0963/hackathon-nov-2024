@@ -169,26 +169,28 @@
           />
           <label for="ruler">Ruler</label>
         </div>
-        <div>
-          <input
-            type="checkbox"
-            name="highlight"
-            value="highlight"
-            aria-label="Highlight"
-            data-key="hoverHighlight"
-          />
-          <label for="highlight">Highlight</label>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            name="magnifyingGlass"
-            value="magnifyingGlass"
-            aria-label="Magnifying Glass"
-            data-key="hoverMagnifyingGlass"
-          />
-          <label for="magnifyingGlass">Magnifying Glass</label>
-        </div>
+        <fieldset>
+          <div>
+            <input
+              type="radio"
+              name="hover-style"
+              value="highlight"
+              aria-label="Highlight"
+              data-key="hoverHighlight"
+            />
+            <label for="highlight">Highlight</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              name="hover-style"
+              value="magnifyingGlass"
+              aria-label="Magnifying Glass"
+              data-key="hoverMagnifyingGlass"
+            />
+            <label for="magnifyingGlass">Magnifying Glass</label>
+          </div>
+      </fieldset>
       </section>
     </main>
 
