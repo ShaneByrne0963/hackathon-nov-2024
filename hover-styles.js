@@ -57,23 +57,39 @@ function mouseTracker(checkedOption) {
  * Only reacts to p elements, targeted in wrapWords function
  */
 function highlight(areaRect) {
-    const words = document.querySelectorAll('span');
-    words.forEach(word => {
-        const wordRect = word.getBoundingClientRect();
+    const paragraphs = document.querySelectorAll('p');
+    paragraphs.forEach((paragraph) => {
+        const paragraphRect = paragraph.getBoundingClientRect();
 
-        // Check if word intersects with the active area
         const isInside =
-            wordRect.right >= areaRect.left &&
-            wordRect.left <= areaRect.right &&
-            wordRect.bottom >= areaRect.top &&
-            wordRect.top <= areaRect.bottom;
+            paragraphRect.right >= areaRect.left &&
+            paragraphRect.left <= areaRect.right &&
+            paragraphRect.bottom >= areaRect.top &&
+            paragraphRect.top <= areaRect.bottom;
+        
+            if(isInside) {
+                wrapWords(paragraph);
 
-        if (isInside) {
-            word.style.backgroundColor = 'yellow';
-        } else {
-            word.style.backgroundColor = 'transparent';
-        }
-    });
+                const words = paragraph.querySelectorAll('span');
+                words.forEach((word) => {
+                    const wordRect = word.getBoundingClientRect();
+        
+                    // Check if word intersects with the active area
+                    const isInside =
+                        wordRect.right >= areaRect.left &&
+                        wordRect.left <= areaRect.right &&
+                        wordRect.bottom >= areaRect.top &&
+                        wordRect.top <= areaRect.bottom;
+        
+                    if (isInside) {
+                        word.style.backgroundColor = 'yellow';
+                    } else {
+                        word.style.backgroundColor = 'transparent';
+                    }
+                });
+
+            } else {}
+    })
 }
 
 /**
@@ -81,19 +97,19 @@ function highlight(areaRect) {
  * divides each word in each element to a span element
  * to allow for highlighting of individual words
  */
-function wrapWords(containers) {
-    containers.forEach(container => {
+function wrapWords(container) {
         const words = container.textContent.split(' '); // Split text by spaces
         container.innerHTML = ''; // Clear existing text
 
-        words.forEach((word) => {
+        words.forEach((word, index) => {
             const span = document.createElement('span');
             span.textContent = word;
             span.classList.add('accessorease-highlight-word')
-            span.style.marginRight = '5px'; // Add space between words
             container.appendChild(span);
-        });
-    });
-}
 
-wrapWords(document.querySelectorAll('p'));
+            // Add a space after each word except the last one
+            if (index < words.length - 1) {
+                container.appendChild(document.createTextNode(' '));
+            }
+        });
+}
