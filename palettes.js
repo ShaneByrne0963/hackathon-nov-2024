@@ -30,32 +30,19 @@ function applyPalette(element, data) {
     console.log(paletteKey);
     const allElements = document.querySelectorAll("*");
 
-    if (paletteKey === "normal") {
-        // NORMAL mode: restore original styles
-        for (const key in originalStyles) {
-            const { element, backgroundColor, color, borderColor } = originalStyles[key];
-            element.style.backgroundColor = backgroundColor;
-            element.style.color = color;
-            element.style.borderColor = borderColor;
-        }
-    } else if (palettes[paletteKey]) {
-        // Apply custom palette
-        const colors = palettes[paletteKey];
-        allElements.forEach((el, index) => {
-            el.style.backgroundColor = colors[index % colors.length]; // Cycle through colors
-            el.style.color = colors[(index + 1) % colors.length];
-            el.style.borderColor = colors[(index + 2) % colors.length];
-        });
+    if (paletteKey === "norm") {
+        if (element.hasAttribute("accessorease-color-palette")){
+            const styles = ["background-color"];
+            element.removeAttribute("accessorease-color-palette");
+            resetStyles(element, styles);
+        }        
+    }
+    else if (palettes[paletteKey]) {
+        const styles = {
+            "background-color": palettes[paletteKey][0]
+        };
+        updateStyles(element, styles);
+        element.setAttribute("accessorease-color-palette", true);
+        
     }
 }
-
-// Listen for messages from the popup script
-// chrome.runtime.onMessage.addListener((message) => {
-//     if (message.action === "applyPalette") {
-//         const { palette } = message;
-//         if (!Object.keys(originalStyles).length) {
-//             saveOriginalStyles();
-//         }
-//         applyPalette(palette);
-//     }
-// });
