@@ -51,6 +51,11 @@ const functions = [
     targets: "body",
   },
   {
+    func: setFontColor,
+    preference: "fontColor",
+    targets: "body",
+  },
+  {
     func: changeButtonSize,
     preference: "buttonSize",
     targets: "button",

@@ -1,18 +1,30 @@
-// Listen for messages from the popup script
-/* const extAPI = typeof browser !== "undefined" ? browser : chrome;
-extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "changeFontColor") {
-    const selectedColor = message.fontColor;
+function setFontColor(element, data) {
+  const fontColor = data.color; // Get selected color
 
-    // Apply the selected font color to the entire page
-    document.querySelectorAll("*").forEach((element) => {
-      // Avoid overriding color for elements that should remain styled (e.g., images)
-      if (element.nodeName !== "IMG" && element.nodeName !== "SVG") {
-        element.style.color = selectedColor;
-      }
-    });
+  let existingColorStyle = document.querySelector(".accessorease-font-color");
 
-    // Respond back if needed (optional)
-    sendResponse({ status: "success", appliedColor: selectedColor });
+  // Remove existing style if it exists
+  if (existingColorStyle) {
+    existingColorStyle.remove();
   }
-}); */
+
+  if (fontColor !== "Default") {
+    // Create and apply new style
+    const styleGlobal = document.createElement("style");
+    styleGlobal.innerHTML = `
+           * {
+               color: ${fontColor} !important;
+           }
+       `;
+
+    styleGlobal.className = "accessorease-font-color";
+    document.head.appendChild(styleGlobal);
+  }
+}
+
+// Example usage
+document.getElementById("selectColor").addEventListener("change", function () {
+  const selectedColor = this.value;
+
+  setFontColor(null, { color: selectedColor });
+});
