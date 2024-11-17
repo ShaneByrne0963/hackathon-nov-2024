@@ -1,38 +1,3 @@
-/**
- * Gets a value from localStorage, or sets it if none exists
- * @param {String} key The key to get the value from localStorage
- * @returns {Any} The value retrieved from localStorage
- */
-function retrieveData(key) {
-  const storageData = localStorage.getItem(key);
-  if (storageData) {
-    // Changing 'true' and 'false' values from string to boolean
-    switch (storageData) {
-      case 'true':
-        return true;
-      case 'false':
-        return false;
-      default:
-        return storageData;
-    }
-  }
-  else {
-    let item = document.querySelector(`*[data-key="${key}"]`);
-    let value = null;
-    if (!item) {
-      throw new Error("Key not found!");
-    }
-    if (item.getAttribute('type') === 'checkbox') {
-      value = item.checked;
-    }
-    else {
-      value = item.value;
-    }
-    localStorage.setItem(key, value);
-    return value;
-  }
-}
-
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 /**
  * Submits data from the popup tab to the main page
@@ -55,7 +20,7 @@ function sendData(preference=null) {
     else {
       value = element.value;
     }
-    if (value) {
+    if (value !== null) {
       data[key] = value;
     }
   });
