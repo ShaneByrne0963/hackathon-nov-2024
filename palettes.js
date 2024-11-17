@@ -25,24 +25,15 @@ function saveOriginalStyles() {
 
 // Function to apply a palette
 function applyPalette(element, data) {
-    console.log(data);
     const paletteKey = data.colorPalette;
-    console.log(paletteKey);
-    const allElements = document.querySelectorAll("*");
-
     if (paletteKey === "norm") {
-        if (element.hasAttribute("accessorease-color-palette")){
-            const styles = ["background-color"];
-            element.removeAttribute("accessorease-color-palette");
-            resetStyles(element, styles);
-        }        
+        const styles = ["background-color"];
+        resetStyles(element, styles, 'color-palette');
     }
     else if (palettes[paletteKey]) {
         const styles = {
             "background-color": palettes[paletteKey][0]
         };
-        updateStyles(element, styles, 'fresh-palette');
-        element.setAttribute("accessorease-color-palette", true);
-        
+        updateStyles(element, styles, 'color-palette');
     }
 }
