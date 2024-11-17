@@ -435,3 +435,17 @@ function forceColorContrast(element, data) {
   console.log("Forcing updateColorContrast");
   return updateColorContrast(element, fakeData);
 }
+
+
+/**
+ * Clears updateColorContrast, even if colorContrast is true
+ * @param {HTMLElement} element The element that is being targeted
+ * @param {Object} data The user's preferences
+ * @returns {[Function]} Any functions to be run after updateColorContrast
+ */
+function clearColorContrast(element, data) {
+  let fakeData = {...data};
+  fakeData.colorContrast = false;
+  console.log("Forcing updateColorContrast");
+  return updateColorContrast(element, fakeData);
+}

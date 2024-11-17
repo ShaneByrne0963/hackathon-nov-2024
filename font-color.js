@@ -1,5 +1,5 @@
 function setFontColor(element, data) {
-  const fontColor = data.color; // Get selected color
+  const fontColor = data.fontColor; // Get selected color
 
   let existingColorStyle = document.querySelector(".accessorease-font-color");
 
@@ -21,10 +21,3 @@ function setFontColor(element, data) {
     document.head.appendChild(styleGlobal);
   }
 }
-
-// Example usage
-document.getElementById("selectColor").addEventListener("change", function () {
-  const selectedColor = this.value;
-
-  setFontColor(null, { color: selectedColor });
-});

@@ -50,6 +50,43 @@ function updateBodySize(maxWidth, padding) {
   )}px`;
 }
 
+/**
+ * Enables/Disables a target input element
+ * @param {HTMLElement} item The item that can disable an element
+ */
+function checkDisabled(item) {
+  if (item.hasAttribute('data-enables')) {
+    document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+  }
+  if (item.hasAttribute('data-disables')) {
+    document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
+  }
+}
+
+/**
+ * Enables/Disables inputs if the extension switch is turned on or not
+ */
+function updateExtensionController() {
+  let feedback = document.querySelector('#extension-feedback');
+  feedback.classList.remove('text-danger');
+  if (document.querySelector('#enable-extension').checked) {
+    feedback.innerText = 'Web Accessor-Ease is running on this page';
+    document.querySelectorAll('input:not(#enable-extension), select').forEach(element => element.disabled = false);
+    // Enabling/Disabling inputs that depend on checkboxes being checked
+    document.querySelectorAll('[data-enables]').forEach((item) => {
+      document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+    });
+    document.querySelectorAll('[data-disables]').forEach((item) => {
+      document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
+    });
+  }
+  else {
+    feedback.innerText = 'Web Accessor-Ease is disabled';
+    feedback.classList.add('text-danger');
+    document.querySelectorAll('input:not(#enable-extension), select').forEach(element => element.disabled = true);
+  }
+}
+
 // Send the preferences to the page when requested
 extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.update) {
@@ -99,35 +136,32 @@ window.addEventListener('DOMContentLoaded', () => {
   
       if (item.tagName === 'BUTTON' || elType === 'radio') {
         item.addEventListener('click', () => {
-          if (item.hasAttribute('data-enables')) {
-            document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
-          }
-          if (item.hasAttribute('data-disables')) {
-            document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
-          }
+          checkDisabled(item);
+          sendData(key);
+        });
+      }
+      else if (elType === 'range') {
+        item.addEventListener('input', () => {
           sendData(key);
         });
       }
       else {
         item.addEventListener('change', () => {
-          if (item.hasAttribute('data-enables')) {
-            document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
-          }
-          if (item.hasAttribute('data-disables')) {
-            document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
-          }
+          checkDisabled(item);
           sendData(key);
         });
       }
     });
 
-    // Enabling/Disabling inputs that depend on checkboxes being checked
-    document.querySelectorAll('[data-enables]').forEach((item) => {
-      document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+    // Allowing inputs to update an element's inner text with it's value, if specified
+    document.querySelectorAll('[data-updates]').forEach(element => {
+      element.addEventListener('input', () => document.querySelector(element.getAttribute('data-updates')).innerText = element.value);
+      document.querySelector(element.getAttribute('data-updates')).innerText = element.value;
     });
-    document.querySelectorAll('[data-disables]').forEach((item) => {
-      document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
-    });
+
+    // Enable/Disable all elements depending on the state of the extension control
+    document.querySelector('#enable-extension').addEventListener('change', updateExtensionController);
+    updateExtensionController();
   });
 
   // Update the size of the body

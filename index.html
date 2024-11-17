@@ -19,6 +19,17 @@
   </header>
 
   <main>
+    <section id="page-enable" class="d-flex align-items-center justify-content-between w-100 mb-3">
+      <div id="extension-feedback">Web Accessor-Ease is running on this page</div>
+      <div class="switch">
+        <label>
+          Off
+          <input type="checkbox" id="enable-extension" data-key="runExtension" checked>
+          <span class="lever"></span>
+          On
+        </label>
+      </div>
+    </section>
     <!-- Color Contrast Input -->
     <section id="colors" class="panel-section mb-3 p-3">
       <h2>Clarity & Colour</h2>
@@ -70,11 +81,23 @@
     <section id="sizing" class="panel-section mb-3 p-3">
       <h2>Spacing & Sizing</h2>
       <!-- Checkbox to break up long paragraphs -->
-      <div class="mb-2">
+      <div class="mb-3">
         <input type="checkbox" id="break-paragraph" data-key="breakParagraph"
           aria-label="Toggle to break up long paragraphs" checked />
         <!-- Label for Background Image Removal toggle -->
         <label for="break-paragraph">Fragment Large Paragraphs</label>
+      </div>
+      <!-- Slider for line spacing -->
+      <div class="form-group mb-3">
+        <div class="d-flex w-100 justify-content-between">
+          <label for="lineSpacing">Line Spacing</label>
+          <div>
+            <span>x</span>
+            <span id="range-value">1</span>
+          </div>
+        </div>
+        <input id="lineSpacing" class="form-control-range d-block w-100" type="range" min="1" max="2" step="0.05"
+          data-key="lineSpacing" data-updates="#range-value" />
       </div>
       <!-- Label for Button Size Selector -->
       <label for="button-size">Button Size:</label>
@@ -83,15 +106,12 @@
         <option value="medium">Medium</option>
         <option value="large">Large</option>
       </select>
-      <!-- Slider for line spacing -->
-      <label for="lineSpacing">Line Spacing</label>
-      <input id="lineSpacing" type="range" min="1" max="2" step="0.25" data-key="lineSpacing" />
     </section>
 
     <section id="fonts" class="panel-section mb-3 p-3">
       <h2>Fonts</h2>
       <div class="form-group mb-3">
-        <label for="selectFontFamily">Select Font Family:</label>
+        <label for="selectFontFamily">Font Family:</label>
         <select id="selectFontFamily" class="form-select" data-key="fontFamily">
           <option value="Default" selected>Default</option>
           <option value="Arial">Arial</option>
@@ -101,7 +121,7 @@
           <option value="Georgia">Georgia</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <input type="checkbox" id="enable-min-font-size" data-key="isMinFontSize" data-enables="#inputFontSize">
         <label for="enable-min-font-size">Enable Minimum Font Size</label>
         <div class="d-flex align-items-center gap-3">
@@ -111,8 +131,8 @@
         </div>
       </div>
       <div>
-        <label for="selectColor">Select Color:</label>
-        <select id="selectColor" class="form-select" data-key="color">
+        <label for="selectColor">Font Color:</label>
+        <select id="selectColor" class="form-select" data-key="fontColor">
           <option value="Default" selected>Default</option>
           <option value="Red">Red</option>
           <option value="Green">Green</option>
@@ -123,29 +143,18 @@
       </div>
     </section>
 
-      <section id="mouse-tools" class="panel-section mb-3 p-3">
-        <h2>Mouse Tools</h2>
-        <div>
-          <input
-            type="checkbox"
-            id="ruler"
-            data-key="ruler"
-            aria-label="Select a ruler"
-          />
-          <label for="ruler">Ruler</label>
-        </div>
-          <div>
-            <input
-              type="checkbox"
-              name="hover-style"
-              value="highlight"
-              aria-label="Highlight"
-              data-key="hoverHighlight"
-            />
-            <label for="highlight">Highlight</label>
-          </div>
-      </section>
-    </main>
+    <section id="mouse-tools" class="panel-section mb-3 p-3">
+      <h2>Mouse Tools</h2>
+      <div>
+        <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler" />
+        <label for="ruler">Ruler</label>
+      </div>
+      <div>
+        <input type="checkbox" name="hover-style" value="highlight" aria-label="Highlight" data-key="hoverHighlight" />
+        <label for="highlight">Highlight</label>
+      </div>
+    </section>
+  </main>
 
   <script src="popup.js"></script>
 </body>
