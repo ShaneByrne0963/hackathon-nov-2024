@@ -51,7 +51,7 @@ const functions = [
   },
   {
     func: setFontSize,
-    preference: "fontSize",
+    preference: "isMinFontSize",
     targets: "body",
   },
   {

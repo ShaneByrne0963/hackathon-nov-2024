@@ -31,15 +31,18 @@ function setFontSize(element, data) {
     existingFontSize.remove();
   }
 
-  // Add style to body
-  const styleGlobal = document.createElement("style");
-  styleGlobal.innerHTML = `
-         * {
-             font-size: ${fontSize}px !important;
-         }
-     `;
+  if (data.isMinFontSize) {
+    // Add style to body
+    const styleGlobal = document.createElement("style");
+    styleGlobal.innerHTML = `
+           * {
+               font-size: ${fontSize}px !important;
+           }
+       `;
+  
+    styleGlobal.className = "accessorease-font-size";
+  
+    document.head.appendChild(styleGlobal);
+  }
 
-  styleGlobal.className = ".accessorease-font-size";
-
-  document.head.appendChild(styleGlobal);
 }
