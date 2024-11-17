@@ -41,7 +41,7 @@ function applyPalette(element, data) {
         const styles = {
             "background-color": palettes[paletteKey][0]
         };
-        updateStyles(element, styles);
+        updateStyles(element, styles, 'fresh-palette');
         element.setAttribute("accessorease-color-palette", true);
         
     }
