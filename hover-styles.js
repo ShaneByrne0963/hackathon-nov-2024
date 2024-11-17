@@ -1,20 +1,19 @@
+//global variable to support removeEventListener
+let eventListenerWrapper;
+
 function hoverStyles(element, data) {
     // constants are true if checkbox is checked, false if not checked
     const hoverHighlight = data.hoverHighlight; 
     
     if (hoverHighlight) {
         mouseTracker("highlight");
-        console.log(hoverHighlight);
 
     } else {
         if (document.body.classList.contains('accessorease-event-listener')) {
             document.body.classList.remove('accessorease-event-listener');
-            document.removeEventListener('mousemove', (event) => {
-                eventListenerCreator(event, checkedOption, activeArea);
-            });
+            document.removeEventListener('mousemove', eventListenerWrapper);
         }
         clearHighlights();
-        console.log(hoverHighlight);
     }
 }
 
@@ -38,10 +37,15 @@ function mouseTracker(checkedOption) {
     // Mousemove event listener
     if (!document.body.classList.contains('accessorease-event-listener')) {
         document.body.classList.add('accessorease-event-listener');
-        document.addEventListener('mousemove', (event) => {
-            eventListenerCreator(event, checkedOption, activeArea);
-        });
+        eventListenerWrapper = createEventListenerWrapper(checkedOption, activeArea);
+        document.addEventListener('mousemove', eventListenerWrapper);
     }
+}
+
+function createEventListenerWrapper(checkedOption, activeArea) {
+    return function(event) {
+        eventListenerCreator(event, checkedOption, activeArea);
+    };
 }
 
 function eventListenerCreator(event, checkedOption, activeArea) {
@@ -63,7 +67,7 @@ function eventListenerCreator(event, checkedOption, activeArea) {
                 bottom: mouseY + areaHeight / 2
             };
             
-            checkedOption === "highlight" ? highlight(areaRect) : null;
+            checkedOption ? highlight(areaRect) : null; 
 }
 
 /**
