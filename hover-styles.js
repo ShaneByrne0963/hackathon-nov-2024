@@ -1,20 +1,20 @@
 function hoverStyles(element, data) {
     // constants are true if checkbox is checked, false if not checked
     const hoverHighlight = data.hoverHighlight; 
-    const hoverMagnifyingGlass = data.hoverMagnifyingGlass;
-    const hoverDefault = data.hoverDefault;
     
     if (hoverHighlight) {
-        clearMagnifyingGlass();
         mouseTracker("highlight");
+        console.log(hoverHighlight);
 
-    } else if (hoverMagnifyingGlass) {
+    } else {
+        if (document.body.classList.contains('accessorease-event-listener')) {
+            document.body.classList.remove('accessorease-event-listener');
+            document.removeEventListener('mousemove', (event) => {
+                eventListenerCreator(event, checkedOption, activeArea);
+            });
+        }
         clearHighlights();
-        mouseTracker("magnifyingGlass");
-
-    } else if (hoverDefault) {
-        clearHighlights();
-        clearMagnifyingGlass();
+        console.log(hoverHighlight);
     }
 }
 
@@ -22,42 +22,48 @@ function hoverStyles(element, data) {
 function mouseTracker(checkedOption) {
 
     //Check if activeArea already exists
-    const oldActiveArea = document.getElementById('active-area');
+    const oldActiveArea = document.getElementById('accessorease-active-area');
     if (oldActiveArea) {
         return;
     } 
 
     // Create the active area element
     const activeArea = document.createElement('div');
-    activeArea.id = 'active-area';
+    activeArea.id = 'accessorease-active-area';
     document.body.appendChild(activeArea);
 
     //styles for active area
     activeAreaStyles(checkedOption, activeArea);
 
     // Mousemove event listener
-    document.addEventListener('mousemove', (event) => {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
+    if (!document.body.classList.contains('accessorease-event-listener')) {
+        document.body.classList.add('accessorease-event-listener');
+        document.addEventListener('mousemove', (event) => {
+            eventListenerCreator(event, checkedOption, activeArea);
+        });
+    }
+}
 
-        // Position the active area around the mouse
-        const areaWidth = 100;
-        const areaHeight = checkedOption === 'highlight' ? 15 : 50;
-        activeArea.style.left = `${mouseX - areaWidth - 40 / 2}px`;
-        activeArea.style.top = `${mouseY - areaHeight / 2}px`;
-        activeArea.style.display = 'block';
-
-        // Get bounding box of the active area
-        const areaRect = {
-            left: mouseX - areaWidth - 40 / 2,
-            right: mouseX + areaWidth / 2,
-            top: mouseY - areaHeight / 2,
-            bottom: mouseY + areaHeight / 2
-        };
-        
-        checkedOption === "highlight" ? highlight(areaRect) : null;
-        checkedOption === "magnifyingGlass" ? magnifyingGlass(areaRect) : null;
-    });
+function eventListenerCreator(event, checkedOption, activeArea) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+    
+            // Position the active area around the mouse
+            const areaWidth = 100;
+            const areaHeight = checkedOption === 'highlight' ? 15 : 50;
+            activeArea.style.left = `${mouseX - areaWidth - 40 / 2}px`;
+            activeArea.style.top = `${mouseY - areaHeight / 2}px`;
+            activeArea.style.display = 'block';
+    
+            // Get bounding box of the active area
+            const areaRect = {
+                left: mouseX - areaWidth - 40 / 2,
+                right: mouseX + areaWidth / 2,
+                top: mouseY - areaHeight / 2,
+                bottom: mouseY + areaHeight / 2
+            };
+            
+            checkedOption === "highlight" ? highlight(areaRect) : null;
 }
 
 /**
@@ -122,7 +128,7 @@ function wrapWords(container) {
 }
 
 function clearHighlights() {
-    const activeArea = document.getElementById('active-area');
+    const activeArea = document.getElementById('accessorease-active-area');
     if (activeArea) {
         activeArea.remove();
     }
@@ -133,29 +139,6 @@ function clearHighlights() {
     });
 }
 
-function magnifyingGlass(areaRect){
-    console.log("inside magnifyingGlass")
-    // Check for old magnifying glass
-    const oldMagnifyingGlass = document.getElementById('magnifying-glass');
-    if (oldMagnifyingGlass) {
-        return;
-    }
-
-    const magnifyingGlass = document.createElement('div');
-    magnifyingGlass.id = 'magnifying-glass';
-    document.body.appendChild(magnifyingGlass);
-
-    // Placeholder styles for development
-    magnifyingGlass.style.position = 'absolute';
-    magnifyingGlass.style.width = '100px';
-}
-
-function clearMagnifyingGlass() {
-    const activeArea = document.getElementById('active-area');
-    if (activeArea) {
-        activeArea.remove();
-    }
-}
 
 function activeAreaStyles(checkedOption, activeArea) {
     if (checkedOption === 'highlight') { 
@@ -164,18 +147,5 @@ function activeAreaStyles(checkedOption, activeArea) {
         activeArea.style.height = '15px';
         activeArea.style.pointerEvents = 'none';
         activeArea.style.display = 'none';
-    }
-
-    if (checkedOption === 'magnifyingGlass') {
-        activeArea.style.position = 'absolute';
-        activeArea.style.width = '100px';
-        activeArea.style.height = '100px';
-        activeArea.style.borderRadius = '50%';
-        activeArea.style.pointerEvents = 'none';
-        activeArea.style.display = 'none';
-
-        //placeholder
-        activeArea.style.background = 'rgba(0, 255, 0, 0.1)';
-        activeArea.style.border = '1px solid green';
     }
 }
