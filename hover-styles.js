@@ -17,19 +17,26 @@ function hoverStyles(element, data) {
 // Creates an active area that follows the mouse
 function mouseTracker(checkedOption) {
 
+    //Check if activeArea already exists
+    const oldActiveArea = document.getElementById('active-area');
+    if (oldActiveArea) {
+        return;
+    } 
+
     // Create the active area element
     const activeArea = document.createElement('div');
     activeArea.id = 'active-area';
     document.body.appendChild(activeArea);
 
+    
     // Placeholder active area styles
     activeArea.style.position = 'absolute';
     activeArea.style.width = '100px';
-    checkedOption === 'highlight' ? activeArea.style.height = '20px' : activeArea.style.height = '50px';
+    checkedOption === 'highlight' ? activeArea.style.height = '15px' : activeArea.style.height = '50px';
 
     // Placeholder styles for development
-    // activeArea.style.background = 'rgba(0, 255, 0, 0.2)';
-    // activeArea.style.border = '1px solid green';
+    activeArea.style.background = 'rgba(0, 255, 0, 0.2)';
+    activeArea.style.border = '1px solid green';
     activeArea.style.pointerEvents = 'none';
     activeArea.style.display = 'none';
 
@@ -40,7 +47,7 @@ function mouseTracker(checkedOption) {
 
         // Position the active area around the mouse
         const areaWidth = 100;
-        const areaHeight = checkedOption === 'highlight' ? 20 : 50;
+        const areaHeight = checkedOption === 'highlight' ? 15 : 50;
         activeArea.style.left = `${mouseX - areaWidth - 40 / 2}px`;
         activeArea.style.top = `${mouseY - areaHeight / 2}px`;
         activeArea.style.display = 'block';
