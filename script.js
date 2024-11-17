@@ -7,7 +7,7 @@
 const functions = [
   {
     func: disableAutoplay,
-    targets: "audio, video, iframe",
+    targets: "audio, video",
   },
   {
     func: removeBackgroundImage,
