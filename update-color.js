@@ -352,6 +352,7 @@ function updateColorContrast(element, data) {
         let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
         let textHsl = rgb2hsl(...getColorParameters(textColor));
         let goodContrast = false;
+        let changedBackground  = false;
   
         // Gradually changing the values of the colors until the contrast is strong enough
         // Text will always be changed first
@@ -362,6 +363,7 @@ function updateColorContrast(element, data) {
             }
             else if (backHsl.l < 100) {
               textHsl.l = 0;
+              changedBackground = true;
               backHsl.l++;
             }
             else {
@@ -376,6 +378,7 @@ function updateColorContrast(element, data) {
             }
             else if (backHsl.l > 0) {
               textHsl.l = 100;
+              changedBackground = true;
               backHsl.l--;
             }
             else {
@@ -397,7 +400,10 @@ function updateColorContrast(element, data) {
             // Make sure to include !important tags so they override everything
             const newStyles = {
               "color": `rgb(${getColorParameters(textNewRgb).join()})`,
-              "background-color": `rgb(${getColorParameters(backNewRgb).join()})`
+            }
+            if (changedBackground) {
+              element.setAttribute('accessorease-contrast-background', true);
+              newStyles["background-color"] = `rgb(${getColorParameters(backNewRgb).join()})`;
             }
             updateStyles(element, newStyles, 'updated-contrast');
           }
@@ -407,6 +413,11 @@ function updateColorContrast(element, data) {
   }
   else {
     // Setting the original colors back
+    let styles = ['color'];
+    if (element.hasAttribute('accessorease-contrast-background')) {
+      styles.push('background-color');
+      element.removeAttribute('accessorease-contrast-background');
+    }
     resetStyles(element, ['color', 'background-color'], 'updated-contrast');
   }
 }
