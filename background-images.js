@@ -1,7 +1,6 @@
 
 /**
  * Processes the replacement and reinstatement of background images.
- * Automatically sets a contrasting text color.
  * @param {element} Element whose bg image will be removed and text colors updated
  * @param {data} User preferences
  */
@@ -43,7 +42,6 @@ function removeBackgroundImage(element, data) {
 }
 
 function isButton(element) {
-
   if (
     (element.hasAttribute('role') && element.getAttribute('role').includes('button')) ||
     (element.hasAttribute('type') && element.getAttribute('type').includes('button'))
@@ -51,7 +49,6 @@ function isButton(element) {
     return true;
   }
   return false;
-
 }
 
 // Function to check if an element has a background image
