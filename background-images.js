@@ -8,7 +8,7 @@
 function removeBackgroundImage(element, data) {
   const childElements = element.querySelectorAll("*");
 
-  if (data.removeBg && childElements.length) {
+  if (data.removeBg && childElements.length && !isButton(element)) {
 
     const style = window.getComputedStyle(element);
 
@@ -38,25 +38,30 @@ function removeBackgroundImage(element, data) {
         'background-repeat': style.backgroundRepeat,
       };
 
+      let stylesOrig = {
+        'background-image': style.backgroundImage,
+        // 'background-color': 'transparent',
+        'background-size': style.backgroundSize,
+        'background-position': style.backgroundPosition,
+        'background-repeat': style.backgroundRepeat,
+      };
+
+
       if (
         style.backgroundSize === "cover" ||
         style.backgroundSize === "contain"
       ) {
         stylesUpdate['width'] = style.width;
         stylesUpdate['height'] = style.height;
-
-        // element.style.width = style.width;
-        // element.style.height = style.height;
       }
 
-      //  element.style.backgroundImage = 'none';
-      //  element.style.backgroundColor = 'transparent';
-      updateStyles(element, stylesUpdate);
+
+      updateStyles(element, stylesUpdate, stylesOrig);
       element.setAttribute('accessorease-bg-image-updated', true);
+
       data['colorContrast'] = true;
       updateColorContrast(element, data);
-      // TODO: call shane's function
-      //  element.setAttribute('style', `background-image: none !important; background-color: transparent !important;`)
+
       // Go through each child element and check if it has text
       childElements.forEach((child) => {
         if (child.textContent.trim() !== '') {
@@ -67,11 +72,10 @@ function removeBackgroundImage(element, data) {
           // }
 
           // data['colorContrast'] = true;
-          if (findBackgroundColor(child) === origBgColor) {
+          if (isButton(child) || findBackgroundColor(child) === origBgColor) {
             //   // child.style.color = contrastColor;
-           // child.setAttribute('accessorease-font-color-updated', true);
+            // child.setAttribute('accessorease-font-color-updated', true);
             updateColorContrast(child, data);
-
 
             //   updateStyles(child, { 'color': contrastColor });
           }
@@ -109,6 +113,19 @@ function removeBackgroundImage(element, data) {
   }
 }
 
+
+function isButton(element) {
+  //let isButton = false;
+
+  if (
+    (element.hasAttribute('role') && element.getAttribute('role').includes('button')) ||
+    (element.hasAttribute('type') && element.getAttribute('type').includes('button'))
+  ) {
+    return true;
+  }
+  return false;
+
+}
 // Adapted from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
 
 function getLuminance(r, g, b) {
