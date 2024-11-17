@@ -51,7 +51,27 @@ const functions = [
     targets: "body",
   },
 ];
-const defaultValues = {};
+// These functions are always run on page load. These functions are independent of preferences
+// Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
+/**
+ * func: The function to be run
+ * targets: The query selector to apply the function to
+ */
+const startFunctions = [
+  
+]
+const defaultValues = {
+  colorContrast: true,
+  removeBg: false,
+  colorPalette: "palette-default",
+  breakParagraph: true,
+  buttonSize: "default",
+  fontFamily: "Default",
+  fontSize: "10",
+  ruler: false,
+  highlight: false,
+  hoverMagnifyingGlass: false
+};
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
 function updatePage(preference = null) {
@@ -73,7 +93,7 @@ function updatePage(preference = null) {
         !("condition" in data) ||
         preferences[data.condition.key] === data.condition.equals
       ) {
-        [...document.querySelectorAll(data.targets)].map((element) => {
+        document.querySelectorAll(data.targets).forEach((element) => {
           data.func(element, preferences);
         });
       }
@@ -82,6 +102,12 @@ function updatePage(preference = null) {
     setTimeout(() => observer.observe(document.body, config), 1000);
   });
 }
+
+startFunctions.map(data => {
+  document.querySelectorAll(data.targets).forEach((element) => {
+    data.func(element);
+  });
+});
 
 // Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
