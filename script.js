@@ -32,7 +32,7 @@ const functions = [
   },
   {
     func: hoverStyles,
-    preference: "hoverHighlight, hoverMagnifyingGlass",
+    preference: "hoverHighlight",
     targets: "body",
   },
   {
@@ -87,17 +87,19 @@ const startFunctions = [
   },
 ];
 const defaultValues = {
-  colorContrast: true,
+  colorContrast: false,
   removeBg: false,
-  colorPalette: "palette-default",
-  breakParagraph: true,
+  colorPalette: "norm",
+  breakParagraph: false,
   buttonSize: "default",
   fontFamily: "Default",
   isMinFontSize: false,
+  focusMode: false,
+  lineSpacing: "1",
   fontSize: "20",
   ruler: false,
-  highlight: false,
-  hoverMagnifyingGlass: false,
+  hoverHighlight: false,
+  fontColor: 'Default',
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
@@ -105,10 +107,15 @@ function updatePage(preference = null) {
   // Disable DOM change detection while the process is running
   observer.disconnect();
   extAPI.storage.local.get("accessorEasePreferences", (result) => {
-    const preferences = result.accessorEasePreferences || defaultValues;
+    let preferences = defaultValues;
+    console.log(result.accessorEasePreferences.runExtension);
+    if (result.accessorEasePreferences && result.accessorEasePreferences.runExtension) {
+      preferences = result.accessorEasePreferences;
+      console.log(preferences);
+    }
     let runFunctions;
 
-    if (preference) {
+    if (preference && preference !== "runExtension") {
       runFunctions = [...functions].filter(
         (item) => item.preference && item.preference.includes(preference)
       );
@@ -118,13 +125,13 @@ function updatePage(preference = null) {
     while (runFunctions.length > 0) {
       let data = runFunctions[0];
       document.querySelectorAll(data.targets).forEach((element) => {
-        const result = data.func(element, preferences);
+        const functionResult = data.func(element, preferences);
         // Check if any other functions need to be ran after the function has been run
-        if (result) {
-          let resultArray = [result];
+        if (functionResult) {
+          let resultArray = [functionResult];
           // Check if the output is an array
-          if (typeof result === 'object' && result.map) {
-            resultArray = result;
+          if (typeof functionResult === 'object' && functionResult.map) {
+            resultArray = functionResult;
           }
           // Remove the functions that will be run later in the process anyway
           const functionsToRun = resultArray.filter(res => runFunctions.filter(fnc => fnc.func === res).length === 0);
@@ -153,7 +160,6 @@ function updatePage(preference = null) {
 startFunctions.map(data => {
   document.querySelectorAll(data.targets).forEach((element) => {
     data.func(element);
-
   });
 });
 

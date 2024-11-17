@@ -24,7 +24,7 @@
       <div class="switch">
         <label>
           Off
-          <input type="checkbox" id="enable-extension" data-key="runExtension">
+          <input type="checkbox" id="enable-extension" data-key="runExtension" checked>
           <span class="lever"></span>
           On
         </label>
@@ -111,7 +111,7 @@
     <section id="fonts" class="panel-section mb-3 p-3">
       <h2>Fonts</h2>
       <div class="form-group mb-3">
-        <label for="selectFontFamily">Select Font Family:</label>
+        <label for="selectFontFamily">Font Family:</label>
         <select id="selectFontFamily" class="form-select" data-key="fontFamily">
           <option value="Default" selected>Default</option>
           <option value="Arial">Arial</option>
@@ -121,7 +121,7 @@
           <option value="Georgia">Georgia</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <input type="checkbox" id="enable-min-font-size" data-key="isMinFontSize" data-enables="#inputFontSize">
         <label for="enable-min-font-size">Enable Minimum Font Size</label>
         <div class="d-flex align-items-center gap-3">
@@ -131,8 +131,8 @@
         </div>
       </div>
       <div>
-        <label for="selectColor">Select Color:</label>
-        <select id="selectColor" class="form-select" data-key="color">
+        <label for="selectColor">Font Color:</label>
+        <select id="selectColor" class="form-select" data-key="fontColor">
           <option value="Default" selected>Default</option>
           <option value="Red">Red</option>
           <option value="Green">Green</option>
