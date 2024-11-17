@@ -3,10 +3,10 @@ function hoverStyles(element, data) {
     const hoverHighlight = data.hoverHighlight; 
     const hoverMagnifyingGlass = data.hoverMagnifyingGlass;
     
-    // this need to be changed
-    // as of now, two mousetracker functions are called
     if (hoverHighlight) {
         mouseTracker("highlight");
+    } else {
+        clearHighlights();
     }
     
     if (hoverMagnifyingGlass) {
@@ -28,7 +28,6 @@ function mouseTracker(checkedOption) {
     activeArea.id = 'active-area';
     document.body.appendChild(activeArea);
 
-    
     // Placeholder active area styles
     activeArea.style.position = 'absolute';
     activeArea.style.width = '100px';
@@ -123,4 +122,11 @@ function wrapWords(container) {
                 container.appendChild(document.createTextNode(' '));
             }
         });
+}
+
+function clearHighlights() {
+    const words = document.querySelectorAll('.accessorease-highlight-word');
+    words.forEach((word) => {
+        word.style.backgroundColor = 'transparent';
+    });
 }
