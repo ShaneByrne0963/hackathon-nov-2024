@@ -1,0 +1,27 @@
+h1, h2, h3 {
+  font-family: "Montserrat", sans-serif;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+.form-select,
+.form-control {
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header>img {
+  width: 64px;
+  height: 64px;
+}
+
+.panel-section {
+  background-color: #eeeeee;
+}

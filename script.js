@@ -11,6 +11,11 @@ const functions = [
     targets: "*",
   },
   {
+    func: applyPalette,
+    preference: "colorPalette",
+    targets: "body"
+  },
+  {
     func: removeBackgroundImage,
     preference: "removeBg",
     targets: "body, header, footer, div, section, article, aside, nav",
@@ -46,11 +51,36 @@ const functions = [
     targets: "body",
   },
   {
+    func: changeButtonSize,
+    preference: "buttonSize",
+    targets: "button",
+  },
+  {
     func: disableAutoplay,
     targets: "audio, video, iframe",
   }
 ];
-const defaultValues = {};
+// These functions are always run on page load. These functions are independent of preferences
+// Avoid using DOM manipulation here, as it may disrupt the page layout even if the user has nothing enabled
+/**
+ * func: The function to be run
+ * targets: The query selector to apply the function to
+ */
+const startFunctions = [
+  
+]
+const defaultValues = {
+  colorContrast: true,
+  removeBg: false,
+  colorPalette: "palette-default",
+  breakParagraph: true,
+  buttonSize: "default",
+  fontFamily: "Default",
+  fontSize: "10",
+  ruler: false,
+  highlight: false,
+  hoverMagnifyingGlass: false
+};
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
 function updatePage(preference = null) {
@@ -72,11 +102,7 @@ function updatePage(preference = null) {
         !("condition" in data) ||
         preferences[data.condition.key] === data.condition.equals
       ) {
-        [...document.querySelectorAll(data.targets)].map((element) => {
-
-          if (data.func === disableAutoplay) {
-            console.log(element.tagName);
-          }
+        document.querySelectorAll(data.targets).forEach((element) => {
           data.func(element, preferences);
         });
       }
@@ -86,10 +112,15 @@ function updatePage(preference = null) {
   });
 }
 
+startFunctions.map(data => {
+  document.querySelectorAll(data.targets).forEach((element) => {
+    data.func(element);
+  });
+});
+
 // Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.action === "update") {
-    console.log(message.preference);
     updatePage(message.preference || null);
   }
 });

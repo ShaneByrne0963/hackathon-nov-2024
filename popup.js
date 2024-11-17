@@ -1,38 +1,3 @@
-/**
- * Gets a value from localStorage, or sets it if none exists
- * @param {String} key The key to get the value from localStorage
- * @returns {Any} The value retrieved from localStorage
- */
-function retrieveData(key) {
-  const storageData = localStorage.getItem(key);
-  if (storageData) {
-    // Changing 'true' and 'false' values from string to boolean
-    switch (storageData) {
-      case 'true':
-        return true;
-      case 'false':
-        return false;
-      default:
-        return storageData;
-    }
-  }
-  else {
-    let item = document.querySelector(`*[data-key="${key}"]`);
-    let value = null;
-    if (!item) {
-      throw new Error("Key not found!");
-    }
-    if (item.getAttribute('type') === 'checkbox') {
-      value = item.checked;
-    }
-    else {
-      value = item.value;
-    }
-    localStorage.setItem(key, value);
-    return value;
-  }
-}
-
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 /**
  * Submits data from the popup tab to the main page
@@ -42,14 +7,22 @@ function sendData(preference=null) {
   let data = {};
   document.querySelectorAll('*[data-key]').forEach(element => {
     const key = element.getAttribute('data-key');
-    let value;
-    if (element.getAttribute('type') === 'checkbox') {
+    const elType = element.getAttribute('type');
+    let value = null;
+    if (elType === 'checkbox') {
       value = element.checked;
     }
-    else {
-      value = element.value; 
+    else if (elType === 'radio') {
+      if (element.checked) {
+        value = element.value;
+      }
     }
-    data[key] = value;
+    else {
+      value = element.value;
+    }
+    if (value !== null) {
+      data[key] = value;
+    }
   });
   let messageData = {
     action: 'update'
@@ -91,8 +64,14 @@ window.addEventListener('DOMContentLoaded', () => {
     const data = result.accessorEasePreferences || [...keyElements].reduce((dataObj, element) => {
       const key = element.getAttribute('data-key');
       let value;
-      if (element.getAttribute('type') === 'checkbox') {
+      let elType = element.getAttribute('type');
+      if (elType === 'checkbox') {
         value = element.checked;
+      }
+      else if (elType === 'radio') {
+        if (element.checked) {
+          value = element.value;
+        }
       }
       else {
         value = element.value; 
@@ -106,15 +85,19 @@ window.addEventListener('DOMContentLoaded', () => {
   
       // Set the input value if it exists in the localStorage
       const key = item.getAttribute('data-key');
+      const elType = item.getAttribute('type');
       const inputValue = data[key];
       if (typeof inputValue === "boolean") {
         item.checked = inputValue;
+      }
+      else if (elType === 'radio') {
+        item.checked = (item.value === inputValue);
       }
       else {
         item.value = inputValue;
       }
   
-      if (item.tagName === 'BUTTON') {
+      if (item.tagName === 'BUTTON' || elType === 'radio') {
         item.addEventListener('click', () => {
           sendData(key);
         });
