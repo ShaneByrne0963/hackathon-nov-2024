@@ -135,6 +135,11 @@ window.addEventListener('DOMContentLoaded', () => {
           sendData(key);
         });
       }
+      else if (elType === 'range') {
+        item.addEventListener('input', () => {
+          sendData(key);
+        });
+      }
       else {
         item.addEventListener('change', () => {
           checkDisabled(item);
@@ -143,6 +148,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Allowing inputs to update an element's inner text with it's value, if specified
+    document.querySelectorAll('[data-updates]').forEach(element => {
+      element.addEventListener('input', () => document.querySelector(element.getAttribute('data-updates')).innerText = element.value);
+    });
+
+    // Enable/Disable all elements depending on the state of the extension control
     document.querySelector('#enable-extension').addEventListener('change', updateExtensionController);
     updateExtensionController();
   });
