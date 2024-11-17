@@ -6,6 +6,11 @@
  */
 const functions = [
   {
+    func: removeBackgroundImage,
+    preference: "removeBg",
+    targets: "body, header, footer, div, section, article, aside, nav",
+  },
+  {
     func: updateColorContrast,
     preference: "colorContrast",
     targets: "*",
@@ -14,11 +19,6 @@ const functions = [
     func: applyPalette,
     preference: "colorPalette",
     targets: "body",
-  },
-  {
-    func: removeBackgroundImage,
-    preference: "removeBg",
-    targets: "body, header, footer, div, section, article, aside",
   },
   {
     func: splitParagraphs,
@@ -75,7 +75,12 @@ const resultFunctions = [
  * func: The function to be run
  * targets: The query selector to apply the function to
  */
-const startFunctions = [];
+const startFunctions = [
+  {
+    func: disableAutoplay,
+    targets: "audio, video, iframe",
+  },
+];
 const defaultValues = {
   colorContrast: true,
   removeBg: false,
@@ -139,9 +144,10 @@ function updatePage(preference = null) {
   });
 }
 
-startFunctions.map((data) => {
+startFunctions.map(data => {
   document.querySelectorAll(data.targets).forEach((element) => {
     data.func(element);
+
   });
 });
 
@@ -156,7 +162,9 @@ extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 const observer = new MutationObserver((mutationsList, obs) => {
   // Only update the page under specific conditions
   let canUpdate = false;
+
   for (let mutation of mutationsList) {
+
     // Always update the page if elements are added/deleted
     if (mutation.type === "childList") {
       canUpdate = true;
@@ -193,6 +201,7 @@ const config = {
 
 // Start observing the document body
 observer.observe(document.body, config);
+
 // Disconnect the observer before page unload
 window.addEventListener("beforeunload", () => {
   observer.disconnect();
