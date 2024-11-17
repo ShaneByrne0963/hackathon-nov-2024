@@ -82,7 +82,7 @@ The Accessibles Team:
 
 - Special thanks to [Code Institute/Event Name] for hosting the hackathon
 - Icons generated using [Icon Source: OpenAI's ChatGPT/Anthropics Claude (confirm which!)]
-- [Any other acknowledgments]
+- [Any other acknowledgments]Photoscissors.com, DaVinci, Canva
 
 ## 📧 Contact
 
