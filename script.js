@@ -13,7 +13,7 @@ const functions = [
   {
     func: applyPalette,
     preference: "colorPalette",
-    targets: "body"
+    targets: "body",
   },
   {
     func: removeBackgroundImage,
@@ -62,8 +62,7 @@ const functions = [
  * func: The function to be run
  * targets: The query selector to apply the function to
  */
-const startFunctions = [
-]
+const startFunctions = [];
 const defaultValues = {
   colorContrast: true,
   removeBg: false,
@@ -74,7 +73,7 @@ const defaultValues = {
   fontSize: "10",
   ruler: false,
   highlight: false,
-  hoverMagnifyingGlass: false
+  hoverMagnifyingGlass: false,
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
@@ -86,9 +85,10 @@ function updatePage(preference = null) {
     let runFunctions;
 
     if (preference) {
-      runFunctions = functions.filter(item => (item.preference && item.preference.includes(preference)));
-    }
-    else {
+      runFunctions = functions.filter(
+        (item) => item.preference && item.preference.includes(preference)
+      );
+    } else {
       runFunctions = functions;
     }
     runFunctions.map((data) => {
@@ -107,7 +107,7 @@ function updatePage(preference = null) {
   });
 }
 
-startFunctions.map(data => {
+startFunctions.map((data) => {
   document.querySelectorAll(data.targets).forEach((element) => {
     data.func(element);
   });
