@@ -4,14 +4,14 @@
   "description": "A browser extension to address website accessibility issues limiting fully diversified inclusivity",
   "manifest_version": 3,
   "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
   },
   "author": "The Accessibles",
   "action": {
-    "default_icon": "icons/icon48.png",
+    "default_icon": "assets/icons/icon48.png",
     "default_popup": "index.html",
     "default_title": "Web Accessor-Ease"
   },
@@ -20,7 +20,7 @@
   ],
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*"],
-    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "update-color.js", "background-images.js", "font.js","focusMode.js","script.js"],
+    "js": ["hover-styles.js", "line-spacing.js", "ruler.js", "split-paragraphs.js", "update-color.js", "background-images.js", "font.js", "palettes.js","focusMode.js", "script.js"],
     "css": ["assets/css/main.css"]
   }]
 }
