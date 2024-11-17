@@ -1,8 +1,4 @@
 function setLineSpacing(element, data) {
-  console.log("Function Running!")
-  console.log(element.style.lineHeight)
-  console.log(data.lineSpacing)
-
   // Get the style from the element
   const computedStyle = window.getComputedStyle(element)
 
