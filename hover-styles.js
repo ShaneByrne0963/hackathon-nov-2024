@@ -2,15 +2,19 @@ function hoverStyles(element, data) {
     // constants are true if checkbox is checked, false if not checked
     const hoverHighlight = data.hoverHighlight; 
     const hoverMagnifyingGlass = data.hoverMagnifyingGlass;
+    const hoverDefault = data.hoverDefault;
     
     if (hoverHighlight) {
+        clearMagnifyingGlass();
         mouseTracker("highlight");
-    } else {
+
+    } else if (hoverMagnifyingGlass) {
         clearHighlights();
-    }
-    
-    if (hoverMagnifyingGlass) {
         mouseTracker("magnifyingGlass");
+
+    } else if (hoverDefault) {
+        clearHighlights();
+        clearMagnifyingGlass();
     }
 }
 
@@ -118,6 +122,11 @@ function wrapWords(container) {
 }
 
 function clearHighlights() {
+    const activeArea = document.getElementById('active-area');
+    if (activeArea) {
+        activeArea.remove();
+    }
+    
     const words = document.querySelectorAll('.accessorease-highlight-word');
     words.forEach((word) => {
         word.style.backgroundColor = 'transparent';
@@ -139,6 +148,13 @@ function magnifyingGlass(areaRect){
     // Placeholder styles for development
     magnifyingGlass.style.position = 'absolute';
     magnifyingGlass.style.width = '100px';
+}
+
+function clearMagnifyingGlass() {
+    const activeArea = document.getElementById('active-area');
+    if (activeArea) {
+        activeArea.remove();
+    }
 }
 
 function activeAreaStyles(checkedOption, activeArea) {
