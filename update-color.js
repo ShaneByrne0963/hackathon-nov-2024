@@ -194,8 +194,8 @@ function updateStyles(element, styles, type) {
     let elementArray = elementStyle.split('; ');
     for (let i = 0; i < elementArray.length; i++) {
       let styleData = elementArray[i].split(':');
-      let prop = styleData[0];
-      let value = styleData[1].replace(';', '').trim();
+      let prop = styleData.splice(0, 1);
+      let value = styleData.join(':').trim().trim(';');
 
       if (prop in styles) {
         if (!editedStyles.includes(prop)) {
@@ -262,7 +262,7 @@ function resetStyles(element, styles, type) {
         }
       }
     }
-    let newStyles = ``;
+    let oldStyles = ``;
     let first = true;
     let editedStyles = [];
     if (element.hasAttribute('accessorease-css')) {
@@ -275,16 +275,17 @@ function resetStyles(element, styles, type) {
       }
       if (element.hasAttribute(`accessorease-style-${style}`)) {
         if (!first) {
-          newStyles += ` `;
+          oldStyles += ` `;
         }
         first = false;
-        newStyles += `${style}: ${element.getAttribute(`accessorease-style-${style}`)};`;
+        oldStyles += `${style}: ${element.getAttribute(`accessorease-style-${style}`)};`;
+        element.removeAttribute(`accessorease-style-${style}`);
       }
     }
     if (editedStyles.length > 0) {
       element.setAttribute('accessorease-css', editedStyles.join());
     }
-    element.setAttribute('style', extraStyles + newStyles);
+    element.setAttribute('style', extraStyles + oldStyles);
   }
 }
 

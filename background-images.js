@@ -34,12 +34,11 @@ function removeBackgroundImage(element, data) {
 
   } else {
     // Restore the original background image if present
-    if (element.hasAttribute('accessorease-bg-image-updated')) {
-      let stylesUpdate = ['width', 'height', 'color', 'background-image', 'background-color', 'background-size', 'background-position', 'background-repeat'];
+  
+      let stylesUpdate = ['width', 'height', 'background-image', 'background-color', 'background-size', 'background-position', 'background-repeat'];
 
       resetStyles(element, stylesUpdate, 'bg-image-updated');
-
-    }
+    
   }
 }
 
