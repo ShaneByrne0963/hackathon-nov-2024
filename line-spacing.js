@@ -39,7 +39,5 @@ function setLineSpacing(element, data) {
 
   element.style.lineHeight = (data.lineSpacing * Number(numbersArray.join(""))) + units
   element.style.lineSpacing = (data.lineSpacing * Number(numbersArray.join(""))) + units
-  console.log(element.style.lineHeight)
-
 }
 
