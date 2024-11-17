@@ -60,7 +60,7 @@ extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
 window.addEventListener('DOMContentLoaded', () => {
   // Retrieve the preferences from the local storage
   extAPI.storage.local.get('accessorEasePreferences', (result) => {
-    const keyElements = document.querySelectorAll('*[data-key]');
+    const keyElements = document.querySelectorAll('[data-key]');
     const data = result.accessorEasePreferences || [...keyElements].reduce((dataObj, element) => {
       const key = element.getAttribute('data-key');
       let value;
@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
             document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
           }
           if (item.hasAttribute('data-disables')) {
-            document.querySelector(item.getAttribute('data-enables')).disabled = item.checked;
+            document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
           }
           sendData(key);
         });
@@ -114,11 +114,19 @@ window.addEventListener('DOMContentLoaded', () => {
             document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
           }
           if (item.hasAttribute('data-disables')) {
-            document.querySelector(item.getAttribute('data-enables')).disabled = item.checked;
+            document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
           }
           sendData(key);
         });
       }
+    });
+
+    // Enabling/Disabling inputs that depend on checkboxes being checked
+    document.querySelectorAll('[data-enables]').forEach((item) => {
+      document.querySelector(item.getAttribute('data-enables')).disabled = !item.checked;
+    });
+    document.querySelectorAll('[data-disables]').forEach((item) => {
+      document.querySelector(item.getAttribute('data-disables')).disabled = item.checked;
     });
   });
 
