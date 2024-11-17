@@ -12,7 +12,7 @@ function ruler(element, data) {
 function createRuler() {
         const oldParentContainer = document.getElementById("accessorease-parent-container");
         if (oldParentContainer) {
-                return
+                return;
         }
 
         // Remove default cursor

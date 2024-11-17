@@ -105,77 +105,29 @@
       </div>
     </section>
 
-    <section id="mouse-tools" class="panel-section mb-3 p-3">
-      <h2>Mouse Tools</h2>
-      <div>
-        <input type="checkbox" id="ruler" data-key="ruler" aria-label="Select a ruler" />
-        <label for="ruler">Ruler</label>
-      </div>
-      <div>
-        <input type="checkbox" name="highlight" value="highlight" aria-label="Highlight" data-key="hoverHighlight" />
-        <label for="highlight">Highlight</label>
-      </div>
-      <div>
-        <input type="checkbox" name="magnifyingGlass" value="magnifyingGlass" aria-label="Magnifying Glass"
-          data-key="hoverMagnifyingGlass" />
-        Magnifying Glass
-      </label>
-    </fieldset>
-
-    <!-- Buttons with ARIA labels for clarity -->
-    <button aria-label="Action for Button 1">Button 1</button>
-    <button aria-label="Action for Button 2">Button 2</button>
-    <button aria-label="Action for Button 3">Button 3</button>
-
-    <!-- Checkbox to hide/show background images -->
-    <div>
-      <input type="checkbox" id="remove-bg-image" data-key="removeBg" aria-label="Toggle to remove background images" />
-      <!-- Label for Background Image Removal toggle -->
-      <label for="remove-bg-image">Hide background images</label>
-    </div>
-
-    <!-- Checkbox to break up long paragraphs -->
-    <div>
-      <input type="checkbox" id="break-paragraph" data-key="breakParagraph"
-        aria-label="Toggle to break up long paragraphs" />
-      <!-- Label for Background Image Removal toggle -->
-      <label for="break-paragraph">Break up long paragraphs</label>
-      <br />
-    </div>
-
-    <!-- Radio buttons for colour palettes -->
-    <div>
-      <h4>Palette</h4>
-      <label>
-        <input type="radio" name="vision" value="normal" data-key="colorPalette" checked /> Normal
-      </label>
-      <label>
-        <input type="radio" name="vision" value="prot" data-key="colorPalette" /> Protanopia
-      </label>
-      <label>
-        <input type="radio" name="vision" value="deut" data-key="colorPalette" /> Deuteranopia
-      </label>
-      <label>
-        <input type="radio" name="vision" value="trit" data-key="colorPalette" /> Tritanopia
-      </label>
-    </div>
-
-    <!-- Font Customization -->
-    <fieldset>
-      <legend>Font Customization</legend>
-      <label for="selectFontFamily">Select Font Family:</label>
-      <select id="selectFontFamily" class="form-select" data-key="fontFamily">
-        <option value="Arial" selected>Arial</option>
-        <option value="Verdana">Verdana</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Tahoma">Tahoma</option>
-        <option value="Georgia">Georgia</option>
-      </select>
-
-      <label for="inputFontSize">Minimum Font Size (px):</label>
-      <input type="number" id="inputFontSize" min="10" max="100" step="1" placeholder="16" data-key="fontSize" />
-    </fieldset>
-  </main>
+      <section id="mouse-tools" class="panel-section mb-3 p-3">
+        <h2>Mouse Tools</h2>
+        <div>
+          <input
+            type="checkbox"
+            id="ruler"
+            data-key="ruler"
+            aria-label="Select a ruler"
+          />
+          <label for="ruler">Ruler</label>
+        </div>
+          <div>
+            <input
+              type="checkbox"
+              name="hover-style"
+              value="highlight"
+              aria-label="Highlight"
+              data-key="hoverHighlight"
+            />
+            <label for="highlight">Highlight</label>
+          </div>
+      </section>
+    </main>
 
   <!-- Slider for line spacing -->
   <label for="lineSpacing">Line Spacing</label>

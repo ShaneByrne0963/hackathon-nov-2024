@@ -243,7 +243,6 @@ function resetStyles(element, styles, type) {
     let extraStyles = '';
     if (elementStyle) {
       let elementArray = elementStyle.split('; ');
-      console.log(elementArray);
       for (let i = 0; i < elementArray.length; i++) {
         let prop = elementArray[i].split(':')[0];
   
@@ -353,6 +352,7 @@ function updateColorContrast(element, data) {
         let backHsl = rgb2hsl(...getColorParameters(backgroundColor));
         let textHsl = rgb2hsl(...getColorParameters(textColor));
         let goodContrast = false;
+        let changedBackground  = false;
   
         // Gradually changing the values of the colors until the contrast is strong enough
         // Text will always be changed first
@@ -363,6 +363,7 @@ function updateColorContrast(element, data) {
             }
             else if (backHsl.l < 100) {
               textHsl.l = 0;
+              changedBackground = true;
               backHsl.l++;
             }
             else {
@@ -377,6 +378,7 @@ function updateColorContrast(element, data) {
             }
             else if (backHsl.l > 0) {
               textHsl.l = 100;
+              changedBackground = true;
               backHsl.l--;
             }
             else {
@@ -398,7 +400,10 @@ function updateColorContrast(element, data) {
             // Make sure to include !important tags so they override everything
             const newStyles = {
               "color": `rgb(${getColorParameters(textNewRgb).join()})`,
-              "background-color": `rgb(${getColorParameters(backNewRgb).join()})`
+            }
+            if (changedBackground) {
+              element.setAttribute('accessorease-contrast-background', true);
+              newStyles["background-color"] = `rgb(${getColorParameters(backNewRgb).join()})`;
             }
             updateStyles(element, newStyles, 'updated-contrast');
           }
@@ -408,6 +413,24 @@ function updateColorContrast(element, data) {
   }
   else {
     // Setting the original colors back
+    let styles = ['color'];
+    if (element.hasAttribute('accessorease-contrast-background')) {
+      styles.push('background-color');
+      element.removeAttribute('accessorease-contrast-background');
+    }
     resetStyles(element, ['color', 'background-color'], 'updated-contrast');
   }
+}
+
+/**
+ * Runs updateColorContrast, regardless of whether colorContrast is true or not
+ * @param {HTMLElement} element The element that is being targeted
+ * @param {Object} data The user's preferences
+ * @returns {[Function]} Any functions to be run after updateColorContrast
+ */
+function forceColorContrast(element, data) {
+  let fakeData = {...data};
+  fakeData.colorContrast = true;
+  console.log("Forcing updateColorContrast");
+  return updateColorContrast(element, fakeData);
 }
