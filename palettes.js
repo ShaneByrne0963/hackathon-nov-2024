@@ -1,4 +1,4 @@
-// Define preset palettes
+// Extend existing palettes object with contrast thresholds
 const palettes = {
     norm: null, // NORMAL mode (default styling)
     prot: {
@@ -15,10 +15,117 @@ const palettes = {
     }
 };
 
-// Store original styles to restore NORMAL mode
-let originalStyles = {};
+// Helper function to get computed colors
+function getComputedColors(element) {
+    const styles = window.getComputedStyle(element);
+    return {
+        background: styles.backgroundColor,
+        text: styles.color,
+        border: styles.borderColor
+    };
+}
 
-// Function to save original styles of all elements
+// Convert color to RGB array
+function getRGB(color) {
+    const temp = document.createElement('div');
+    temp.style.color = color;
+    document.body.appendChild(temp);
+    const style = window.getComputedStyle(temp);
+    const rgb = style.color.match(/\d+/g).map(Number);
+    document.body.removeChild(temp);
+    return rgb;
+}
+
+// Calculate relative luminance for WCAG contrast
+function calculateRelativeLuminance(r, g, b) {
+    const [rs, gs, bs] = [r, g, b].map(c => {
+        c = c / 255;
+        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+// Calculate contrast ratio between two colors
+function getContrastRatio(color1, color2) {
+    const rgb1 = getRGB(color1);
+    const rgb2 = getRGB(color2);
+    
+    const l1 = calculateRelativeLuminance(...rgb1);
+    const l2 = calculateRelativeLuminance(...rgb2);
+    
+    const lighter = Math.max(l1, l2);
+    const darker = Math.min(l1, l2);
+    
+    return (lighter + 0.05) / (darker + 0.05);
+}
+
+// Enhanced function to detect problematic color combinations
+function detectColorIssues(element) {
+    const colors = getComputedColors(element);
+    const issues = [];
+
+    // Skip transparent backgrounds
+    if (colors.background !== 'rgba(0, 0, 0, 0)') {
+        // Check text contrast
+        const textContrast = getContrastRatio(colors.background, colors.text);
+        if (textContrast < 3.0) {
+            issues.push('text-contrast');
+        }
+
+        // Check border contrast if border exists
+        if (colors.border !== 'rgba(0, 0, 0, 0)') {
+            const borderContrast = getContrastRatio(colors.background, colors.border);
+            if (borderContrast < 3.0) {
+                issues.push('border-contrast');
+            }
+        }
+    }
+
+    return issues;
+}
+
+// Enhanced applyPalette function
+function applyPalette(element, data) {
+    const paletteKey = data.colorPalette;
+    
+    if (paletteKey === "norm") {
+        resetStyles(element, ["background-color", "color", "border-color"], 'color-palette');
+        return;
+    }
+
+    const palette = palettes[paletteKey];
+    if (!palette) return;
+
+    const colorIssues = detectColorIssues(element);
+    if (colorIssues.length === 0) return; // Skip if no issues detected
+
+    const styles = {};
+    
+    if (colorIssues.includes('text-contrast')) {
+        styles["background-color"] = palette.colors[0];
+        styles["color"] = palette.colors[1];
+    }
+    
+    if (colorIssues.includes('border-contrast')) {
+        styles["border-color"] = palette.colors[2];
+    }
+
+    if (Object.keys(styles).length > 0) {
+        updateStyles(element, styles, 'color-palette');
+        // Mark element as corrected for future reference
+        element.dataset.colorCorrected = 'true';
+    }
+}
+
+// Add a function to recursively process all elements
+function processPageElements(rootElement = document.body, data) {
+    const elements = rootElement.getElementsByTagName("*");
+    for (const element of elements) {
+        applyPalette(element, data);
+    }
+}
+
+// Save original styles (keep your existing implementation)
 function saveOriginalStyles() {
     const allElements = document.querySelectorAll("*");
     originalStyles = {};
@@ -30,107 +137,4 @@ function saveOriginalStyles() {
             borderColor: el.style.borderColor || "",
         };
     });
-}
-
-// Helper function to get computed colors from an element in the webpage
-function getComputedColors(element) {
-    const styles = window.getComputedStyle(element);
-    return {
-        background: styles.backgroundColor,
-        text: styles.color,
-        border: styles.borderColor
-    };
-}
-
-// Calculate contrast ratio between two colors
-function getContrastRatio(color1, color2) {
-    // Helper function to parse RGB values
-    function getRGBValues(color) {
-        const match = color.match(/\d+/g);
-        return match ? match.map(Number) : [0, 0, 0];
-    }
-    
-    // Calculate relative luminance
-    function getLuminance(r, g, b) {
-        const [rs, gs, bs] = [r, g, b].map(c => {
-            c = c / 255;
-            return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-        });
-        return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
-    }
-
-    const rgb1 = getRGBValues(color1);
-    const rgb2 = getRGBValues(color2);
-    
-    const l1 = getLuminance(...rgb1);
-    const l2 = getLuminance(...rgb2);
-    
-    const lighter = Math.max(l1, l2);
-    const darker = Math.min(l1, l2);
-    
-    return (lighter + 0.05) / (darker + 0.05);
-}
-
-// Detect color contrast issues for an element
-function detectColorIssues(element) {
-    const colors = getComputedColors(element);
-    const issues = [];
-    const CONTRAST_THRESHOLD = 3.0; // WCAG AA standard for large text
-
-    // Only check elements with non-transparent background
-    if (colors.background !== 'rgba(0, 0, 0, 0)' && 
-        colors.background !== 'transparent') {
-        
-        // Check text contrast
-        const textContrast = getContrastRatio(colors.background, colors.text);
-        if (textContrast < CONTRAST_THRESHOLD) {
-            issues.push('text-contrast');
-        }
-
-        // Check border contrast if there's a visible border
-        if (colors.border !== 'rgba(0, 0, 0, 0)' && 
-            colors.border !== 'transparent' &&
-            element.style.borderWidth !== '0px') {
-            const borderContrast = getContrastRatio(colors.background, colors.border);
-            if (borderContrast < CONTRAST_THRESHOLD) {
-                issues.push('border-contrast');
-            }
-        }
-    }
-
-    return issues;
-}
-
-// Modify your existing applyPalette function
-function applyPalette(element, data) {
-    const paletteKey = data.colorPalette;
-    
-    // Handle NORMAL mode
-    if (paletteKey === "norm") {
-        const styles = ["background-color", "color", "border-color"];
-        resetStyles(element, styles, 'color-palette');
-        return;
-    }
-
-    // Check if we have a valid palette
-    if (!palettes[paletteKey]) return;
-
-    // Detect color issues
-    const colorIssues = detectColorIssues(element);
-    
-    // Only proceed if there are issues to fix
-    if (colorIssues.length > 0) {
-        const styles = {};
-        
-        if (colorIssues.includes('text-contrast')) {
-            styles["background-color"] = palettes[paletteKey][0];
-            styles["color"] = palettes[paletteKey][1];
-        }
-        
-        if (colorIssues.includes('border-contrast')) {
-            styles["border-color"] = palettes[paletteKey][2];
-        }
-
-        updateStyles(element, styles, 'color-palette');
-    }
 }
