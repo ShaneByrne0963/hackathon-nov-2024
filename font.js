@@ -25,7 +25,7 @@ function setFontFamily(element, data) {
 function setFontSize(element, data) {
   const fontSize = data.fontSize;
 
-  let existingFontSize = document.querySelector(".dynamic-font-size");
+  let existingFontSize = document.querySelector(".accessorease-font-size");
 
   if (existingFontSize) {
     existingFontSize.remove();
@@ -39,7 +39,7 @@ function setFontSize(element, data) {
          }
      `;
 
-  styleGlobal.className = "dynamic-font-size";
+  styleGlobal.className = ".accessorease-font-size";
 
   document.head.appendChild(styleGlobal);
 }

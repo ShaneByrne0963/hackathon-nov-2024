@@ -13,7 +13,7 @@ const functions = [
   {
     func: applyPalette,
     preference: "colorPalette",
-    targets: "body"
+    targets: "body",
   },
   {
     func: removeBackgroundImage,
@@ -53,7 +53,7 @@ const functions = [
   {
     func: setFocusMode,
     preference: "focusMode",
-    targets: "body",
+    targets: "img, footer, aside",
   },
 ];
 // These functions are always run on page load. These functions are independent of preferences
@@ -62,9 +62,7 @@ const functions = [
  * func: The function to be run
  * targets: The query selector to apply the function to
  */
-const startFunctions = [
-  
-]
+const startFunctions = [];
 const defaultValues = {
   colorContrast: true,
   removeBg: false,
@@ -75,7 +73,7 @@ const defaultValues = {
   fontSize: "10",
   ruler: false,
   highlight: false,
-  hoverMagnifyingGlass: false
+  hoverMagnifyingGlass: false,
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
@@ -109,7 +107,7 @@ function updatePage(preference = null) {
   });
 }
 
-startFunctions.map(data => {
+startFunctions.map((data) => {
   document.querySelectorAll(data.targets).forEach((element) => {
     data.func(element);
   });

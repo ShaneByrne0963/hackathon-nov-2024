@@ -3,7 +3,6 @@ let isFocusModeOn = false;
 
 function setFocusMode(data) {
   const focusMode = data.focusMode;
-  console.log(focusMode);
   isFocusModeOn = !isFocusModeOn;
 
   if (isFocusModeOn) {
@@ -17,5 +16,3 @@ function setFocusMode(data) {
 
 // JavaScript
 const focusModeButton = document.getElementById("focusModeButton");
-
-focusModeButton.addEventListener("click", setFocusMode);
