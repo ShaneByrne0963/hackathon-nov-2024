@@ -2,18 +2,16 @@
 function changeButtonSize(element, data) {
     // Retrieve the button size preference from the `data` object
     const selectedSize = data.buttonSize || "default";
-  
     // Remove any existing size-related classes
-    element.classList.remove("button-medium", "button-large");
+    element.classList.remove("accessorease-button-medium", "accessorease-button-large");
   
     // Apply the new size class based on the preference
     if (selectedSize === "medium") {
-      element.classList.add("button-medium");
+      element.classList.add("accessorease-button-medium");
     } else if (selectedSize === "large") {
-      element.classList.add("button-large");
+      element.classList.add("accessorease-button-large");
     }
   
-    console.log(`Button size updated to: ${selectedSize}`);
   }
   
   // Add helper CSS classes to control button size
@@ -21,11 +19,11 @@ function changeButtonSize(element, data) {
     const style = document.createElement("style");
     style.id = "button-size-styles";
     style.textContent = `
-      .button-medium {
+      .accessorease-button-medium {
         font-size: 16px;
         padding: 10px 15px;
       }
-      .button-large {
+      .accessorease-button-large {
         font-size: 20px;
         padding: 15px 20px;
       }

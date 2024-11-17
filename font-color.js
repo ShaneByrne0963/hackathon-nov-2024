@@ -1,5 +1,5 @@
 // Listen for messages from the popup script
-const extAPI = typeof browser !== "undefined" ? browser : chrome;
+/* const extAPI = typeof browser !== "undefined" ? browser : chrome;
 extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "changeFontColor") {
     const selectedColor = message.fontColor;
@@ -15,4 +15,4 @@ extAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Respond back if needed (optional)
     sendResponse({ status: "success", appliedColor: selectedColor });
   }
-});
+}); */
