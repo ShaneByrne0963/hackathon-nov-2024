@@ -68,6 +68,7 @@ const functions = [
  */
 const startFunctions = [
   disableAutoplay,
+
 ]
 const defaultValues = {
   colorContrast: true,
