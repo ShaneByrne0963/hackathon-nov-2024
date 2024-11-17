@@ -12,6 +12,7 @@ function applyPalette(element, data) {
     if (paletteKey === "norm") {
         const styles = ["background-color", "color", "border-color"];
         resetStyles(element, styles, 'color-palette');
+        return updateColorContrast;
     }
     else if (palettes[paletteKey]) {
         const styles = {
@@ -20,5 +21,6 @@ function applyPalette(element, data) {
             "border-color": palettes[paletteKey][2]
         };
         updateStyles(element, styles, 'color-palette');
+        return forceColorContrast;
     }
 }
