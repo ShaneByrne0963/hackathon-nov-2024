@@ -92,6 +92,7 @@ const defaultValues = {
   ruler: false,
   highlight: false,
   hoverMagnifyingGlass: false,
+  eventListeners: [],
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 

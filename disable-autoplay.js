@@ -1,7 +1,8 @@
-function disableAutoplay(element) {
+function disableAutoplay(element, data) {
   // console.log('disable-autoplay running ... ');
 
-  if (element.tagName === 'VIDEO' && !element.getAttribute('accessorease-video-eventlistener')) {
+
+  if (element.tagName === 'VIDEO' && !data.eventListeners.includes(element)) { // && !element.getAttribute('accessorease-video-eventlistener')) {
     console.log('trying to add event listnener');
     // Only set once!!
     const clickHandler = function (event) {
@@ -19,6 +20,7 @@ function disableAutoplay(element) {
     const siblings = Array.from(element.parentNode.parentNode.children);
 
     element.addEventListener('click', clickHandler);
+    data.eventListeners.push([]);
     element.parentElement.addEventListener('click', clickHandler);
     siblings.forEach(sibling => sibling.addEventListener('click', clickHandler));
     element.setAttribute('accessorease-video-eventlistener', true);
