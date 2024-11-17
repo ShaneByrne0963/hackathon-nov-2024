@@ -38,7 +38,7 @@ const functions = [
   {
     func: setLineSpacing,
     preference: "lineSpacing",
-    targets: "*",
+    targets: "p, span",
   },
   {
     func: setFontFamily,
