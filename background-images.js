@@ -56,33 +56,9 @@ function removeBackgroundImage(element, data) {
       }
 
 
-      updateStyles(element, stylesUpdate, 'hello-world');
-      element.setAttribute('accessorease-bg-image-updated', true);
+      updateStyles(element, stylesUpdate, 'bg-image-updated');
 
-      data['colorContrast'] = true;
-      updateColorContrast(element, data);
-
-      // Go through each child element and check if it has text
-      childElements.forEach((child) => {
-        if (child.textContent.trim() !== '') {
-          // Save the original text color
-          // if (!child.getAttribute("accessorease-style-color")) {
-          //   const childStyle = window.getComputedStyle(child);
-          //   child.setAttribute("accessorease-style-color", childStyle.color);
-          // }
-
-          // data['colorContrast'] = true;
-          if (isButton(child) || findBackgroundColor(child) === origBgColor) {
-            //   // child.style.color = contrastColor;
-            // child.setAttribute('accessorease-font-color-updated', true);
-            updateColorContrast(child, data);
-
-            //   updateStyles(child, { 'color': contrastColor });
-          }
-        }
-      });
     }
-
 
   } else {
     // Restore the original background image if present
@@ -93,23 +69,9 @@ function removeBackgroundImage(element, data) {
       if (element.hasAttribute('accessorease-updated-contrast')) {
         stylesUpdate.push('color');
       }
-      resetStyles(element, stylesUpdate);
+      resetStyles(element, stylesUpdate, 'bg-image-updated');
 
-      // element.style.backgroundImage = originalBg;
-      // element.style.backgroundColor = "";
-
-      // Restore the original text color for each child
-      childElements.forEach((child) => {
-        if (child.hasAttribute('accessorease-updated-contrast')) {
-          // originalTextColor = child.getAttribute("accessorease-style-color");
-          //    if (!data.colorContrast) {
-          resetStyles(child, ['color', 'background-color']);
-
-          // child.style.color = originalTextColor;
-          //    }
-        }
-      });
-    }
+      }
   }
 }
 

@@ -6,6 +6,11 @@
  */
 const functions = [
   {
+    func: removeBackgroundImage,
+    preference: "removeBg",
+    targets: "body, header, footer, div, section, article, aside, nav",
+  },
+  {
     func: updateColorContrast,
     preference: "colorContrast",
     targets: "*",
@@ -15,11 +20,7 @@ const functions = [
     preference: "colorPalette",
     targets: "body"
   },
-  {
-    func: removeBackgroundImage,
-    preference: "removeBg",
-    targets: "body, header, footer, div, section, article, aside, nav",
-  },
+
   {
     func: splitParagraphs,
     preference: "breakParagraph",
@@ -126,42 +127,6 @@ extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 });
 
-const videoObserver = new MutationObserver((mutationsList, obs) => {
-  for (let mutation of mutationsList) {
-
-    mutation.addedNodes.forEach(node => {
-      if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === "AUDIO" || node.tagName === "VIDEO")) {
-        console.log('Mutations observed: ', node)
-
-        if (element.tagName === 'VIDEO' && !element.getAttribute('accessorease-video-eventlistener-obs')) {
-
-          const clickHandler = function (event) {
-            console.log('Video clicked:', event.target);
-            node.setAttribute('accessorease-ignore', true);
-            node.removeEventListener('click', clickHandler);
-            console.log('event listener removed:', node.attributes);
-
-          };
-
-          node.addEventListener('click', clickHandler);
-          node.setAttribute('accessorease-video-eventlistener-obs', true);
-          console.log('event listener set:', node.attributes);
-
-          node.autoplay = false;
-          node.removeAttribute("autoplay");
-          if (typeof node.pause === "function") {
-            node.pause();
-          }
-          //node.setAttribute('accessorease-autoplay-disabled', true);
-          console.log("in observer: Autoplay disabled for ", node);
-        }
-      }
-    });
-
-  }
-});
-
-
 // Create a MutationObserver instance
 const observer = new MutationObserver((mutationsList, obs) => {
   // Only update the page under specific conditions
@@ -205,11 +170,9 @@ const config = {
 
 // Start observing the document body
 observer.observe(document.body, config);
-videoObserver.observe(document, config);
 
 // Disconnect the observer before page unload
 window.addEventListener("beforeunload", () => {
   observer.disconnect();
-  videoObserver.disconnect();
 
 });
