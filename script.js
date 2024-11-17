@@ -6,6 +6,10 @@
  */
 const functions = [
   {
+    func: disableAutoplay,
+    targets: "audio, video",
+  },
+  {
     func: removeBackgroundImage,
     preference: "removeBg",
     targets: "body, header, footer, div, section, article, aside, nav",
@@ -81,10 +85,6 @@ const resultFunctions = [
  * targets: The query selector to apply the function to
  */
 const startFunctions = [
-  {
-    func: disableAutoplay,
-    targets: "audio, video, iframe",
-  },
 ];
 const defaultValues = {
   colorContrast: false,
@@ -100,6 +100,7 @@ const defaultValues = {
   ruler: false,
   hoverHighlight: false,
   fontColor: 'Default',
+  eventListeners: [],
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
 
