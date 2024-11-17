@@ -17,6 +17,9 @@ function setLineSpacing(element, data) {
     element.style.lineHeight = element.style.originalLineHeight
   }
 
+  if (element.style.originalLineHeight === "normal") {
+    element.style.lineHeight = data.lineSpacing
+  }
   let propertyArray = element.style.originalLineHeight.split("")
 
   // Loop over the characters in the style to separate the numbers from the units
@@ -36,6 +39,7 @@ function setLineSpacing(element, data) {
   let units = unitsArray.join("")
 
   element.style.lineHeight = (data.lineSpacing * Number(numbersArray.join(""))) + units
+  element.style.lineSpacing = (data.lineSpacing * Number(numbersArray.join(""))) + units
   console.log(element.style.lineHeight)
 
 }
