@@ -193,11 +193,13 @@ function updateStyles(element, styles, type) {
   if (elementStyle) {
     let elementArray = elementStyle.split('; ');
     for (let i = 0; i < elementArray.length; i++) {
-      let prop = elementArray[i].split(':')[0];
+      let styleData = elementArray[i].split(':');
+      let prop = styleData[0];
+      let value = styleData[1].replace(';', '').trim();
 
       if (prop in styles) {
         if (!editedStyles.includes(prop)) {
-          element.setAttribute('accessorease-style-' + prop, styles[prop]);
+          element.setAttribute('accessorease-style-' + prop, value);
         }
         elementArray.splice(i, 1);
         i--;
