@@ -47,7 +47,7 @@ const functions = [
   {
     func: setFontSize,
     preference: "isMinFontSize, fontSize",
-    targets: "body",
+    targets: "*",
   },
   {
     func: setFontColor,
