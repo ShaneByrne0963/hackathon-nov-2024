@@ -122,7 +122,7 @@ function highlight(areaRect) {
  * to allow for highlighting of individual words
  */
 function wrapWords(container) {
-        const words = container.textContent.split(' '); // Split text by spaces
+        const words = container.innerText.split(' '); // Split text by spaces
         container.innerHTML = ''; // Clear existing text
 
         words.forEach((word, index) => {
