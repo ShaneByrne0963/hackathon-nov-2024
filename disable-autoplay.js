@@ -46,10 +46,13 @@ function disableAutoplay(element, data) {
 
     // Set event listeners to a selection of surrounding elements to get buttons and div wrappers
     // Better solution: Check for bounding rectangles overlapping the video
-    listenerGroup.push(element);
-    listenerGroup.push(element.parentNode);
     element.addEventListener('click', clickHandler);
-    element.parentNode.addEventListener('click', clickHandler);
+    listenerGroup.push(element);
+
+    if (element.parentNode) {
+      element.parentNode.addEventListener('click', clickHandler);
+      listenerGroup.push(element.parentNode);
+    }
 
     if (siblings) {
       siblings.forEach(sibling => {
