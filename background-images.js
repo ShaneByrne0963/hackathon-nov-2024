@@ -38,7 +38,7 @@ function removeBackgroundImage(element, data) {
       let stylesUpdate = ['width', 'height', 'background-image', 'background-color', 'background-size', 'background-position', 'background-repeat'];
 
       resetStyles(element, stylesUpdate, 'bg-image-updated');
-      return updateColorContrast;
+      return [clearColorContrast, updateColorContrast];
 
     
   }
