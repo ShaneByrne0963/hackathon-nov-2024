@@ -47,7 +47,7 @@ const functions = [
   {
     func: setFontSize,
     preference: "isMinFontSize, fontSize",
-    targets: "*",
+    targets: "body *",
   },
   {
     func: setFontColor,
@@ -62,7 +62,7 @@ const functions = [
   {
     func: updateColorContrast,
     preference: "colorContrast",
-    targets: "*",
+    targets: "body *",
   },
   {
     func: setFocusMode,

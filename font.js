@@ -25,13 +25,7 @@ function setFontFamily(element, data) {
 function setFontSize(element, data) {
   const fontSize = data.fontSize;
 
-  // let existingFontSize = document.querySelector(".accessorease-font-size");
-
-  // if (existingFontSize) {
-  //   existingFontSize.remove();
-  // }
-
-  if (data.isMinFontSize && fontSize) {
+  if (data.isMinFontSize && fontSize && element.innerText) {
 
     const elementStyle = window.getComputedStyle(element);
 
@@ -41,7 +35,7 @@ function setFontSize(element, data) {
     }
     else {
       elementFontSize = parseFloat(elementStyle.getPropertyValue("font-size").replace('px', ''));
-      element.getAttribute('accessorease-original-size');
+      element.setAttribute('accessorease-original-size', elementFontSize);
     }
 
     if (elementFontSize < parseFloat(fontSize)) {
