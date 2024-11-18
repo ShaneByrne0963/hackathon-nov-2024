@@ -153,7 +153,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Allowing inputs to update an element's inner text with it's value, if specified
+    // Allowing inputs to update an element's inner text with its value, if specified
     document.querySelectorAll('[data-updates]').forEach(element => {
       element.addEventListener('input', () => document.querySelector(element.getAttribute('data-updates')).innerText = element.value);
       document.querySelector(element.getAttribute('data-updates')).innerText = element.value;
