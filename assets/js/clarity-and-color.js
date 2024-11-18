@@ -459,3 +459,110 @@ function clearColorContrast(element, data) {
   fakeData.colorContrast = false;
   return updateColorContrast(element, fakeData);
 }
+
+
+/**
+ * Processes the replacement and reinstatement of background images.
+ * @param {element} Element whose bg image will be removed and text colors updated
+ * @param {data} User preferences
+ */
+function removeBackgroundImage(element, data) {
+  const childElements = element.querySelectorAll("*");
+
+  if (data.removeBg && childElements.length && !isButton(element)) {
+
+    const style = window.getComputedStyle(element);
+
+    if (hasBackgroundImage(style)) {
+      // For elements with size set by the background image, apply explicit dimensions
+      let newStyles = {
+        'background-image': 'none',
+        'background-size': style.backgroundSize,
+        'background-position': style.backgroundPosition,
+        'background-repeat': style.backgroundRepeat,
+      };
+
+      if (
+        style.backgroundSize === "cover" ||
+        style.backgroundSize === "contain"
+      ) {
+        newStyles['width'] = style.width;
+        newStyles['height'] = style.height;
+      }
+
+      updateStyles(element, newStyles, 'bg-image-updated');
+      return forceColorContrast;
+    }
+
+  } else {
+    // Restore the original background image if present
+  
+      let stylesUpdate = ['width', 'height', 'background-image', 'background-color', 'background-size', 'background-position', 'background-repeat'];
+
+      resetStyles(element, stylesUpdate, 'bg-image-updated');
+      return [clearColorContrast, updateColorContrast];
+
+    
+  }
+}
+
+function isButton(element) {
+  if (
+    (element.hasAttribute('role') && element.getAttribute('role').includes('button')) ||
+    (element.hasAttribute('type') && element.getAttribute('type').includes('button'))
+  ) {
+    return true;
+  }
+  return false;
+}
+
+// Function to check if an element has a background image
+function hasBackgroundImage(style) {
+  // Return True if a background image is set in the element style AND if it is not none
+  return style.backgroundImage && style.backgroundImage !== "none";
+}
+
+function setFocusMode(element, data) {
+  const focusMode = data.focusMode;
+
+  if (focusMode) {
+    const styles = { display: "none" };
+
+    updateStyles(element, styles, "focus-mode");
+  } else {
+    const styles = ["display"];
+    resetStyles(element, styles, "focus-mode");
+  }
+}
+
+// Define preset palettes
+const palettes = {
+  norm: null, // NORMAL mode (default styling)
+  prot: {
+      back: '',
+      light: '',
+      dark: '',
+  },
+  prot: ["#0077B6", "#8E44AD", "#2ECC71", "#F1C40F"], // Protanopia
+  deut: ["#1ABC9C", "#9B59B6", "#16A085", "#F4D03F"], // Deuteranopia
+  trit: ["#E74C3C", "#F39C12", "#27AE60", "#8E44AD"], // Tritanopia
+};
+
+// Function to apply a palette
+function applyPalette(element, data) {
+  const paletteKey = data.colorPalette;
+  if (paletteKey === "norm") {
+      const styles = ["background-color", "color", "border-color"];
+      resetStyles(element, styles, 'color-palette');
+      return [clearColorContrast, updateColorContrast];
+  }
+  else if (palettes[paletteKey]) {
+      const styles = {
+          "background-color": palettes[paletteKey][0],
+          "color": palettes[paletteKey][1],
+          "border-color": palettes[paletteKey][2]
+      };
+      updateStyles(element, styles, 'color-palette');
+      return forceColorContrast;
+  }
+}
