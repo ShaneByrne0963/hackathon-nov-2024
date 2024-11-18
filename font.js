@@ -25,7 +25,7 @@ function setFontFamily(element, data) {
 function setFontSize(element, data) {
   const fontSize = data.fontSize;
 
-  if (data.isMinFontSize && fontSize) {
+  if (data.isMinFontSize && fontSize && element.innerText) {
 
     const elementStyle = window.getComputedStyle(element);
 
