@@ -194,7 +194,7 @@ function updateStyles(element, styles, type) {
     let elementArray = elementStyle.split('; ');
     for (let i = 0; i < elementArray.length; i++) {
       let styleData = elementArray[i].split(':');
-      let prop = styleData.splice(0, 1);
+      let prop = styleData.splice(0, 1)[0];
       let value = styleData.join(':').trim().trim(';');
 
       if (prop in styles) {

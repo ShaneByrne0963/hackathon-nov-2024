@@ -47,7 +47,7 @@ const functions = [
   {
     func: setFontSize,
     preference: "isMinFontSize, fontSize",
-    targets: "*",
+    targets: ".commit",
   },
   {
     func: setFontColor,

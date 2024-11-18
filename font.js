@@ -23,13 +23,8 @@ function setFontFamily(element, data) {
 }
 
 function setFontSize(element, data) {
+  console.clear();
   const fontSize = data.fontSize;
-
-  // let existingFontSize = document.querySelector(".accessorease-font-size");
-
-  // if (existingFontSize) {
-  //   existingFontSize.remove();
-  // }
 
   if (data.isMinFontSize && fontSize) {
 
