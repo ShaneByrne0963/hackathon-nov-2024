@@ -51,7 +51,7 @@ const functions = [
   },
   {
     func: setFontSize,
-    preference: "isMinFontSize",
+    preference: "isMinFontSize, fontSize",
     targets: "body",
   },
   {
@@ -82,7 +82,7 @@ const resultFunctions = [
     preference: "colorContrast",
     targets: "*",
   },
-]
+];
 
 const defaultValues = {
   colorContrast: false,
@@ -97,7 +97,7 @@ const defaultValues = {
   fontSize: "20",
   ruler: false,
   hoverHighlight: false,
-  fontColor: 'Default',
+  fontColor: "Default",
   eventListeners: [],
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
@@ -107,7 +107,10 @@ function updatePage(preference = null) {
   observer.disconnect();
   extAPI.storage.local.get("accessorEasePreferences", (result) => {
     let preferences = defaultValues;
-    if (result.accessorEasePreferences && result.accessorEasePreferences.runExtension) {
+    if (
+      result.accessorEasePreferences &&
+      result.accessorEasePreferences.runExtension
+    ) {
       preferences = result.accessorEasePreferences;
     }
     let runFunctions;
@@ -127,24 +130,28 @@ function updatePage(preference = null) {
         if (functionResult) {
           let resultArray = [functionResult];
           // Check if the output is an array
-          if (typeof functionResult === 'object' && functionResult.map) {
+          if (typeof functionResult === "object" && functionResult.map) {
             resultArray = functionResult;
           }
           // Remove the functions that will be run later in the process anyway
-          const functionsToRun = resultArray.filter(res => runFunctions.filter(fnc => fnc.func === res).length === 0);
-          runFunctions.push(...functionsToRun.map(item => {
-            // Finding the data of the function
-            for (let fnc of functions) {
-              if (fnc.func === item) {
-                return fnc;
+          const functionsToRun = resultArray.filter(
+            (res) => runFunctions.filter((fnc) => fnc.func === res).length === 0
+          );
+          runFunctions.push(
+            ...functionsToRun.map((item) => {
+              // Finding the data of the function
+              for (let fnc of functions) {
+                if (fnc.func === item) {
+                  return fnc;
+                }
               }
-            }
-            for (let fnc of resultFunctions) {
-              if (fnc.func === item) {
-                return fnc;
+              for (let fnc of resultFunctions) {
+                if (fnc.func === item) {
+                  return fnc;
+                }
               }
-            }
-          }));
+            })
+          );
         }
       });
       runFunctions.splice(0, 1);
@@ -167,7 +174,6 @@ const observer = new MutationObserver((mutationsList, obs) => {
   let canUpdate = false;
 
   for (let mutation of mutationsList) {
-
     // Always update the page if elements are added/deleted
     if (mutation.type === "childList") {
       canUpdate = true;
