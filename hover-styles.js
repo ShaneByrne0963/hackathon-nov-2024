@@ -55,13 +55,13 @@ function eventListenerCreator(event, checkedOption, activeArea) {
             // Position the active area around the mouse
             const areaWidth = 100;
             const areaHeight = checkedOption === 'highlight' ? 15 : 50;
-            activeArea.style.left = `${mouseX - areaWidth - 40 / 2}px`;
+            activeArea.style.left = `${mouseX - areaWidth - 100 / 2}px`;
             activeArea.style.top = `${mouseY - areaHeight / 2}px`;
             activeArea.style.display = 'block';
     
             // Get bounding box of the active area
             const areaRect = {
-                left: mouseX - areaWidth - 40 / 2,
+                left: mouseX - areaWidth - 100 / 2,
                 right: mouseX + areaWidth / 2,
                 top: mouseY - areaHeight / 2,
                 bottom: mouseY + areaHeight / 2
@@ -101,13 +101,20 @@ function highlight(areaRect) {
                     
                 if (isInside) {
                     word.style.backgroundColor = 'yellow';
+
                 } else {
                     word.style.backgroundColor = 'transparent';
                 }
             });
+        } else { 
+            const words = paragraph.querySelectorAll('span');
+            words.forEach((word) => {
+                word.style.backgroundColor = 'transparent';
+            }); 
         }
     });
 }
+
 
 /**
  * Function that targets all p elements on the page and 
@@ -115,7 +122,7 @@ function highlight(areaRect) {
  * to allow for highlighting of individual words
  */
 function wrapWords(container) {
-        const words = container.textContent.split(' '); // Split text by spaces
+        const words = container.innerText.split(' '); // Split text by spaces
         container.innerHTML = ''; // Clear existing text
 
         words.forEach((word, index) => {
@@ -142,7 +149,6 @@ function clearHighlights() {
         word.style.backgroundColor = 'transparent';
     });
 }
-
 
 function activeAreaStyles(checkedOption, activeArea) {
     if (checkedOption === 'highlight') { 
