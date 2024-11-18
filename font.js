@@ -25,23 +25,34 @@ function setFontFamily(element, data) {
 function setFontSize(element, data) {
   const fontSize = data.fontSize;
 
-  let existingFontSize = document.querySelector(".accessorease-font-size");
+  // let existingFontSize = document.querySelector(".accessorease-font-size");
 
-  if (existingFontSize) {
-    existingFontSize.remove();
-  }
+  // if (existingFontSize) {
+  //   existingFontSize.remove();
+  // }
 
   if (data.isMinFontSize && fontSize) {
-    // Add style to body
-    const styleGlobal = document.createElement("style");
-    styleGlobal.innerHTML = `
-           * {
-               font-size: ${fontSize}px !important;
-           }
-       `;
 
-    styleGlobal.className = "accessorease-font-size";
+    const elementStyle = window.getComputedStyle(element);
 
-    document.head.appendChild(styleGlobal);
+    let elementFontSize;
+    if (element.hasAttribute('accessorease-original-size')) {
+      elementFontSize = element.getAttribute('accessorease-original-size');
+    }
+    else {
+      elementFontSize = parseFloat(elementStyle.getPropertyValue("font-size").replace('px', ''));
+      element.getAttribute('accessorease-original-size');
+    }
+
+    if (elementFontSize < parseFloat(fontSize)) {
+      elementFontSize = fontSize;
+    }
+    const styles = {
+      "font-size": `${elementFontSize}px`
+    }
+    updateStyles(element, styles, "min-font-size");
+  } else {
+    const styles = ['font-size'];
+    resetStyles(element, styles, "min-font-size");
   }
 }
