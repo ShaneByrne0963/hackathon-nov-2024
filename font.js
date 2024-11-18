@@ -23,7 +23,6 @@ function setFontFamily(element, data) {
 }
 
 function setFontSize(element, data) {
-  console.clear();
   const fontSize = data.fontSize;
 
   if (data.isMinFontSize && fontSize) {
@@ -36,7 +35,7 @@ function setFontSize(element, data) {
     }
     else {
       elementFontSize = parseFloat(elementStyle.getPropertyValue("font-size").replace('px', ''));
-      element.getAttribute('accessorease-original-size');
+      element.setAttribute('accessorease-original-size', elementFontSize);
     }
 
     if (elementFontSize < parseFloat(fontSize)) {
