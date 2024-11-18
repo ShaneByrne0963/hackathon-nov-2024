@@ -182,11 +182,11 @@ function hsl2rgb(h, s, l) {
  * @param {String} type The type of style change
  */
 function updateStyles(element, styles, type) {
-  element.setAttribute('accessorease-' + type, true);
+  element.setAttribute('data-accessorease-' + type, true);
   let elementStyle = element.getAttribute('style');
   let editedStyles = [];
-  if (element.hasAttribute('accessorease-css')) {
-    editedStyles = element.getAttribute('accessorease-css').split(',');
+  if (element.hasAttribute('data-accessorease-css')) {
+    editedStyles = element.getAttribute('data-accessorease-css').split(',');
   }
 
   let extraStyles = '';
@@ -199,7 +199,7 @@ function updateStyles(element, styles, type) {
 
       if (prop in styles) {
         if (!editedStyles.includes(prop)) {
-          element.setAttribute('accessorease-style-' + prop, value);
+          element.setAttribute('data-accessorease-style-' + prop, value);
         }
         elementArray.splice(i, 1);
         i--;
@@ -225,7 +225,7 @@ function updateStyles(element, styles, type) {
     first = false;
     newStyles += `${key}: ${value} !important;`;
   }
-  element.setAttribute('accessorease-css', editedStyles.join());
+  element.setAttribute('data-accessorease-css', editedStyles.join());
   const finalStyles = extraStyles + newStyles;
   if (finalStyles.length > 0) {
     element.setAttribute('style', finalStyles);
@@ -243,8 +243,8 @@ function updateStyles(element, styles, type) {
  * @param {String} type The type of style change
  */
 function resetStyles(element, styles, type) {
-  if (element.hasAttribute('accessorease-' + type)) {
-    element.removeAttribute('accessorease-' + type);
+  if (element.hasAttribute('data-accessorease-' + type)) {
+    element.removeAttribute('data-accessorease-' + type);
     let elementStyle = element.getAttribute('style');
     let extraStyles = '';
     if (elementStyle) {
@@ -271,25 +271,25 @@ function resetStyles(element, styles, type) {
     let oldStyles = ``;
     let first = true;
     let editedStyles = [];
-    if (element.hasAttribute('accessorease-css')) {
-      editedStyles = element.getAttribute('accessorease-css').split(',');
-      element.removeAttribute('accessorease-css');
+    if (element.hasAttribute('data-accessorease-css')) {
+      editedStyles = element.getAttribute('data-accessorease-css').split(',');
+      element.removeAttribute('data-accessorease-css');
     }
     for (let style of styles) {
       if (editedStyles.includes(style)) {
         editedStyles.splice(editedStyles.indexOf(style), 1);
       }
-      if (element.hasAttribute(`accessorease-style-${style}`)) {
+      if (element.hasAttribute(`data-accessorease-style-${style}`)) {
         if (!first) {
           oldStyles += ` `;
         }
         first = false;
-        oldStyles += `${style}: ${element.getAttribute(`accessorease-style-${style}`)};`;
-        element.removeAttribute(`accessorease-style-${style}`);
+        oldStyles += `${style}: ${element.getAttribute(`data-accessorease-style-${style}`)};`;
+        element.removeAttribute(`data-accessorease-style-${style}`);
       }
     }
     if (editedStyles.length > 0) {
-      element.setAttribute('accessorease-css', editedStyles.join());
+      element.setAttribute('data-accessorease-css', editedStyles.join());
     }
     const finalStyles = extraStyles + oldStyles;
     if (finalStyles.length > 0) {
@@ -415,7 +415,7 @@ function updateColorContrast(element, data) {
               "color": `rgb(${getColorParameters(textNewRgb).join()})`,
             }
             if (changedBackground) {
-              element.setAttribute('accessorease-contrast-background', true);
+              element.setAttribute('data-accessorease-contrast-background', true);
               newStyles["background-color"] = `rgb(${getColorParameters(backNewRgb).join()})`;
             }
             updateStyles(element, newStyles, 'updated-contrast');
@@ -427,9 +427,9 @@ function updateColorContrast(element, data) {
   else {
     // Setting the original colors back
     let styles = ['color'];
-    if (element.hasAttribute('accessorease-contrast-background')) {
+    if (element.hasAttribute('data-accessorease-contrast-background')) {
       styles.push('background-color');
-      element.removeAttribute('accessorease-contrast-background');
+      element.removeAttribute('data-accessorease-contrast-background');
     }
     resetStyles(element, ['color', 'background-color'], 'updated-contrast');
   }

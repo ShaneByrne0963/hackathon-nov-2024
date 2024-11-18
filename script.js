@@ -7,7 +7,7 @@
 const functions = [
   {
     func: disableAutoplay,
-    targets: "audio, video",
+    targets: "video",
   },
   {
     func: removeBackgroundImage,
@@ -214,8 +214,8 @@ const observer = new MutationObserver((mutationsList, obs) => {
       // Do not update the page if the affected element is the ruler
       const mutatedElement = mutation.target;
       if (
-        mutatedElement.id !== "accessorease-ruler" &&
-        mutatedElement.id !== "accessorease-horizontal-line"
+        mutatedElement.id !== "data-accessorease-ruler" &&
+        mutatedElement.id !== "data-accessorease-horizontal-line"
       ) {
         canUpdate = true;
         break;

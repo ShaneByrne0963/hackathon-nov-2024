@@ -10,7 +10,7 @@ function ruler(element, data) {
 }
 
 function createRuler() {
-        const oldParentContainer = document.getElementById("accessorease-parent-container");
+        const oldParentContainer = document.getElementById("data-accessorease-parent-container");
         if (oldParentContainer) {
                 return;
         }
@@ -20,7 +20,7 @@ function createRuler() {
 
         // Create parent container div
         const parentRulerContainer = document.createElement("div");
-        parentRulerContainer.id = "accessorease-parent-container";
+        parentRulerContainer.id = "data-accessorease-parent-container";
         document.body.appendChild(parentRulerContainer);
 
         // Parent container styles
@@ -35,7 +35,7 @@ function createRuler() {
         
         // Create child container div
         const childRulerContainer = document.createElement("div");
-        childRulerContainer.id = "accessorease-child-container";
+        childRulerContainer.id = "data-accessorease-child-container";
         parentRulerContainer.appendChild(childRulerContainer);
 
         // Child container styles
@@ -45,7 +45,7 @@ function createRuler() {
         
         // Create and add new cursor
         const customCursor = document.createElement("div");
-        customCursor.id = "accessorease-ruler";
+        customCursor.id = "data-accessorease-ruler";
         childRulerContainer.appendChild(customCursor);
 
         // Inline-styling for cursor
@@ -58,7 +58,7 @@ function createRuler() {
         
         // Create and add horizontal line
         const horizontalLine = document.createElement("div");
-        horizontalLine.id = "accessorease-horizontal-line";
+        horizontalLine.id = "data-accessorease-horizontal-line";
         childRulerContainer.appendChild(horizontalLine);
 
         // Inling-styling for horizontal line
@@ -90,10 +90,10 @@ function createRuler() {
 
 function removeRuler() {
         // Remove cursor and horizontal line
-        const customCursor = document.getElementById("accessorease-ruler");
-        const horizontalLine = document.getElementById("accessorease-horizontal-line");
-        const parentRulerContainer = document.getElementById("accessorease-parent-container");
-        const childRulerContainer = document.getElementById("accessorease-child-container");
+        const customCursor = document.getElementById("data-accessorease-ruler");
+        const horizontalLine = document.getElementById("data-accessorease-horizontal-line");
+        const parentRulerContainer = document.getElementById("data-accessorease-parent-container");
+        const childRulerContainer = document.getElementById("data-accessorease-child-container");
 
         // Remove EventListeners
         document.querySelectorAll("a").forEach((link) => {
@@ -113,8 +113,8 @@ function removeRuler() {
 
 // Removes customCursor and horizontalLine when hovering over a link
 function enterLink() {
-        const customCursor = document.getElementById("accessorease-ruler");
-        const horizontalLine = document.getElementById("accessorease-horizontal-line");
+        const customCursor = document.getElementById("data-accessorease-ruler");
+        const horizontalLine = document.getElementById("data-accessorease-horizontal-line");
 
         if (customCursor && horizontalLine) {
                 customCursor.style.display = 'none';
@@ -125,8 +125,8 @@ function enterLink() {
 
 // Restores customCursor and horizontalLine when leaving a link
 function leaveLink() {
-        const customCursor = document.getElementById("accessorease-ruler");
-        const horizontalLine = document.getElementById("accessorease-horizontal-line");
+        const customCursor = document.getElementById("data-accessorease-ruler");
+        const horizontalLine = document.getElementById("data-accessorease-horizontal-line");
 
         if (customCursor && horizontalLine) {
                 customCursor.style.display = 'block';

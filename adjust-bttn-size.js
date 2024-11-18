@@ -5,21 +5,21 @@ function changeButtonSize(element, data) {
 
   // Apply the new size class based on the preference
   if (selectedSize === "default") {
-    if (element.hasAttribute('accessorease-button-size')) {
+    if (element.hasAttribute('data-accessorease-button-size')) {
       // Restore the original size for default
       let styles = ['padding', 'box-sizing'];
-      if (!element.hasAttribute('accessorease-min-font-size')) {
+      if (!element.hasAttribute('data-accessorease-min-font-size')) {
         styles.push('font-size');
-        if (element.hasAttribute('accessorease-original-size')) {
-          element.removeAttribute('accessorease-original-size');
+        if (element.hasAttribute('data-accessorease-original-size')) {
+          element.removeAttribute('data-accessorease-original-size');
         }
       }
       resetStyles(element, styles, "button-size");
-      if (element.hasAttribute('accessorease-original-padding')) {
-        element.removeAttribute('accessorease-original-padding');
+      if (element.hasAttribute('data-accessorease-original-padding')) {
+        element.removeAttribute('data-accessorease-original-padding');
       }
       // Run the setFontSize function to update the font sizes
-      if (element.hasAttribute('accessorease-min-font-size')) {
+      if (element.hasAttribute('data-accessorease-min-font-size')) {
         return setFontSize;
       }
     }
@@ -28,21 +28,21 @@ function changeButtonSize(element, data) {
     const elementStyle = window.getComputedStyle(element);
 
     let elementFontSize;
-    if (element.hasAttribute('accessorease-original-size')) {
-      elementFontSize = element.getAttribute('accessorease-original-size');
+    if (element.hasAttribute('data-accessorease-original-size')) {
+      elementFontSize = element.getAttribute('data-accessorease-original-size');
     }
     else {
       elementFontSize = parseFloat(elementStyle.getPropertyValue("font-size").replace('px', ''));
-      element.setAttribute('accessorease-original-size', elementFontSize);
+      element.setAttribute('data-accessorease-original-size', elementFontSize);
     }
 
     let elementPadding;
-    if (element.hasAttribute('accessorease-original-padding')) {
-      elementPadding = element.getAttribute('accessorease-original-padding');
+    if (element.hasAttribute('data-accessorease-original-padding')) {
+      elementPadding = element.getAttribute('data-accessorease-original-padding');
     }
     else {
       elementPadding = elementStyle.getPropertyValue("font-size").replaceAll('px', '');
-      element.setAttribute('accessorease-original-padding', elementPadding);
+      element.setAttribute('data-accessorease-original-padding', elementPadding);
     }
     // Allow for both the x and y padding
     const parsedPadding = elementPadding.split(' ').map(item => parseFloat(item));

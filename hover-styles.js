@@ -9,8 +9,8 @@ function hoverStyles(element, data) {
         mouseTracker("highlight");
 
     } else {
-        if (document.body.classList.contains('accessorease-event-listener')) {
-            document.body.classList.remove('accessorease-event-listener');
+        if (document.body.classList.contains('data-accessorease-event-listener')) {
+            document.body.classList.remove('data-accessorease-event-listener');
             document.removeEventListener('mousemove', eventListenerWrapper);
         }
         clearHighlights();
@@ -21,22 +21,22 @@ function hoverStyles(element, data) {
 function mouseTracker(checkedOption) {
 
     //Check if activeArea already exists
-    const oldActiveArea = document.getElementById('accessorease-active-area');
+    const oldActiveArea = document.getElementById('data-accessorease-active-area');
     if (oldActiveArea) {
         return;
     } 
 
     // Create the active area element
     const activeArea = document.createElement('div');
-    activeArea.id = 'accessorease-active-area';
+    activeArea.id = 'data-accessorease-active-area';
     document.body.appendChild(activeArea);
 
     //styles for active area
     activeAreaStyles(checkedOption, activeArea);
 
     // Mousemove event listener
-    if (!document.body.classList.contains('accessorease-event-listener')) {
-        document.body.classList.add('accessorease-event-listener');
+    if (!document.body.classList.contains('data-accessorease-event-listener')) {
+        document.body.classList.add('data-accessorease-event-listener');
         eventListenerWrapper = createEventListenerWrapper(checkedOption, activeArea);
         document.addEventListener('mousemove', eventListenerWrapper);
     }
@@ -128,7 +128,7 @@ function wrapWords(container) {
         words.forEach((word, index) => {
             const span = document.createElement('span');
             span.textContent = word;
-            span.classList.add('accessorease-highlight-word')
+            span.classList.add('data-accessorease-highlight-word')
             container.appendChild(span);
 
             // Add a space after each word except the last one
@@ -139,12 +139,12 @@ function wrapWords(container) {
 }
 
 function clearHighlights() {
-    const activeArea = document.getElementById('accessorease-active-area');
+    const activeArea = document.getElementById('data-accessorease-active-area');
     if (activeArea) {
         activeArea.remove();
     }
     
-    const words = document.querySelectorAll('.accessorease-highlight-word');
+    const words = document.querySelectorAll('.data-accessorease-highlight-word');
     words.forEach((word) => {
         word.style.backgroundColor = 'transparent';
     });

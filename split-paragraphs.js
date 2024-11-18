@@ -28,12 +28,10 @@ function splitParagraphs(element, data) {
             const sentences = node.textContent.split(/(?<=[.:?!])\s+/).filter(sentence => sentence.trim() !== "");
 
             sentences.forEach((sentence, index) => {
-              // console.log(sentence.length);
               let isFullSentence = ['.', ':', '!', '?'].some(char => sentence.endsWith(char));
               // Count the length of the paragraph so far
               // Add 1 for whitespace between sentences
               charCount += sentence.length + 1;
-              // console.log('char count:' + charCount);
 
               // Add the node as a new text node with trailing whitespace after full sentences
               paragraph.appendChild(document.createTextNode(`${sentence}${isFullSentence ? " " : ""}`));
@@ -75,25 +73,24 @@ function splitParagraphs(element, data) {
         const wrapper = document.createElement("div");
         adjustedContent.forEach(p => wrapper.appendChild(p));
         // Save the original element content
-        wrapper.setAttribute("accessorease-original-paragraph-content", element.innerHTML);
+        wrapper.setAttribute("data-accessorease-original-paragraph-content", element.innerHTML);
         // Replace the <p> element with the wrapper
         element.replaceWith(wrapper);
       }
     }
 
   } else {
-    if (element.getAttribute("accessorease-original-paragraph-content")) {
+    if (element.getAttribute("data-accessorease-original-paragraph-content")) {
       // Retrieve the original element content if available
       restoredParagraph = document.createElement("p");
       // Restore original attributes
       if (element.children[0].hasAttributes()) {
         Array.from(element.children[0].attributes).forEach(attr => restoredParagraph.setAttribute(attr.nodeName, attr.nodeValue));
       }
-      restoredParagraph.innerHTML = element.getAttribute("accessorease-original-paragraph-content");
+      restoredParagraph.innerHTML = element.getAttribute("data-accessorease-original-paragraph-content");
       element.replaceWith(restoredParagraph);
     }
   }
-
 }
 
 function getAllAttributes(element) {
@@ -104,4 +101,3 @@ function getAllAttributes(element) {
   }
 }
 
-// TODO: (future feature) make this language-specific to avoid breaking up dates etc.
