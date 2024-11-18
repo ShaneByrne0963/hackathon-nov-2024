@@ -31,7 +31,7 @@ function setFontSize(element, data) {
     existingFontSize.remove();
   }
 
-  if (data.isMinFontSize) {
+  if (data.isMinFontSize && fontSize) {
     // Add style to body
     const styleGlobal = document.createElement("style");
     styleGlobal.innerHTML = `
@@ -39,10 +39,9 @@ function setFontSize(element, data) {
                font-size: ${fontSize}px !important;
            }
        `;
-  
+
     styleGlobal.className = "accessorease-font-size";
-  
+
     document.head.appendChild(styleGlobal);
   }
-
 }
