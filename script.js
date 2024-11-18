@@ -15,11 +15,6 @@ const functions = [
     targets: "body, header, footer, div, section, article, aside, nav",
   },
   {
-    func: updateColorContrast,
-    preference: "colorContrast",
-    targets: "*",
-  },
-  {
     func: applyPalette,
     preference: "colorPalette",
     targets: "body, header, footer, nav",
@@ -52,7 +47,7 @@ const functions = [
   {
     func: setFontSize,
     preference: "isMinFontSize, fontSize",
-    targets: "body",
+    targets: "*",
   },
   {
     func: setFontColor,
@@ -63,6 +58,11 @@ const functions = [
     func: changeButtonSize,
     preference: "buttonSize",
     targets: "button",
+  },
+  {
+    func: updateColorContrast,
+    preference: "colorContrast",
+    targets: "*",
   },
   {
     func: setFocusMode,
@@ -122,44 +122,71 @@ function updatePage(preference = null) {
     } else {
       runFunctions = [...functions];
     }
-    while (runFunctions.length > 0) {
-      let data = runFunctions[0];
-      document.querySelectorAll(data.targets).forEach((element) => {
-        const functionResult = data.func(element, preferences);
-        // Check if any other functions need to be ran after the function has been run
-        if (functionResult) {
-          let resultArray = [functionResult];
-          // Check if the output is an array
-          if (typeof functionResult === "object" && functionResult.map) {
-            resultArray = functionResult;
-          }
-          // Remove the functions that will be run later in the process anyway
-          const functionsToRun = resultArray.filter(
-            (res) => runFunctions.filter((fnc) => fnc.func === res).length === 0
-          );
-          runFunctions.push(
-            ...functionsToRun.map((item) => {
-              // Finding the data of the function
-              for (let fnc of functions) {
-                if (fnc.func === item) {
-                  return fnc;
-                }
-              }
-              for (let fnc of resultFunctions) {
-                if (fnc.func === item) {
-                  return fnc;
-                }
-              }
-            })
-          );
-        }
-      });
-      runFunctions.splice(0, 1);
-    }
-    // Allow for automatic changes again after 1 second
-    setTimeout(() => observer.observe(document.body, config), 1000);
+    pageUpdateStep(runFunctions, preferences);
   });
 }
+
+
+/**
+ * Steps through each function to e run
+ * @param {[Object]} fncs The list of functions from the functions variable to be run
+ * @param {Object} preferences The user preferences
+ */
+function pageUpdateStep(fncs, preferences) {
+  let runFunctions = [...fncs];
+  let data = runFunctions[0];
+  document.querySelectorAll(data.targets).forEach((element) => {
+    const functionResult = data.func(element, preferences);
+    // Check if any other functions need to be ran after the function has been run
+    if (functionResult) {
+      let resultArray = [functionResult];
+      // Check if the output is an array
+      if (typeof functionResult === 'object' && functionResult.map) {
+        resultArray = functionResult;
+      }
+      resultArray.map(res => {
+        let hasFunction = false;
+        for (let i = 0; i < runFunctions.length; i++) {
+          let fnc = runFunctions[i];
+          if (fnc.func === res) {
+            // Move the function to the back of the queue if it already exists
+            const foundFunction = runFunctions.splice(i, 1)[0];
+            runFunctions.push(foundFunction);
+            hasFunction = true;
+            break;
+          }
+        }
+        if (!hasFunction) {
+          let foundFunction = false;
+          for (let fnc of functions) {
+            if (fnc.func === res) {
+              runFunctions.push(fnc);
+              foundFunction = true;
+              break;
+            }
+          }
+          if (!foundFunction) {
+            for (let fnc of resultFunctions) {
+              if (fnc.func === res) {
+                runFunctions.push(fnc);
+                break;
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+  runFunctions.splice(0, 1);
+  if (runFunctions.length > 0) {
+    setTimeout(() => pageUpdateStep(runFunctions, preferences));
+  }
+  else {
+    // Allow for automatic changes again after 1 second
+    setTimeout(() => observer.observe(document.body, config), 1000);
+  }
+}
+
 
 // Listening for data from the popup
 extAPI.runtime.onMessage.addListener(function (message, sender, sendResponse) {

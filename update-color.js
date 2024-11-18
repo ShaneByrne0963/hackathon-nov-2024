@@ -432,7 +432,6 @@ function updateColorContrast(element, data) {
 function forceColorContrast(element, data) {
   let fakeData = {...data};
   fakeData.colorContrast = true;
-  console.log("Forcing updateColorContrast");
   return updateColorContrast(element, fakeData);
 }
 
@@ -446,6 +445,5 @@ function forceColorContrast(element, data) {
 function clearColorContrast(element, data) {
   let fakeData = {...data};
   fakeData.colorContrast = false;
-  console.log("Forcing updateColorContrast");
   return updateColorContrast(element, fakeData);
 }

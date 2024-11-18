@@ -19,5 +19,8 @@ function setFontColor(element, data) {
 
     styleGlobal.className = "accessorease-font-color";
     document.head.appendChild(styleGlobal);
+    return forceColorContrast;
+  } else {
+    return [clearColorContrast, updateColorContrast];
   }
 }
