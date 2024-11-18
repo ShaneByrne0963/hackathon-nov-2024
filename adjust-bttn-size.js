@@ -7,7 +7,7 @@ function changeButtonSize(element, data) {
   if (selectedSize === "default") {
     if (element.hasAttribute('accessorease-button-size')) {
       // Restore the original size for default
-      let styles = ['padding'];
+      let styles = ['padding', 'box-sizing'];
       if (!element.hasAttribute('accessorease-min-font-size')) {
         styles.push('font-size');
         if (element.hasAttribute('accessorease-original-size')) {
@@ -58,11 +58,13 @@ function changeButtonSize(element, data) {
       styles = {
         "font-size": `${mediumFontSize}px`,
         "padding": mediumPadding,
+        "box-sizing": "content-box"
       };
     } else if (selectedSize === "large") {
       styles = {
         "font-size": `${largeFontSize}px`,
         "padding": largePadding,
+        "box-sizing": "content-box"
       };
     }
     updateStyles(element, styles, "button-size");
