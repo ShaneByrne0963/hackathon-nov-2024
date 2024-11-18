@@ -264,7 +264,7 @@ function resetStyles(element, styles, type) {
       if (elementArray.length > 0) {
         extraStyles = elementArray.join('; ');
         if (extraStyles[extraStyles.length - 1] !== ';') {
-          extraStyles += ';';
+          extraStyles += '; ';
         }
       }
     }
