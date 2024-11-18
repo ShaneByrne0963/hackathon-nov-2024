@@ -39,14 +39,21 @@ function setFontSize(element, data) {
     }
 
     if (elementFontSize < parseFloat(fontSize)) {
-      elementFontSize = fontSize;
+      const styles = {
+        "font-size": `${fontSize}px`
+      }
+      updateStyles(element, styles, "min-font-size");
     }
-    const styles = {
-      "font-size": `${elementFontSize}px`
+    else {
+      resetStyles(element, ["font-size"], "min-font-size");
+      if (element.hasAttribute('accessorease-original-size')) {
+        element.removeAttribute('accessorease-original-size');
+      }
     }
-    updateStyles(element, styles, "min-font-size");
   } else {
-    const styles = ['font-size'];
-    resetStyles(element, styles, "min-font-size");
+    resetStyles(element, ['font-size'], "min-font-size");
+    if (element.hasAttribute('accessorease-original-size')) {
+      element.removeAttribute('accessorease-original-size');
+    }
   }
 }
