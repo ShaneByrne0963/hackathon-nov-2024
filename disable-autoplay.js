@@ -51,15 +51,19 @@ function disableAutoplay(element, data) {
     element.addEventListener('click', clickHandler);
     element.parentNode.addEventListener('click', clickHandler);
 
-    siblings.forEach(sibling => {
-      sibling.addEventListener('click', clickHandler);
-      listenerGroup.push(sibling);
-    });
+    if (siblings) {
+      siblings.forEach(sibling => {
+        sibling.addEventListener('click', clickHandler);
+        listenerGroup.push(sibling);
+      });
+    }
 
-    parentSiblings.forEach(pSibling => {
-      pSibling.addEventListener('click', clickHandler);
-      listenerGroup.push(pSibling);
-    });
+    if (parentSiblings) {
+      parentSiblings.forEach(pSibling => {
+        pSibling.addEventListener('click', clickHandler);
+        listenerGroup.push(pSibling);
+      });
+    }
 
     element.setAttribute('accessorease-video-eventlistener', true);
     console.log('Event listener set for group:', element.tagName);
