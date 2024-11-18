@@ -46,7 +46,7 @@ const functions = [
   },
   {
     func: setFontSize,
-    preference: "isMinFontSize",
+    preference: "isMinFontSize, fontSize",
     targets: "body",
   },
   {
@@ -82,7 +82,7 @@ const resultFunctions = [
     preference: "colorContrast",
     targets: "*",
   },
-]
+];
 
 const defaultValues = {
   colorContrast: false,
@@ -97,7 +97,7 @@ const defaultValues = {
   fontSize: "20",
   ruler: false,
   hoverHighlight: false,
-  fontColor: 'Default',
+  fontColor: "Default",
   eventListeners: [],
 };
 const extAPI = typeof browser !== "undefined" ? browser : chrome;
@@ -107,7 +107,10 @@ function updatePage(preference = null) {
   observer.disconnect();
   extAPI.storage.local.get("accessorEasePreferences", (result) => {
     let preferences = defaultValues;
-    if (result.accessorEasePreferences && result.accessorEasePreferences.runExtension) {
+    if (
+      result.accessorEasePreferences &&
+      result.accessorEasePreferences.runExtension
+    ) {
       preferences = result.accessorEasePreferences;
     }
     let runFunctions;
@@ -198,7 +201,6 @@ const observer = new MutationObserver((mutationsList, obs) => {
   let canUpdate = false;
 
   for (let mutation of mutationsList) {
-
     // Always update the page if elements are added/deleted
     if (mutation.type === "childList") {
       canUpdate = true;
