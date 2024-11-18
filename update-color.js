@@ -311,7 +311,6 @@ const iconClassNames = [
  * @param {Object} data The user's preferences
  */
 function updateColorContrast(element, data) {
-  console.log(data.colorContrast);
   if (data.colorContrast) {
     if (element.innerText) {
       // Get the colors of the text and its background
