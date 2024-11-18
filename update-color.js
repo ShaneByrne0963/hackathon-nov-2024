@@ -226,7 +226,13 @@ function updateStyles(element, styles, type) {
     newStyles += `${key}: ${value} !important;`;
   }
   element.setAttribute('accessorease-css', editedStyles.join());
-  element.setAttribute('style', extraStyles + newStyles);
+  const finalStyles = extraStyles + newStyles;
+  if (finalStyles.length > 0) {
+    element.setAttribute('style', finalStyles);
+  }
+  else {
+    element.removeAttribute('style');
+  }
 }
 
 
@@ -285,7 +291,13 @@ function resetStyles(element, styles, type) {
     if (editedStyles.length > 0) {
       element.setAttribute('accessorease-css', editedStyles.join());
     }
-    element.setAttribute('style', extraStyles + oldStyles);
+    const finalStyles = extraStyles + oldStyles;
+    if (finalStyles.length > 0) {
+      element.setAttribute('style', finalStyles);
+    }
+    else {
+      element.removeAttribute('style');
+    }
   }
 }
 

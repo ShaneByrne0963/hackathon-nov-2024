@@ -46,10 +46,12 @@ function setFontSize(element, data) {
     }
     else {
       resetStyles(element, ["font-size"], "min-font-size");
+      if (element.hasAttribute('accessorease-original-size')) {
+        element.removeAttribute('accessorease-original-size');
+      }
     }
   } else {
-    const styles = ['font-size'];
-    resetStyles(element, styles, "min-font-size");
+    resetStyles(element, ['font-size'], "min-font-size");
     if (element.hasAttribute('accessorease-original-size')) {
       element.removeAttribute('accessorease-original-size');
     }

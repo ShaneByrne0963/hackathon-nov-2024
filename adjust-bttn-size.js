@@ -3,57 +3,68 @@ function changeButtonSize(element, data) {
   // Retrieve the button size preference from the `data` object
   const selectedSize = data.buttonSize || "default";
 
-  // Check if the original size is already stored, if not, store it
-  if (!element.dataset.originalFontSize || !element.dataset.originalPadding) {
-    const computedStyle = window.getComputedStyle(element);
-    element.dataset.originalFontSize = parseFloat(computedStyle.fontSize); // Store original font size
-    element.dataset.originalPadding = parseFloat(computedStyle.paddingTop); // Store original padding
-  }
-
-  let elementFontSize;
-  if (element.hasAttribute('accessorease-original-size')) {
-    elementFontSize = element.getAttribute('accessorease-original-size');
-  }
-  else {
-    elementFontSize = parseFloat(elementStyle.getPropertyValue("font-size").replace('px', ''));
-    element.setAttribute('accessorease-original-size', elementFontSize);
-  }
-
-  // Retrieve the original size from the data attributes
-  const originalFontSize = parseFloat(element.dataset.originalFontSize);
-  const originalPadding = parseFloat(element.dataset.originalPadding);
-
-  // Calculate medium and large sizes based on the original size
-  const mediumFontSize = originalFontSize * 1.2; // Medium is 20% larger than default
-  const mediumPadding = originalPadding * 1.2;
-  const largeFontSize = originalFontSize * 1.5; // Large is 50% larger than default
-  const largePadding = originalPadding * 1.5;
-
   // Apply the new size class based on the preference
   if (selectedSize === "default") {
-    // Restore the original size for default
-    const styles = ['padding'];
-    resetStyles(element, styles, "button-size");
-    if (element.hasAttribute('accessorease-original-padding')) {
-      element.removeAttribute('accessorease-original-padding');
-    }
-    if (element.hasAttribute('accessorease-original-padding')) {
-      element.removeAttribute('accessorease-original-padding');
+    if (element.hasAttribute('accessorease-button-size')) {
+      // Restore the original size for default
+      let styles = ['padding'];
+      if (!element.hasAttribute('accessorease-min-font-size')) {
+        styles.push('font-size');
+        if (element.hasAttribute('accessorease-original-size')) {
+          element.removeAttribute('accessorease-original-size');
+        }
+      }
+      resetStyles(element, styles, "button-size");
+      if (element.hasAttribute('accessorease-original-padding')) {
+        element.removeAttribute('accessorease-original-padding');
+      }
+      // Run the setFontSize function to update the font sizes
+      if (element.hasAttribute('accessorease-min-font-size')) {
+        return setFontSize;
+      }
     }
   }
   else {
-    if (selectedSize === "medium") {
-      const styles = {
-        "font-size": `${mediumFontSize}px`,
-        "padding": `${mediumPadding}px`,
-      };
-      updateStyles(element, styles, "button-size");
-    } else if (selectedSize === "large") {
-      const styles = {
-        "font-size": `${largeFontSize}px`,
-        "padding": `${largePadding}px`,
-      };
-      updateStyles(element, styles, "button-size");
+    const elementStyle = window.getComputedStyle(element);
+
+    let elementFontSize;
+    if (element.hasAttribute('accessorease-original-size')) {
+      elementFontSize = element.getAttribute('accessorease-original-size');
     }
+    else {
+      elementFontSize = parseFloat(elementStyle.getPropertyValue("font-size").replace('px', ''));
+      element.setAttribute('accessorease-original-size', elementFontSize);
+    }
+
+    let elementPadding;
+    if (element.hasAttribute('accessorease-original-padding')) {
+      elementPadding = element.getAttribute('accessorease-original-padding');
+    }
+    else {
+      elementPadding = elementStyle.getPropertyValue("font-size").replaceAll('px', '');
+      element.setAttribute('accessorease-original-padding', elementPadding);
+    }
+    // Allow for both the x and y padding
+    const parsedPadding = elementPadding.split(' ').map(item => parseFloat(item));
+
+    // Calculate medium and large sizes based on the original size
+    const mediumFontSize = elementFontSize * 1.2; // Medium is 20% larger than default
+    const mediumPadding = parsedPadding.map(item => `${item * 1.2}px`).join(' ');
+    const largeFontSize = elementFontSize * 1.5; // Large is 50% larger than default
+    const largePadding = parsedPadding.map(item => `${item * 1.2}px`).join(' ');
+    let styles;
+
+    if (selectedSize === "medium") {
+      styles = {
+        "font-size": `${mediumFontSize}px`,
+        "padding": mediumPadding,
+      };
+    } else if (selectedSize === "large") {
+      styles = {
+        "font-size": `${largeFontSize}px`,
+        "padding": largePadding,
+      };
+    }
+    updateStyles(element, styles, "button-size");
   }
 }
